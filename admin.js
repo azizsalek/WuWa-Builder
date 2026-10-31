@@ -21,27 +21,46 @@ async function checkAdmin() {
   if (error) throw error;
   return data === true;
 }
+let sessionRenderVersion = 0;
 async function renderSession(session) {
+  const renderVersion = ++sessionRenderVersion;
   show("auth-panel", !session);
   show("setup-panel", false);
   show("admin-app", false);
   if (!session) return;
+
+  let admin;
   try {
-    const admin = await checkAdmin();
-    if (!admin) {
-      show("setup-panel", true);
-      return;
-    }
-    show("admin-app", true);
-    switchAdminView("characters");
+    admin = await checkAdmin();
+  } catch (error) {
+    if (renderVersion !== sessionRenderVersion) return;
+    show("auth-panel", true);
+    setMessage("auth-message", "تعذر الاتصال بخدمة التحقق من صلاحيات المدير: " + (error.message || "خطأ غير معروف"), true);
+    return;
+  }
+  if (renderVersion !== sessionRenderVersion) return;
+  if (!admin) {
+    show("setup-panel", true);
+    return;
+  }
+
+  show("auth-panel", false);
+  show("setup-panel", false);
+  show("admin-app", true);
+  try {
+    await switchAdminView("characters");
+    if (renderVersion !== sessionRenderVersion) return;
     await loadRecords();
     await loadSiteSettings();
     renderCmsList("post","posts-list","posts-count");
     renderCmsList("page","pages-list","pages-count");
     loadAdvancedSettings();
   } catch (error) {
-    show("auth-panel", true);
-    setMessage("auth-message", "تعذر التحقق من الصلاحيات: " + error.message, true);
+    if (renderVersion !== sessionRenderVersion) return;
+    const message = "تم التحقق من صلاحيات المدير، لكن حدث خطأ أثناء تحميل لوحة الإدارة: " + (error.message || "خطأ غير معروف");
+    const target = $("character-editor-message") ? "character-editor-message" : "auth-message";
+    setMessage(target, message, true);
+    console.error("Admin dashboard initialization failed:", error);
   }
 }
 
