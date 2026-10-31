@@ -19,7 +19,7 @@ function evaluateBuild(b){
 }
 document.getElementById("build-form").addEventListener("submit",e=>{
  e.preventDefault();
- const b={id:Date.now(),name:document.getElementById("build-name").value.trim(),weapon:document.getElementById("weapon-type").value,set:document.getElementById("echo-set").value,atk:num("atk"),hp:num("hp"),def:num("def"),cr:num("cr"),cd:num("cd"),er:num("er"),element:num("element"),date:new Date().toLocaleDateString("ar")};
+ const b={id:Date.now(),name:document.getElementById("build-name").value.trim(),note:document.getElementById("weapon-type").value,set:document.getElementById("echo-set").value,atk:num("atk"),hp:num("hp"),def:num("def"),cr:num("cr"),cd:num("cd"),er:num("er"),element:num("element"),date:new Date().toLocaleDateString("ar")};
  if(b.cr!==null&&(b.cr<0||b.cr>100)){alert("Crit Rate يجب أن يكون بين 0 و100.");return}
  const report=evaluateBuild(b);b.score=report.score;b.notes=report.notes;state.builds.unshift(b);save();
  const box=document.getElementById("build-result");box.classList.remove("hidden");box.innerHTML=`<h3>تقرير البناء: ${esc(b.name)}</h3><div class="score-line"><span class="score">${report.score}%</span><b>اكتمال البيانات المدخلة</b></div><p>${report.notes.map(esc).join("<br>")||"أدخل مزيداً من الإحصائيات للحصول على ملاحظات."}</p><p>هذا المؤشر يقيس اكتمال البيانات فقط، ولا يمثل نسبة قوة أو ضرر الشخصية.</p>`;
@@ -34,7 +34,7 @@ document.getElementById("echo-form").addEventListener("submit",e=>{
  e.target.reset();
 });
 document.getElementById("character-form").addEventListener("submit",e=>{
- e.preventDefault();state.characters.unshift({id:Date.now(),name:document.getElementById("character-name").value.trim(),element:document.getElementById("character-element").value.trim(),weapon:document.getElementById("character-weapon").value.trim()});save();e.target.reset();
+ e.preventDefault();state.characters.unshift({id:Date.now(),name:document.getElementById("character-name").value.trim(),element:document.getElementById("character-element").value.trim(),note:document.getElementById("character-note").value.trim()});save();e.target.reset();
 });
 function removeItem(type,id){if(!confirm("هل تريد حذف هذا العنصر؟"))return;state[type]=state[type].filter(x=>x.id!==id);save()}
 function renderList(id,items,type,meta){const el=document.getElementById(id);if(!items.length){el.className="saved-list empty-state";el.textContent=type==="builds"?"لم تحفظ أي بناء بعد.":"لم تحفظ أي Echo بعد.";return}el.className="saved-list";el.innerHTML=items.map(x=>`<article class="saved-item"><div><b>${esc(x.name)}</b><small>${meta(x)}</small></div><button data-delete="${type}:${x.id}">حذف</button></article>`).join("");el.querySelectorAll("[data-delete]").forEach(btn=>btn.addEventListener("click",()=>{const [t,i]=btn.dataset.delete.split(":");removeItem(t,Number(i))}))}
@@ -42,10 +42,10 @@ function renderAll(){
  document.getElementById("stat-builds").textContent=state.characters.length;
  document.getElementById("stat-echoes").textContent=state.echoes.length;
  document.getElementById("stat-saved").textContent=state.builds.length;
- renderList("build-list",state.builds,"builds",x=>`اكتمال البيانات ${x.score}% • ${esc(x.weapon||"نوع السلاح غير محدد")} • ${esc(x.date)}`);
+ renderList("build-list",state.builds,"builds",x=>`اكتمال البيانات ${x.score}% • ${esc(x.note||"نوع السلاح غير محدد")} • ${esc(x.date)}`);
  renderList("echo-list",state.echoes,"echoes",x=>`${x.cost} Cost • ${x.subs.length}/5 Sub Stats • ${esc(x.date)}`);
  const c=document.getElementById("character-list");
- c.innerHTML=state.characters.length?state.characters.map(x=>`<article class="character-card"><div class="char-symbol">♙</div><b>${esc(x.name)}</b><small>${esc(x.element||"العنصر غير محدد")} • ${esc(x.weapon||"السلاح غير محدد")}</small><p><button class="secondary" data-char-del="${x.id}">حذف</button></p></article>`).join(""):'<div class="empty-state">لم تضف شخصيات بعد.</div>';
+ c.innerHTML=state.characters.length?state.characters.map(x=>`<article class="character-card"><div class="char-symbol">♙</div><b>${esc(x.name)}</b><small>${esc(x.element||"العنصر غير محدد")} • ${esc(x.note||"السلاح غير محدد")}</small><p><button class="secondary" data-char-del="${x.id}">حذف</button></p></article>`).join(""):'<div class="empty-state">لم تضف شخصيات بعد.</div>';
  c.querySelectorAll("[data-char-del]").forEach(b=>b.addEventListener("click",()=>{state.characters=state.characters.filter(x=>x.id!==Number(b.dataset.charDel));save()}));
  document.getElementById("display-name").value=state.profile.name||"";
  document.getElementById("profile-name").textContent=state.profile.name||"لاعب زائر";
