@@ -50,7 +50,7 @@ function openProfile(name) {
     html += section("Teams · الفرق المقترحة", '<ul class="guide-list">' + guide.teams.map(team => '<li>' + esc(team) + '</li>').join("") + '</ul>');
     html += section("Echo Sets · مجموعات Echo", '<div class="guide-highlight"><b>' + esc(guide.echoSet) + '</b><p>Main Echo: ' + esc(guide.mainEcho) + '</p><p>Main Stats: ' + esc(guide.mainStats) + '</p><p>Substats: ' + esc(guide.subStats) + '</p></div>');
     html += section("Rotation · تسلسل اللعب", '<p>' + esc(guide.rotation) + '</p>');
-    html += '<div class="guide-source">المصدر: <a href="' + esc(guide.source) + '" target="_blank" rel="noopener noreferrer">دليل الشخصية في بوابة Wuthering Waves الرسمية</a><p>التوصيات قد تتغير مع تحديثات اللعبة؛ راجع المصدر قبل اعتمادها.</p></div>';
+    html += '<div class="guide-source">المصدر: <a href="' + esc(guide.source) + '" target="_blank" rel="noopener noreferrer">دليل مساهم منشور في بوابة Wuthering Waves الرسمية (WW Echoes)</a><p>التوصيات قد تتغير مع تحديثات اللعبة؛ راجع المصدر قبل اعتمادها.</p></div>';
   } else {
     html += '<div class="guide-pending"><b>المعلومات التفصيلية لهذه الشخصية لم توثّق بعد.</b><p>لن نضع مهارات أو فرقاً أو تدويرات تخمينية. ستظهر البيانات بعد مطابقتها مع دليل رسمي أو مصدر موثوق.</p></div>';
     html += section("Kit · القدرات", "<p>بانتظار توثيق وصف المهارات وآليات Forte.</p>");
