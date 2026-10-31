@@ -53,6 +53,28 @@
         <article class="stat-card"><small>آخر تحديث</small><strong id="last-updated">—</strong></article>
       </div>
 
+      <section class="panel site-settings-panel">
+        <div class="admin-section-head"><div><h2>إعدادات الموقع العامة</h2><small>تحكم بعنوان الموقع والرسالة الرئيسية وإظهار أقسام الواجهة</small></div><span class="status-pill" id="settings-status">جارٍ التحميل</span></div>
+        <form id="site-settings-form" class="admin-form">
+          <div class="admin-two-col">
+            <label class="field">اسم الموقع<input id="setting-site-name" required></label>
+            <label class="field">الوصف المختصر<input id="setting-tagline"></label>
+          </div>
+          <label class="field">عنوان الصفحة الرئيسية<input id="setting-dashboard-title"></label>
+          <label class="field">وصف الصفحة الرئيسية<textarea id="setting-dashboard-description" rows="3"></textarea></label>
+          <label class="field">رسالة / إعلان للزوار<textarea id="setting-announcement" rows="2" placeholder="اتركه فارغاً لإخفاء الإعلان"></textarea></label>
+          <div class="settings-toggles">
+            <label><input id="setting-show-builds" type="checkbox"> إظهار تقييم Builds</label>
+            <label><input id="setting-show-echoes" type="checkbox"> إظهار محلل Echoes</label>
+            <label><input id="setting-show-characters" type="checkbox"> إظهار الشخصيات</label>
+            <label><input id="setting-show-profile" type="checkbox"> إظهار ملف اللاعب</label>
+            <label class="maintenance-toggle"><input id="setting-maintenance" type="checkbox"> تفعيل وضع الصيانة (يخفي التطبيق عن الزوار)</label>
+          </div>
+          <button class="primary" type="submit">حفظ إعدادات الموقع</button>
+        </form>
+        <p id="settings-message" class="admin-message" aria-live="polite"></p>
+      </section>
+
       <div class="admin-layout">
         <aside class="panel admin-records">
           <div class="admin-section-head"><div><h2>محتوى الموقع</h2><small>اختر عنصراً لتعديله</small></div><button id="new-record" class="primary">＋ جديد</button></div>
