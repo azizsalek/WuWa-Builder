@@ -82,7 +82,8 @@ async function applyPublicSiteSettings() {
    const nav = document.querySelector('[data-view="' + view + '"]');
    const section = document.getElementById(view);
    if (nav) nav.hidden = enabled === false;
-   if (section && enabled === false) section.dataset.adminHidden = "true";
+   if (section) section.dataset.adminHidden = enabled === false ? "true" : "false";
+   document.querySelectorAll('[data-go="' + view + '"]').forEach(link => link.hidden = enabled === false);
   });
   let banner = document.getElementById("site-announcement");
   if (s.announcement) {
