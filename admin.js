@@ -296,11 +296,42 @@ $("site-settings-form").addEventListener("submit", async (event) => {
   });
 })();
 
-function switchAdminView(name){
+async function loadCharacterEditorData(){
+ const box=$("character-editor-message"),select=$("character-editor-select");
+ if(!box||!select||!db)return;
+ box.classList.remove("error");box.textContent="جارٍ تحميل قائمة الشخصيات والأدلة…";
+ select.innerHTML='<option value="">جارٍ التحميل…</option>';
+ try{
+  const {data,error}=await db.from("site_content").select("id,slug,title,content,published").in("slug",["characters-roster","character-guides"]);
+  if(error)throw error;
+  const rows=data||[];
+  const rosterRow=rows.find(r=>r.slug==="characters-roster");
+  const guidesRow=rows.find(r=>r.slug==="character-guides");
+  if(!rosterRow||!guidesRow)throw new Error("سجلات قاعدة الشخصيات غير مكتملة (القائمة: "+(rosterRow?"موجودة":"مفقودة")+"، الأدلة: "+(guidesRow?"موجودة":"مفقودة")+")");
+  if(!Array.isArray(rosterRow.content))throw new Error("محتوى قائمة الشخصيات ليس قائمة JSON.");
+  ceRoster=rosterRow.content.filter(c=>c&&typeof c.name==="string"&&c.name.trim());
+  ceGuides=guidesRow.content&&typeof guidesRow.content==="object"&&!Array.isArray(guidesRow.content)?guidesRow.content:{};
+  records=records.filter(r=>!["characters-roster","character-guides"].includes(r.slug)).concat(rows);
+  const previous=ceCurrentName;
+  select.innerHTML='<option value="">اختر شخصية…</option>'+ceRoster.map(c=>'<option value="'+escapeHtml(c.name)+'">'+escapeHtml(c.name)+'</option>').join("");
+  const selected=ceRoster.some(c=>c.name===previous)?previous:(ceRoster[0]?.name||"");
+  select.value=selected;
+  if(selected)loadCharacterIntoEditor(selected);
+  else box.textContent="تم الاتصال بقاعدة البيانات، لكن قائمة الشخصيات فارغة.";
+  if(selected){box.classList.remove("error");box.textContent="تم تحميل "+ceRoster.length+" شخصية و"+Object.keys(ceGuides).length+" دليل. اختر شخصية من القائمة لبدء التعديل.";}
+ }catch(error){
+  select.innerHTML='<option value="">تعذر تحميل الشخصيات</option>';
+  box.textContent="فشل تحميل قاعدة الشخصيات: "+(error.message||String(error));
+  box.classList.add("error");
+ }
+}
+async function switchAdminView(name){
  document.querySelectorAll(".admin-view").forEach(v=>v.classList.toggle("active",v.dataset.panel===name));
  document.querySelectorAll(".admin-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.view===name));
  const meta={posts:["المشاركات","أنشئ المقالات وأدر المسودات والمنشورات."],stats:["الإحصاءات","متابعة أداء الموقع والزيارات الحقيقية."],comments:["التعليقات","مراجعة تعليقات الزوار وإدارتها."],earnings:["الأرباح","إعدادات تحقيق الدخل والربط بالخدمات."],pages:["الصفحات","إنشاء الصفحات الثابتة وإدارتها."],layout:["التنسيق","التحكم بالأقسام الظاهرة وترتيب الواجهة."],theme:["المظهر","تخصيص ألوان وهوية الموقع."],settings:["الإعدادات","إعدادات الموقع العامة والخصوصية."],reading:["قائمة القراءة","مصادر ومراجع محفوظة."],characters:["قاعدة الشخصيات","إدارة قاعدة الشخصيات وأدلتها."],media:["مكتبة الوسائط","رفع الصور وإدارة روابطها."],backup:["النسخ الاحتياطي","تصدير المحتوى واستيراد نسخة محفوظة."],content:["محرر جميع بيانات الموقع","إضافة وتعديل وحذف سجلات المحتوى والإعدادات وقاعدة الشخصيات والأدلة مباشرة."]};
+ if(!meta[name])return;
  $("view-title").textContent=meta[name][0];$("view-description").textContent=meta[name][1];
+ if(name==="characters")await loadCharacterEditorData();
 }
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{switchAdminView(b.dataset.view);if(b.dataset.view==="content")loadRecords();}));
 document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>switchAdminView(b.dataset.go)));
@@ -526,28 +557,4 @@ ce("character-editor-form")?.addEventListener("submit",async event=>{
 });
 
 
-// Ensure the character editor refreshes when its navigation item is opened.
-document.querySelectorAll('[data-view="characters"]').forEach(button=>{
- button.addEventListener("click",async()=>{
-  const box=$("character-editor-message");
-  if(box)box.textContent="جارٍ تحميل قاعدة الشخصيات من قاعدة البيانات…";
-  try{
-   const {data,error}=await db.from("site_content").select("id,slug,title,content,published").in("slug",["characters-roster","character-guides"]);
-   if(error)throw error;
-   const rows=data||[];
-   const rosterRow=rows.find(x=>x.slug==="characters-roster");
-   const guidesRow=rows.find(x=>x.slug==="character-guides");
-   if(!rosterRow||!guidesRow){
-    if(box){box.textContent="تعذر العثور على سجلات قاعدة الشخصيات. القائمة: "+(rosterRow?"موجودة":"مفقودة")+"، الأدلة: "+(guidesRow?"موجودة":"مفقودة")+". راجع محرر جميع البيانات." ;box.classList.add("error");}
-    return;
-   }
-   ceRoster=Array.isArray(rosterRow.content)?rosterRow.content:[];
-   ceGuides=guidesRow.content&&typeof guidesRow.content==="object"?guidesRow.content:{};
-   const select=$("character-editor-select");
-   select.innerHTML='<option value="">اختر شخصية…</option>'+ceRoster.map(c=>'<option value="'+escapeHtml(c.name)+'">'+escapeHtml(c.name)+'</option>').join("");
-   if(ceRoster.length){select.value=ceRoster[0].name;loadCharacterIntoEditor(select.value);}
-   else if(box){box.textContent="تم الاتصال بقاعدة البيانات، لكن سجل الشخصيات لا يحتوي عناصر.";box.classList.add("error");}
-   if(box&&ceRoster.length){box.classList.remove("error");box.textContent="تم تحميل "+ceRoster.length+" شخصية و"+Object.keys(ceGuides).length+" دليل بنجاح.";}
-  }catch(error){if(box){box.textContent="خطأ أثناء تحميل الشخصيات: "+error.message;box.classList.add("error");}}
- });
-});
+// Character data is loaded by switchAdminView() whenever the section is opened.
