@@ -52,10 +52,39 @@
   <div class="top-actions"><a class="secondary top-view-link" href="/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> عرض الموقع</a><button id="logout-button" class="secondary"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button></div>
 </header>
 <section class="admin-view active" data-panel="posts">
-<div class="blogger-toolbar"><div><h2>كل المشاركات</h2><p class="admin-muted">إدارة المقالات المنشورة والمسودات.</p></div><div class="post-filters"><button class="filter-chip active" data-post-filter="all">الكل</button><button class="filter-chip" data-post-filter="published">منشورة</button><button class="filter-chip" data-post-filter="draft">مسودات</button></div></div>
-<div class="blogger-workspace"><section class="panel posts-list-panel"><div class="admin-section-head"><div><h2>المشاركات</h2><small id="posts-count">0 مشاركة</small></div><button id="post-create" class="primary">＋ مشاركة جديدة</button></div><div id="posts-list" class="blog-post-list"><p class="admin-muted">جارٍ تحميل المشاركات…</p></div></section>
-<section class="panel post-compose-panel"><div class="admin-section-head"><div><h2 id="post-editor-heading">مشاركة جديدة</h2><small>اكتب المحتوى واحفظه كمسودة أو انشره</small></div><span id="post-editor-state" class="status-pill">مسودة جديدة</span></div>
-<form id="post-form" class="admin-form"><input id="post-id" type="hidden"><label class="field">عنوان المشاركة<input id="post-title" maxlength="180" required placeholder="اكتب عنواناً واضحاً"></label><div class="admin-two-col"><label class="field">الرابط المختصر<input id="post-slug" required pattern="[a-z0-9-]+" placeholder="my-first-post"></label><label class="field">التصنيفات / Labels<input id="post-labels" placeholder="أخبار، أدلة، تحديثات"></label></div><label class="field">ملخص المشاركة<textarea id="post-excerpt" rows="2" placeholder="ملخص قصير يظهر في قائمة المقالات"></textarea></label><label class="field">محتوى المشاركة<textarea id="post-body" class="post-body-editor" rows="14" placeholder="اكتب نص المشاركة هنا. يمكنك استخدام HTML بسيط عند الحاجة."></textarea></label><div class="publish-toggle"><label><input id="post-published" type="checkbox"> نشر المشاركة للزوار</label></div><div class="admin-actions"><button class="primary" type="submit">حفظ المشاركة</button><button class="secondary" type="button" id="post-reset">مشاركة جديدة</button><button class="danger" type="button" id="post-delete">حذف</button></div></form><p id="post-message" class="admin-message" aria-live="polite"></p></section></div></section>
+<div id="posts-manager-view">
+  <div class="blogger-toolbar posts-page-heading"><div><h2>المشاركات</h2><p class="admin-muted">إدارة جميع المشاركات المنشورة والمسودات من مكان واحد.</p></div><button id="post-create" class="primary"><i class="fa-solid fa-plus"></i> مشاركة جديدة</button></div>
+  <div class="posts-status-tabs">
+    <button class="filter-chip active" data-post-filter="all">كل المشاركات <b id="post-count-all">0</b></button>
+    <button class="filter-chip" data-post-filter="published">منشورة <b id="post-count-published">0</b></button>
+    <button class="filter-chip" data-post-filter="draft">مسودات <b id="post-count-draft">0</b></button>
+  </div>
+  <section class="panel posts-management-panel">
+    <div class="posts-filterbar">
+      <label class="posts-search"><i class="fa-solid fa-magnifying-glass"></i><input id="post-search-input" type="search" placeholder="ابحث في المشاركات أو استخدم title: أو body: أو label: أو status:draft"></label>
+      <select id="post-label-filter" aria-label="تصفية حسب التصنيف"><option value="">كل التصنيفات</option></select>
+      <select id="post-sort" aria-label="ترتيب المشاركات"><option value="updated">آخر تعديل</option><option value="created">الأحدث إنشاءً</option><option value="title">العنوان</option></select>
+    </div>
+    <div class="posts-bulkbar">
+      <label class="select-all-posts"><input id="posts-select-all" type="checkbox"> تحديد الكل</label>
+      <div class="posts-bulk-actions"><select id="posts-bulk-action"><option value="">إجراءات جماعية</option><option value="publish">نشر</option><option value="draft">تحويل إلى مسودة</option><option value="add-label">إضافة تصنيف</option><option value="delete">حذف</option></select><input id="posts-bulk-label" type="text" placeholder="اسم التصنيف" class="hidden"><button id="posts-bulk-apply" class="secondary" type="button">تطبيق</button></div>
+      <span id="posts-selection-count" class="admin-muted">لم يتم تحديد أي مشاركة</span>
+    </div>
+    <div class="posts-table-wrap">
+      <table class="posts-table">
+        <thead><tr><th class="check-col"></th><th>عنوان المشاركة</th><th>التصنيفات</th><th>الحالة</th><th>آخر تحديث</th><th>الإجراءات</th></tr></thead>
+        <tbody id="posts-table-body"><tr><td colspan="6" class="posts-empty">جارٍ تحميل المشاركات…</td></tr></tbody>
+      </table>
+    </div>
+    <div class="posts-pagination"><span id="posts-page-summary">0 مشاركة</span><div><button id="posts-prev-page" class="secondary" type="button">السابق</button><button id="posts-next-page" class="secondary" type="button">التالي</button></div></div>
+  </section>
+</div>
+<div id="post-editor-view" class="hidden">
+  <div class="blogger-toolbar"><div><h2 id="post-editor-page-title">مشاركة جديدة</h2><p class="admin-muted">اكتب المحتوى ثم احفظه كمسودة أو انشره.</p></div><button id="post-editor-back" class="secondary" type="button"><i class="fa-solid fa-arrow-right"></i> العودة إلى المشاركات</button></div>
+  <section class="panel post-compose-panel"><div class="admin-section-head"><div><h2 id="post-editor-heading">مشاركة جديدة</h2><small>العنوان والمحتوى والتصنيفات</small></div><span id="post-editor-state" class="status-pill">مسودة جديدة</span></div>
+  <form id="post-form" class="admin-form"><input id="post-id" type="hidden"><label class="field">عنوان المشاركة<input id="post-title" maxlength="180" required placeholder="اكتب عنواناً واضحاً"></label><div class="admin-two-col"><label class="field">الرابط المختصر<input id="post-slug" required pattern="[a-z0-9-]+" placeholder="my-first-post"></label><label class="field">التصنيفات / Labels<input id="post-labels" placeholder="أخبار، أدلة، تحديثات"></label></div><label class="field">ملخص المشاركة<textarea id="post-excerpt" rows="2" placeholder="ملخص قصير يظهر في قائمة المقالات"></textarea></label><label class="field">محتوى المشاركة<textarea id="post-body" class="post-body-editor" rows="18" placeholder="اكتب نص المشاركة هنا."></textarea></label><div class="publish-toggle"><label><input id="post-published" type="checkbox"> نشر المشاركة للزوار</label></div><div class="admin-actions"><button class="primary" type="submit">حفظ التغييرات</button><button class="secondary" type="button" id="post-reset">مشاركة جديدة</button><button class="danger" type="button" id="post-delete">حذف المشاركة</button></div></form><p id="post-message" class="admin-message" aria-live="polite"></p></section>
+</div>
+</section></div></section>
 <section class="admin-view" data-panel="stats"><div class="section-banner"><div><span class="eyebrow">BLOG ANALYTICS</span><h2>إحصاءات الموقع</h2><p>لوحة الإحصاءات جاهزة للربط بنظام قياس الزيارات.</p></div><span class="banner-icon">▥</span></div><div class="notice-card"><b>لم يتم تفعيل تتبع الزيارات بعد</b><p>لن نعرض أرقاماً تقديرية على أنها زيارات حقيقية. يتطلب هذا القسم إضافة نظام تسجيل مشاهدات الصفحات ومصادر الزيارة والدول، ثم عرض البيانات المجمعة هنا.</p></div></section>
 <section class="admin-view" data-panel="comments"><div class="section-banner"><div><span class="eyebrow">COMMENT MODERATION</span><h2>التعليقات</h2><p>إدارة تعليقات الزوار ومراجعتها.</p></div><span class="banner-icon">▧</span></div><div class="notice-card"><b>نظام التعليقات غير مفعّل حالياً</b><p>لم تتم إضافة نموذج تعليقات عام إلى الموقع بعد، لذلك لا توجد تعليقات حقيقية للموافقة أو الحذف. سنربط هذا القسم بجدول تعليقات وسياسات حماية من الرسائل المزعجة قبل تفعيله.</p></div></section>
 <section class="admin-view" data-panel="earnings"><div class="section-banner"><div><span class="eyebrow">MONETIZATION</span><h2>الأرباح</h2><p>معلومات حول خيارات تحقيق الدخل من الموقع.</p></div><span class="banner-icon">◇</span></div><div class="notice-card"><b>لا يوجد ربط أرباح حالياً</b><p>لا يوجد حساب إعلانات أو بيانات أرباح مرتبطة بهذا الموقع. لن نعرض أرباحاً وهمية أو نطلب بيانات تسجيل دخول لخدمات خارجية. يمكن لاحقاً دراسة خيارات مناسبة ومتوافقة مع شروط الخدمات والبلد.</p></div></section>
