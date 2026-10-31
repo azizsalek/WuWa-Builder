@@ -55,3 +55,32 @@
  .profile-image-frame{width:96px;height:126px;flex-basis:96px}
  .profile-title h2{font-size:18px}
 }
+
+
+/* Prydwen-inspired roster controls (original implementation) */
+.catalog-controls{display:flex;flex-direction:column;align-items:stretch;gap:16px;padding:18px 20px}
+.catalog-controls .catalog-search{width:100%}
+.catalog-controls .catalog-search input{direction:ltr;text-align:left;padding:13px 16px}
+.catalog-controls .catalog-search span{right:auto;left:14px}
+.filter-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.filter-chip,.element-filter,.reset-filters{font:inherit;cursor:pointer;transition:.16s ease}
+.filter-chip{min-width:52px;padding:8px 16px;border:1px solid #394b65;border-radius:9px;background:#172338;color:#dce8f8;font-weight:700}
+.filter-chip:hover,.filter-chip.selected{border-color:var(--cyan);background:#21405a;color:var(--cyan)}
+.element-filter{display:flex;align-items:center;justify-content:center;gap:7px;min-width:95px;padding:8px 11px;border:1px solid transparent;border-radius:9px;background:#0b1423;color:#c4d1e4}
+.element-filter:hover,.element-filter.selected{border-color:var(--cyan);background:#1b3048;color:#fff}
+.element-symbol{font-style:normal;font-size:18px;color:var(--cyan)}
+.element-filter[data-element-filter="Electro"] .element-symbol{color:#bd9bff}
+.element-filter[data-element-filter="Fusion"] .element-symbol{color:#ffad84}
+.element-filter[data-element-filter="Glacio"] .element-symbol{color:#8edfff}
+.element-filter[data-element-filter="Havoc"] .element-symbol{color:#e59ad4}
+.element-filter[data-element-filter="Spectro"] .element-symbol{color:#ffe08b}
+.catalog-toolbar-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;border-top:1px solid var(--line);padding-top:12px}
+.reset-filters{border:0;background:transparent;color:var(--cyan);text-decoration:underline;padding:6px 0}
+.catalog-meta{text-align:right}
+.element-badge{position:absolute;top:9px;right:9px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#07101dcc;border:1px solid #ffffff35;color:#fff;font-size:17px;backdrop-filter:blur(5px)}
+.resonator-card{border-radius:10px;background:#111a2b;box-shadow:0 4px 14px #0002}
+.resonator-art{border-radius:9px 9px 0 0}
+.resonator-info{text-align:center;background:#111a2b}
+.resonator-info b{font-size:13px;letter-spacing:.1px}
+.resonator-info span{font-size:11px}
+@media(max-width:700px){.catalog-controls{padding:14px}.element-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.element-filter{min-width:0;padding:8px 5px;font-size:10px}.element-filter .element-symbol{font-size:16px}.catalog-toolbar-footer{align-items:flex-start}.catalog-meta{white-space:normal}.resonator-grid{gap:8px}}
