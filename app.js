@@ -54,3 +54,56 @@ document.getElementById("save-profile").addEventListener("click",()=>{state.prof
 document.getElementById("export-data").addEventListener("click",()=>{const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="wuwa-builder-backup.json";a.click();URL.revokeObjectURL(a.href)});
 document.getElementById("clear-data").addEventListener("click",()=>{if(!confirm("سيتم حذف كل البناءات والـ Echoes والشخصيات المحفوظة محلياً. هل أنت متأكد؟"))return;localStorage.removeItem(KEY);location.reload()});
 renderAll();
+
+
+async function applyPublicSiteSettings() {
+ try {
+  if (!window.wuwaSupabase) return;
+  const { data, error } = await window.wuwaSupabase
+   .from("site_content").select("content").eq("slug","site-settings").eq("published",true).maybeSingle();
+  if (error || !data?.content) return;
+  const s = data.content;
+  if (s.siteName) {
+   document.title = s.siteName;
+   document.querySelectorAll(".brand b").forEach(el => el.textContent = s.siteName);
+   document.querySelectorAll(".admin-brand b").forEach(el => el.textContent = s.siteName);
+  }
+  if (s.tagline) document.querySelectorAll(".brand small").forEach(el => el.textContent = s.tagline);
+  if (s.dashboardTitle) {
+   const title = document.querySelector("#dashboard .hero-copy h2");
+   if (title) title.textContent = s.dashboardTitle;
+  }
+  if (s.dashboardDescription) {
+   const description = document.querySelector("#dashboard .hero-copy p");
+   if (description) description.textContent = s.dashboardDescription;
+  }
+  const navMap = {builds:s.showBuilds, echoes:s.showEchoes, characters:s.showCharacters, profile:s.showProfile};
+  Object.entries(navMap).forEach(([view, enabled]) => {
+   const nav = document.querySelector('[data-view="' + view + '"]');
+   const section = document.getElementById(view);
+   if (nav) nav.hidden = enabled === false;
+   if (section && enabled === false) section.dataset.adminHidden = "true";
+  });
+  let banner = document.getElementById("site-announcement");
+  if (s.announcement) {
+   if (!banner) {
+    banner = document.createElement("div");
+    banner.id = "site-announcement";
+    banner.className = "notice site-announcement";
+    const main = document.querySelector(".main");
+    const topbar = main?.querySelector(".topbar");
+    if (main && topbar) topbar.insertAdjacentElement("afterend", banner);
+   }
+   if (banner) banner.textContent = s.announcement;
+  } else if (banner) banner.remove();
+  if (s.maintenanceMode === true) {
+   const overlay = document.createElement("div");
+   overlay.className = "maintenance-overlay";
+   overlay.innerHTML = '<div class="maintenance-card"><span class="eyebrow">WUWA BUILDER</span><h2>الموقع تحت الصيانة</h2><p>نعمل على تحسين الموقع. يرجى العودة لاحقاً.</p></div>';
+   document.body.appendChild(overlay);
+  }
+ } catch (error) {
+  console.warn("Site settings could not be applied.", error);
+ }
+}
+applyPublicSiteSettings();
