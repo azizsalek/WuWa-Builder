@@ -1,0 +1,82 @@
+{
+  "Jiyan": {
+    "role": "مهاجم رئيسي · Aero",
+    "kit": "مقاتل ميداني يعتمد أساساً على ضرر Heavy Attack. عند تجميع Resolve يمكنه تقوية Resonance Skill أو تفعيل نسخة أقوى من Resonance Liberation؛ وبعد تفعيل Liberation يدخل حالة محسّنة لفترة قصيرة.",
+    "teams": [
+      "Jiyan + Mortefi + Shorekeeper",
+      "Jiyan + Mortefi + Aero Rover"
+    ],
+    "echoSet": "Sierra Gale (5 قطع)",
+    "mainEcho": "Feilian Beringal",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Aero DMG Bonus · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Heavy Attack DMG Bonus > Energy Regen",
+    "rotation": "EQ → بدّل إلى أعضاء الفريق لإكمال Concerto Energy → ادخل بـ Intro Skill → Resonance Liberation → استمر في نافذة الضرر المحسّنة قرابة 10 ثوانٍ → أكمل Concerto Energy ثم بدّل.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1404&strategy_id=14035"
+  },
+  "Lupa": {
+    "role": "دعم هجومي / Sub-DPS · Fusion",
+    "kit": "تعتمد على Wolflame وWolfaith لتفعيل هجمات محسّنة وهجمات منسّقة. تمنح الفريق تعزيزات تتغير بحسب عدد شخصيات Fusion، ويعزز Outro Skill ضرر Fusion وBasic Attack للحليف التالي.",
+    "teams": [
+      "Changli + Lupa + Brant"
+    ],
+    "echoSet": "Flaming Clawprint (5 قطع)؛ Molten Rift خيار بديل",
+    "mainEcho": "Lioness of Glory؛ Nightmare: Inferno Rider بديل",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Fusion DMG Bonus · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Liberation DMG Bonus > Energy Regen",
+    "rotation": "بعد Resonance Liberation فعّل Foebreaker للحصول على Burning Matchpoint، ثم نفّذ سلسلة Basic Attacks خلال نافذة التعزيز لبناء Wolflame، وأنهِ بالهجمات الخاصة المتاحة. تدوير مختصر منشور: R → A/E → A*n → H → A → Ultimate E.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1207&strategy_id=14073"
+  },
+  "Lingyang": {
+    "role": "مهاجم رئيسي · Glacio",
+    "kit": "مهاجم Glacio يعتمد على Basic Attack والقتال الجوي. يجمع Lion's Spirit عبر الضربات والمهارات، وعند بلوغ الحد المطلوب يدخل Striding Lion؛ وتزيد Resonance Liberation ضرره الجليدي وتخفّض استهلاك Lion's Spirit.",
+    "teams": [
+      "Lingyang + Sanhua + Shorekeeper"
+    ],
+    "echoSet": "Freezing Frost (5 قطع)",
+    "mainEcho": "Lampylumen Myriad",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Glacio DMG Bonus أو ATK% · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Basic Attack DMG > Resonance Skill DMG Bonus",
+    "rotation": "Intro Skill → سلسلة Basic Attacks مع Resonance Skill المحسّنة → Resonance Liberation → Heavy Attack للدخول في Striding Lion → واصل سلسلة الهجمات الجوية والمهارات خلال الحالة.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1104&strategy_id=14049"
+  },
+  "Denia": {
+    "role": "دعم هجومي مزدوج / Sub-DPS · Fusion",
+    "kit": "لديها نظامان للعب: Fusion Burst وTune Strain. في الأول تعزز Fusion DMG وتزيد قابلية الأعداء لتلقي Fusion Burst؛ وفي الثاني تطبّق Tune Strain وتدعم Tune Break Boost. يمكنها أيضاً تجميع الأعداء خارج الميدان.",
+    "teams": [
+      "Aemeath + Denia + Chisa",
+      "Luuk Herssen + Denia + Mornye"
+    ],
+    "echoSet": "Chromatic Foam (5 قطع) لمسار Fusion Burst؛ Reel of Spliced Memories (5 قطع) لمسار Tune Strain",
+    "mainEcho": "Reminiscence: Denia",
+    "mainStats": "4-Cost: Crit Rate أو ATK · 3-Cost: Fusion DMG Bonus · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Liberation DMG > Energy Regen",
+    "rotation": "Intro Skill → Basic Attack → Resonance Skill → Resonance Liberation (المرحلة الأولى) → Basic Attacks → Resonance Skills المحسّنة → Resonance Liberation (المرحلة الثانية) → Outro Skill.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1211&strategy_id=14116"
+  },
+  "Rover (Aero)": {
+    "role": "دعم / Sub-DPS / معالج · Aero",
+    "kit": "يركز على Resonance Skill DMG. بعض هجماته الجوية وResonance Liberation توفر علاجاً للفريق، كما تساعد Resonance Skill على تحويل الحالات السلبية غير الهوائية إلى Aero، ويزيد Outro Skill سقف تراكم الحالة الهوائية.",
+    "teams": [
+      "Jiyan + Mortefi + Rover (Aero)"
+    ],
+    "echoSet": "Rejuvenating Glow (5 قطع)",
+    "mainEcho": "Fallacy of No Return",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Aero DMG Bonus · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Skill DMG Bonus > Energy Regen",
+    "rotation": "اشحن Windstrings عبر Intro Skill والهجمات الجوية المعززة وضربات Basic Attack المحددة، ثم استخدم مراحل Resonance Skill المعززة لتفعيل دعم الفريق، وبعدها Resonance Liberation واخرج عند اكتمال Concerto Energy.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1408&strategy_id=14104"
+  },
+  "Rover (Spectro)": {
+    "role": "مهاجم · Spectro",
+    "kit": "يركز على Resonance Skill DMG وتطبيق Spectro Frazzle. يجمع Diminutive Sound من الهجمات وIntro Skill، وعند تجاوز العتبة يستطيع إطلاق Resonance Skill محسّنة.",
+    "teams": [
+      "Rover (Spectro) + Phoebe + Shorekeeper"
+    ],
+    "echoSet": "Eternal Radiance (5 قطع)",
+    "mainEcho": "Nightmare: Mourning Aix",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Spectro DMG Bonus أو ATK% · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Skill DMG Bonus > Resonance Liberation DMG Bonus",
+    "rotation": "اجمع Diminutive Sound بالهجمات وIntro Skill، ثم استخدم Resonance Skill المحسّنة عند تجاوز 50؛ تدوير مختصر منشور: E → A → H → A → A → E → A → R.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1502&strategy_id=14049"
+  }
+}
