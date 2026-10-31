@@ -87,3 +87,11 @@
 
 /* Admin navigation link */
 a.nav-item{ text-decoration:none; }
+
+[hidden]{display:none!important}
+.view[data-admin-hidden="true"]{display:none!important}
+.site-announcement{margin:0 0 16px}
+.maintenance-overlay{position:fixed;inset:0;z-index:99999;background:rgba(5,10,20,.97);display:grid;place-items:center;padding:24px}
+.maintenance-card{width:min(520px,100%);text-align:center;background:#111d30;border:1px solid #29445d;border-radius:18px;padding:34px;box-shadow:0 20px 70px #0008}
+.maintenance-card h2{font-size:26px;margin:12px 0}
+.maintenance-card p{color:#9fb0c7;line-height:1.8}
