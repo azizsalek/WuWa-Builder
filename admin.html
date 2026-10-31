@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b1020">
-<title>إدارة الموقع · WuWa Builder</title><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="admin.css">
+<title>إدارة الموقع · WuWa Builder</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="stylesheet" href="style.css"><link rel="stylesheet" href="admin.css">
 </head>
 <body class="admin-body">
 <section id="auth-panel" class="panel admin-auth">
@@ -14,32 +14,43 @@
 <div id="admin-app" class="admin-app hidden">
 <button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="إغلاق القائمة"></button>
 <aside class="admin-sidebar">
-<a class="admin-brand" href="/"><span class="brand-mark">W</span><span><b>WuWa Builder</b><small>لوحة التحكم</small></span></a>
-<div class="sidebar-label">مساحة العمل</div>
-<div class="blog-switcher"><span class="blog-avatar">W</span><div><b>WuWa Builder</b><small>المدونة الحالية</small></div><span class="switch-arrow">⌄</span></div>
-<div class="sidebar-label">القائمة الرئيسية</div>
-<nav class="admin-nav">
-<button class="admin-nav-item active" data-view="posts"><span>▤</span> المشاركات</button>
-<button class="admin-nav-item" data-view="stats"><span>▥</span> الإحصاءات</button>
-<button class="admin-nav-item" data-view="comments"><span>▧</span> التعليقات</button>
-<button class="admin-nav-item" data-view="earnings"><span>◇</span> الأرباح</button>
-<button class="admin-nav-item" data-view="pages"><span>▣</span> الصفحات</button>
-<button class="admin-nav-item" data-view="layout"><span>▦</span> التنسيق</button>
-<button class="admin-nav-item" data-view="theme"><span>◈</span> المظهر</button>
-<button class="admin-nav-item" data-view="settings"><span>⚙</span> الإعدادات</button>
-<button class="admin-nav-item" data-view="reading"><span>☷</span> قائمة القراءة</button>
-</nav>
-<div class="sidebar-label sidebar-tools-label">أدوات الموقع</div>
-<nav class="admin-nav admin-tools-nav">
-<button class="admin-nav-item" data-view="characters"><span>✦</span> قاعدة الشخصيات</button>
-<button class="admin-nav-item" data-view="media"><span>▧</span> مكتبة الوسائط</button>
-<button class="admin-nav-item" data-view="content"><span>✎</span> محرر جميع بيانات الموقع</button>
-<button class="admin-nav-item" data-view="backup"><span>⇧</span> النسخ الاحتياطي</button>
-</nav>
-<div class="sidebar-bottom"><span class="status-dot"></span> مساحة الإدارة متصلة<small><a href="/" class="view-blog-link">↗ عرض الموقع</a></small></div>
+  <div class="sidebar-top">
+    <a class="admin-brand" href="/"><span class="brand-mark">W</span><span><b>WuWa Builder</b><small>إدارة الموقع</small></span></a>
+    <div class="blog-switcher"><span class="blog-avatar">W</span><div><b>WuWa Builder</b><small>مساحة إدارة الموقع</small></div><i class="fa-solid fa-chevron-down switch-arrow"></i></div>
+    <button id="quick-new-post" class="primary sidebar-new-post" type="button"><i class="fa-solid fa-plus"></i><span>مشاركة جديدة</span></button>
+    <div class="sidebar-label">القائمة الرئيسية</div>
+    <nav class="admin-nav" aria-label="القائمة الرئيسية">
+      <button class="admin-nav-item active" data-view="posts"><i class="fa-solid fa-file-lines"></i><span>المشاركات</span></button>
+      <button class="admin-nav-item" data-view="stats"><i class="fa-solid fa-chart-line"></i><span>الإحصاءات</span></button>
+      <button class="admin-nav-item" data-view="comments"><i class="fa-solid fa-comments"></i><span>التعليقات</span></button>
+      <button class="admin-nav-item" data-view="earnings"><i class="fa-solid fa-coins"></i><span>الأرباح</span></button>
+      <button class="admin-nav-item" data-view="pages"><i class="fa-solid fa-copy"></i><span>الصفحات</span></button>
+      <button class="admin-nav-item" data-view="layout"><i class="fa-solid fa-sliders"></i><span>التنسيق</span></button>
+      <button class="admin-nav-item" data-view="theme"><i class="fa-solid fa-palette"></i><span>المظهر</span></button>
+      <button class="admin-nav-item" data-view="settings"><i class="fa-solid fa-gear"></i><span>الإعدادات</span></button>
+      <button class="admin-nav-item" data-view="reading"><i class="fa-solid fa-book-bookmark"></i><span>قائمة القراءة</span></button>
+    </nav>
+    <div class="sidebar-label sidebar-tools-label">أدوات الموقع</div>
+    <nav class="admin-nav admin-tools-nav" aria-label="أدوات الموقع">
+      <button class="admin-nav-item" data-view="characters"><i class="fa-solid fa-users"></i><span>قاعدة الشخصيات</span></button>
+      <button class="admin-nav-item" data-view="media"><i class="fa-solid fa-images"></i><span>مكتبة الوسائط</span></button>
+      <button class="admin-nav-item" data-view="content"><i class="fa-solid fa-pen-to-square"></i><span>محرر جميع بيانات الموقع</span></button>
+      <button class="admin-nav-item" data-view="backup"><i class="fa-solid fa-box-archive"></i><span>النسخ الاحتياطي</span></button>
+    </nav>
+  </div>
+  <div class="sidebar-bottom">
+    <a href="/" target="_blank" rel="noopener" class="view-blog-link"><span>عرض الموقع</span><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+    <div class="sidebar-legal"><span>WuWa Builder</span><span>لوحة إدارة الموقع</span></div>
+  </div>
 </aside>
 <main class="admin-main">
-<header class="admin-topbar"><div class="topbar-heading"><button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false">☰</button><div><span class="eyebrow">BLOGGER-STYLE PUBLISHING DESK</span><h1 id="view-title">المشاركات</h1><p class="admin-muted" id="view-description">أنشئ المقالات وأدر المسودات والمنشورات.</p></div></div><div class="top-actions"><button id="quick-new-post" class="primary">＋ مشاركة جديدة</button><a class="secondary" href="/" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout-button" class="secondary">تسجيل الخروج</button></div></header>
+<header class="admin-topbar">
+  <div class="topbar-heading">
+    <button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+    <div><span class="eyebrow">WUWA BUILDER · CONTROL PANEL</span><h1 id="view-title">المشاركات</h1><p class="admin-muted" id="view-description">أنشئ المقالات وأدر المسودات والمنشورات.</p></div>
+  </div>
+  <div class="top-actions"><a class="secondary top-view-link" href="/" target="_blank" rel="noopener"><i class="fa-solid fa-arrow-up-right-from-square"></i> عرض الموقع</a><button id="logout-button" class="secondary"><i class="fa-solid fa-right-from-bracket"></i> تسجيل الخروج</button></div>
+</header>
 <section class="admin-view active" data-panel="posts">
 <div class="blogger-toolbar"><div><h2>كل المشاركات</h2><p class="admin-muted">إدارة المقالات المنشورة والمسودات.</p></div><div class="post-filters"><button class="filter-chip active" data-post-filter="all">الكل</button><button class="filter-chip" data-post-filter="published">منشورة</button><button class="filter-chip" data-post-filter="draft">مسودات</button></div></div>
 <div class="blogger-workspace"><section class="panel posts-list-panel"><div class="admin-section-head"><div><h2>المشاركات</h2><small id="posts-count">0 مشاركة</small></div><button id="post-create" class="primary">＋ مشاركة جديدة</button></div><div id="posts-list" class="blog-post-list"><p class="admin-muted">جارٍ تحميل المشاركات…</p></div></section>
