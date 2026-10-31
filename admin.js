@@ -524,3 +524,30 @@ ce("character-editor-form")?.addEventListener("submit",async event=>{
  ceCurrentName=newName;await loadRecords();ce("character-editor-select").value=newName;loadCharacterIntoEditor(newName);
  setMessage("character-editor-message","تم حفظ بيانات "+newName+" بنجاح.");
 });
+
+
+// Ensure the character editor refreshes when its navigation item is opened.
+document.querySelectorAll('[data-view="characters"]').forEach(button=>{
+ button.addEventListener("click",async()=>{
+  const box=$("character-editor-message");
+  if(box)box.textContent="جارٍ تحميل قاعدة الشخصيات من قاعدة البيانات…";
+  try{
+   const {data,error}=await db.from("site_content").select("id,slug,title,content,published").in("slug",["characters-roster","character-guides"]);
+   if(error)throw error;
+   const rows=data||[];
+   const rosterRow=rows.find(x=>x.slug==="characters-roster");
+   const guidesRow=rows.find(x=>x.slug==="character-guides");
+   if(!rosterRow||!guidesRow){
+    if(box){box.textContent="تعذر العثور على سجلات قاعدة الشخصيات. القائمة: "+(rosterRow?"موجودة":"مفقودة")+"، الأدلة: "+(guidesRow?"موجودة":"مفقودة")+". راجع محرر جميع البيانات." ;box.classList.add("error");}
+    return;
+   }
+   ceRoster=Array.isArray(rosterRow.content)?rosterRow.content:[];
+   ceGuides=guidesRow.content&&typeof guidesRow.content==="object"?guidesRow.content:{};
+   const select=$("character-editor-select");
+   select.innerHTML='<option value="">اختر شخصية…</option>'+ceRoster.map(c=>'<option value="'+escapeHtml(c.name)+'">'+escapeHtml(c.name)+'</option>').join("");
+   if(ceRoster.length){select.value=ceRoster[0].name;loadCharacterIntoEditor(select.value);}
+   else if(box){box.textContent="تم الاتصال بقاعدة البيانات، لكن سجل الشخصيات لا يحتوي عناصر.";box.classList.add("error");}
+   if(box&&ceRoster.length){box.classList.remove("error");box.textContent="تم تحميل "+ceRoster.length+" شخصية و"+Object.keys(ceGuides).length+" دليل بنجاح.";}
+  }catch(error){if(box){box.textContent="خطأ أثناء تحميل الشخصيات: "+error.message;box.classList.add("error");}}
+ });
+});
