@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1020">
+  <title>إدارة الموقع · WuWa Builder</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+  <main class="admin-shell">
+    <header class="admin-topbar">
+      <a class="admin-brand" href="/"><span class="brand-mark">W</span><span><b>WuWa Builder</b><small>لوحة إدارة الموقع</small></span></a>
+      <a class="secondary" href="/">العودة إلى الموقع</a>
+    </header>
+
+    <section id="auth-panel" class="panel admin-auth">
+      <span class="eyebrow">SECURE ADMIN ACCESS</span>
+      <h1>تسجيل الدخول إلى لوحة الإدارة</h1>
+      <p class="admin-muted">سجّل الدخول بحساب الإدارة. إنشاء الحساب لا يمنح صلاحيات المدير تلقائياً.</p>
+      <form id="auth-form" class="admin-form">
+        <label class="field">البريد الإلكتروني<input id="auth-email" type="email" autocomplete="email" required></label>
+        <label class="field">كلمة المرور<input id="auth-password" type="password" autocomplete="current-password" minlength="8" required></label>
+        <div class="admin-actions">
+          <button class="primary" type="submit" id="login-button">تسجيل الدخول</button>
+          <button class="secondary" type="button" id="signup-button">إنشاء حساب</button>
+        </div>
+      </form>
+      <p id="auth-message" class="admin-message" aria-live="polite"></p>
+    </section>
+
+    <section id="setup-panel" class="panel admin-auth hidden">
+      <span class="eyebrow">ONE-TIME ADMIN ACTIVATION</span>
+      <h1>تفعيل صلاحيات المدير</h1>
+      <p class="admin-muted">تم تسجيل الدخول. أدخل رمز التفعيل لمرة واحدة الذي حصلت عليه عند إعداد لوحة الإدارة. لا تشارك هذا الرمز مع أي شخص.</p>
+      <form id="setup-form" class="admin-form">
+        <label class="field">رمز التفعيل<input id="setup-token" type="password" autocomplete="off" required></label>
+        <button class="primary" type="submit">تفعيل حساب المدير</button>
+      </form>
+      <p id="setup-message" class="admin-message" aria-live="polite"></p>
+    </section>
+
+    <section id="admin-app" class="hidden">
+      <div class="admin-welcome panel">
+        <div><span class="eyebrow">CONTENT CONTROL CENTER</span><h1>مرحباً بك في لوحة الإدارة</h1><p class="admin-muted">إدارة البيانات المنشورة في الموقع. التغييرات المنشورة تظهر لزوار الموقع بعد تحديث الصفحة.</p></div>
+        <button id="logout-button" class="secondary">تسجيل الخروج</button>
+      </div>
+
+      <div class="admin-stats">
+        <article class="stat-card"><small>إجمالي السجلات</small><strong id="record-count">0</strong></article>
+        <article class="stat-card"><small>السجلات المنشورة</small><strong id="published-count">0</strong></article>
+        <article class="stat-card"><small>آخر تحديث</small><strong id="last-updated">—</strong></article>
+      </div>
+
+      <div class="admin-layout">
+        <aside class="panel admin-records">
+          <div class="admin-section-head"><div><h2>محتوى الموقع</h2><small>اختر عنصراً لتعديله</small></div><button id="new-record" class="primary">＋ جديد</button></div>
+          <div id="record-list" class="record-list"><p class="admin-muted">جارٍ تحميل السجلات…</p></div>
+          <div class="admin-shortcuts">
+            <button type="button" data-load-record="characters-roster">قاعدة الشخصيات</button>
+            <button type="button" data-load-record="character-guides">أدلة الشخصيات</button>
+          </div>
+        </aside>
+
+        <section class="panel admin-editor">
+          <div class="admin-section-head"><div><h2 id="editor-heading">محرر المحتوى</h2><small>تعديل السجل المختار أو إنشاء سجل جديد</small></div><span id="editor-status" class="status-pill">غير محفوظ</span></div>
+          <form id="content-form" class="admin-form">
+            <input id="record-id" type="hidden">
+            <div class="admin-two-col">
+              <label class="field">معرّف السجل (Slug)<input id="record-slug" required pattern="[a-z0-9-]+" placeholder="مثال: home-announcement"></label>
+              <label class="field">عنوان السجل<input id="record-title" required placeholder="عنوان واضح"></label>
+            </div>
+            <label class="field">المحتوى بصيغة JSON<textarea id="record-content" class="json-editor" spellcheck="false" required>{}</textarea></label>
+            <label class="publish-toggle"><input id="record-published" type="checkbox"> نشر هذا المحتوى للزوار</label>
+            <div class="admin-actions">
+              <button class="primary" type="submit">حفظ التغييرات</button>
+              <button class="secondary" type="button" id="reset-editor">إلغاء التعديلات</button>
+              <button class="danger" type="button" id="delete-record">حذف السجل</button>
+            </div>
+          </form>
+          <p id="save-message" class="admin-message" aria-live="polite"></p>
+        </section>
+      </div>
+
+      <section class="panel media-panel">
+        <div class="admin-section-head"><div><h2>مكتبة الصور</h2><small>رفع صور الموقع وإنتاج رابط عام لاستخدامه داخل المحتوى</small></div></div>
+        <form id="media-form" class="media-form">
+          <input id="media-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" required>
+          <button class="primary" type="submit">رفع الصورة</button>
+        </form>
+        <p class="admin-muted">الحد الأقصى للصورة 5MB. استخدم صوراً تملك حق استخدامها.</p>
+        <div id="media-result" class="admin-message" aria-live="polite"></div>
+      </section>
+    </section>
+    <footer class="admin-footer">WuWa Builder · إدارة آمنة للمحتوى</footer>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.118.0/dist/umd/supabase.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
