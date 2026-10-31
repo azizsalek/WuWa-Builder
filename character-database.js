@@ -69,7 +69,8 @@ function openProfile(name) {
   const facts = '<div class="profile-facts"><span>' + esc(c.element || "العنصر غير موثق") + '</span><span>' + esc(c.rarity) + ' نجوم</span><span>' + (guide ? esc(guide.role) : "تفاصيل الدور قيد التوثيق") + '</span></div>';
   let html = '<div class="profile-banner"><div class="profile-image-frame">' + art + '</div><div class="profile-title"><span class="eyebrow">RESONATOR PROFILE</span><h2>' + esc(c.name) + '</h2>' + facts + '<p>ملف الشخصية ودليل اللعب</p></div></div>';
   if (guide) {
-    html += section("Kit · أسلوب اللعب والقدرات", '<p>' + esc(guide.kit) + '</p>');
+    if (guide.summary) html += section("نبذة عن الشخصية", '<p>' + esc(guide.summary) + '</p>');
+    html += section("Kit · أسلوب اللعب والقدرات", '<p>' + esc(guide.kit || "لم تتم إضافة وصف بعد.") + '</p>');
     if (guide.skills) html += section("Skills · المهارات", '<div class="guide-highlight">' + guide.skills.map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
     if (guide.passives) html += section("Passive Skills · المهارات السلبية", '<div class="guide-highlight">' + guide.passives.map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
     html += section("Teams · الفرق المقترحة", '<ul class="guide-list">' + guide.teams.map(team => '<li>' + esc(team) + '</li>').join("") + '</ul>');
