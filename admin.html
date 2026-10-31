@@ -12,6 +12,7 @@
 </section>
 <section id="setup-panel" class="panel admin-auth hidden"><span class="eyebrow">ONE-TIME ADMIN ACTIVATION</span><h1>تفعيل حساب المدير</h1><p class="admin-muted">أدخل رمز التفعيل الذي أعددته سابقاً. لا تشارك الرمز مع أي شخص.</p><form id="setup-form" class="admin-form"><label class="field">رمز التفعيل<input id="setup-token" type="password" autocomplete="off" required></label><button class="primary" type="submit">تفعيل صلاحية المدير</button></form><p id="setup-message" class="admin-message" aria-live="polite"></p></section>
 <div id="admin-app" class="admin-app hidden">
+<button class="sidebar-backdrop" id="sidebar-backdrop" type="button" aria-label="إغلاق القائمة"></button>
 <aside class="admin-sidebar">
 <a class="admin-brand" href="/"><span class="brand-mark">W</span><span><b>WuWa Builder</b><small>لوحة التحكم</small></span></a>
 <div class="sidebar-label">مساحة العمل</div>
@@ -37,7 +38,7 @@
 <div class="sidebar-bottom"><span class="status-dot"></span> مساحة الإدارة متصلة<small><a href="/" class="view-blog-link">↗ عرض الموقع</a></small></div>
 </aside>
 <main class="admin-main">
-<header class="admin-topbar"><div><span class="eyebrow">BLOGGER-STYLE PUBLISHING DESK</span><h1 id="view-title">المشاركات</h1><p class="admin-muted" id="view-description">أنشئ المقالات وأدر المسودات والمنشورات.</p></div><div class="top-actions"><button id="quick-new-post" class="primary">＋ مشاركة جديدة</button><a class="secondary" href="/" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout-button" class="secondary">تسجيل الخروج</button></div></header>
+<header class="admin-topbar"><div class="topbar-heading"><button id="sidebar-toggle" class="sidebar-toggle" type="button" aria-label="فتح القائمة" aria-expanded="false">☰</button><div><span class="eyebrow">BLOGGER-STYLE PUBLISHING DESK</span><h1 id="view-title">المشاركات</h1><p class="admin-muted" id="view-description">أنشئ المقالات وأدر المسودات والمنشورات.</p></div></div><div class="top-actions"><button id="quick-new-post" class="primary">＋ مشاركة جديدة</button><a class="secondary" href="/" target="_blank" rel="noopener">عرض الموقع ↗</a><button id="logout-button" class="secondary">تسجيل الخروج</button></div></header>
 <section class="admin-view active" data-panel="posts">
 <div class="blogger-toolbar"><div><h2>كل المشاركات</h2><p class="admin-muted">إدارة المقالات المنشورة والمسودات.</p></div><div class="post-filters"><button class="filter-chip active" data-post-filter="all">الكل</button><button class="filter-chip" data-post-filter="published">منشورة</button><button class="filter-chip" data-post-filter="draft">مسودات</button></div></div>
 <div class="blogger-workspace"><section class="panel posts-list-panel"><div class="admin-section-head"><div><h2>المشاركات</h2><small id="posts-count">0 مشاركة</small></div><button id="post-create" class="primary">＋ مشاركة جديدة</button></div><div id="posts-list" class="blog-post-list"><p class="admin-muted">جارٍ تحميل المشاركات…</p></div></section>
