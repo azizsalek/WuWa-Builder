@@ -314,3 +314,64 @@ html,body{max-width:100%;overflow-x:hidden}
 /* Keep only the two requested admin sections in the sidebar. */
 .admin-nav .admin-nav-item:not([data-view="characters"]):not([data-view="pages"]){display:none!important}
 .sidebar-new-post,.sidebar-tools-label{display:none!important}
+
+
+/* Dark neon dashboard theme inspired by the approved WuWa Admin concept */
+.admin-body{font-family:'Cairo',sans-serif!important;background:radial-gradient(ellipse at 75% -12%,#173653 0,transparent 38%),radial-gradient(ellipse at 8% 100%,#241b49 0,transparent 34%),#070b14!important;color:#e8f1ff!important}
+.admin-app{background:transparent!important;grid-template-columns:260px minmax(0,1fr)!important}
+.admin-sidebar{background:rgba(9,14,25,.96)!important;color:#dbeafe!important;border-left:1px solid #24364f!important;box-shadow:12px 0 40px #0003!important;backdrop-filter:blur(18px)}
+.admin-brand,.admin-topbar h1,.admin-section-head h2,.blogger-toolbar h2,.admin-view h2,.admin-view h3{color:#f2f7ff!important}
+.admin-brand small,.blog-switcher small,.sidebar-label,.admin-muted{color:#91a4bf!important}
+.blog-switcher{background:#111c2e!important;border-color:#2a405e!important;color:#e6f0ff!important}
+.blog-avatar,.admin-brand .brand-mark,.auth-brand .brand-mark{background:linear-gradient(135deg,#22c7df,#4779e8 65%,#9165ed)!important;color:#06111f!important;box-shadow:0 0 24px #22c7df2b!important}
+.admin-nav-item{color:#9aabc2!important;border-color:transparent!important}
+.admin-nav-item i{color:#8ea8c7!important}
+.admin-nav-item:hover{background:#14243a!important;color:#eaf7ff!important}
+.admin-nav-item.active{background:linear-gradient(100deg,#0e5267aa,#263b72aa)!important;border-color:#247c99!important;color:#70e5f4!important;box-shadow:inset 0 0 18px #22c7df0b!important}
+.admin-nav-item.active i{color:#70e5f4!important}
+.sidebar-bottom{border-color:#24364f!important}
+.view-blog-link{color:#70e5f4!important}
+.admin-main{background:transparent!important}
+.admin-topbar,.panel,.stat-card,.quick-card,.notice-card,.posts-management-panel,.post-compose-panel,.site-settings-panel,.backup-card,.character-editor-panel,.media-panel{background:linear-gradient(145deg,rgba(17,29,47,.97),rgba(10,18,32,.97))!important;color:#e7f0ff!important;border:1px solid #263b58!important;box-shadow:0 14px 35px #0002!important}
+.admin-topbar{border-radius:17px!important}
+.admin-topbar .eyebrow{color:#6bd9ed!important}
+.admin-topbar .admin-muted,.stat-card small,.stat-card span,.quick-card small,.notice-card p{color:#8fa4c0!important}
+.welcome-card,.section-banner{background:linear-gradient(110deg,#10283e,#101a30 62%,#211b40)!important;border-color:#2d526e!important;box-shadow:0 16px 40px #0003!important}
+.welcome-card h2,.section-banner h2{color:#f4f8ff!important}
+.welcome-card p,.section-banner p{color:#9db0ca!important}
+.welcome-mark,.banner-icon{color:#6ce3f2!important;background:#1a4354aa!important;border-color:#34758a!important;box-shadow:0 0 35px #22c7df18!important}
+.stat-card{border-radius:16px!important}
+.stat-card strong{color:#f3f8ff!important}
+.quick-card{border-radius:15px!important}
+.quick-card:hover{border-color:#35b8d2!important;box-shadow:0 0 28px #22c7df12!important}
+.panel{border-radius:16px!important}
+.field{color:#c9d8eb!important}
+.field input,.field textarea,.field select,#theme-mode,.json-editor,.post-body-editor,.rich-content-editor{background:#091321!important;color:#e6f1ff!important;border-color:#2b405d!important}
+.field input::placeholder,.field textarea::placeholder{color:#627995!important}
+.field input:focus,.field textarea:focus{border-color:#35c4df!important;box-shadow:0 0 0 3px #22c7df19!important}
+.json-editor{color:#bfeaff!important}
+.primary{background:linear-gradient(110deg,#08a9c4,#397de2)!important;color:#04111d!important;box-shadow:0 5px 18px #089dbb25!important}
+.primary:hover{filter:brightness(1.12)!important}
+.secondary{background:#172840!important;color:#dcecff!important;border-color:#304866!important}
+.secondary:hover{background:#203652!important}
+.danger{background:#3b1d2a!important;color:#ffb6c3!important;border-color:#71394c!important}
+.filter-chip,.blog-post-item,.record-button{background:#0c192a!important;color:#b7c9df!important;border-color:#293e5a!important}
+.filter-chip.active,.blog-post-item:hover,.blog-post-item.active,.record-button:hover,.record-button.active{background:#12364a!important;color:#70e5f4!important;border-color:#258da7!important}
+.status-pill{background:#352a19!important;color:#f6d99c!important;border-color:#765b2e!important}
+.status-pill.saved{background:#12332e!important;color:#8ce7c7!important;border-color:#286b5d!important}
+.settings-toggles{background:#0a1626!important;border-color:#2b405d!important}
+.settings-toggles label,.publish-toggle,.publish-toggle label{color:#c5d6ea!important}
+.reading-item{background:#0b1728!important;border-color:#2a405c!important}
+.reading-item button{background:#3b1d2a!important;color:#ffb6c3!important}
+.media-form input,.backup-card input[type=file]{background:#091321!important;color:#dcecff!important;border-color:#2b405d!important}
+.notice-card{border-right-color:#35c4df!important}
+.admin-footer{border-color:#263b58!important;color:#8198b5!important}
+.admin-auth{background:linear-gradient(145deg,#111d30,#0a1424)!important;color:#e7f0ff!important;border-color:#2a405d!important;box-shadow:0 20px 55px #0005!important}
+.admin-auth h1{color:#f4f8ff!important}
+.admin-auth .field{color:#c9d8eb!important}
+.rich-toolbar{background:#0d1a2b!important;border-color:#2b405d!important}
+.rich-toolbar button{background:#182b43!important;color:#d9efff!important;border-color:#35516f!important}
+.rich-content-editor{background:#091321!important;border-color:#2b405d!important;color:#e7f1ff!important}
+.admin-stats{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+@media(max-width:950px){.admin-sidebar{background:#0a1424!important;border-color:#263b58!important}.admin-app.sidebar-open .sidebar-backdrop{background:#020817c9!important}.admin-main{background:transparent!important}}
+@media(max-width:650px){.admin-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}.admin-stats .stat-card:last-child{grid-column:auto!important}}
