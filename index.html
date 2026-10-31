@@ -82,13 +82,21 @@
       </section>
       <section class="view" id="characters">
         <div class="intro-row"><div><span class="eyebrow">RESONATOR DATABASE • LIVE DATA</span><h2>قاعدة شخصيات Wuthering Waves</h2><p>استكشف الشخصيات، الصور، العناصر، الندرة، الإحصائيات الأساسية، المهارات وسلاسل الرنين.</p></div><span class="big-symbol">♙</span></div>
-        <div class="catalog-toolbar panel">
-          <div class="catalog-search"><input id="character-search" type="search" placeholder="ابحث عن شخصية..." aria-label="ابحث عن شخصية"><span>⌕</span></div>
-          <div class="catalog-filters">
-            <select id="filter-rarity" aria-label="فلتر الندرة"><option value="">كل الندرات</option><option value="5">5 نجوم</option><option value="4">4 نجوم</option></select>
-            <select id="filter-element" aria-label="فلتر العنصر"><option value="">كل العناصر</option><option>Aero</option><option>Electro</option><option>Fusion</option><option>Glacio</option><option>Havoc</option><option>Spectro</option></select>
+        <div class="catalog-toolbar panel catalog-controls">
+          <div class="catalog-search"><input id="character-search" type="search" placeholder="Search characters..." aria-label="Search characters"><span>⌕</span></div>
+          <div class="filter-row rarity-row" aria-label="Filter by rarity">
+            <button type="button" class="filter-chip" data-rarity-filter="4">4★</button>
+            <button type="button" class="filter-chip" data-rarity-filter="5">5★</button>
           </div>
-          <div class="catalog-meta"><b id="catalog-count">جارٍ تحميل الشخصيات…</b><span id="catalog-source">يتم جلب البيانات والصور</span></div>
+          <div class="filter-row element-row" aria-label="Filter by element">
+            <button type="button" class="element-filter" data-element-filter="Aero" title="Aero"><i class="element-symbol">✧</i><span>Aero</span></button>
+            <button type="button" class="element-filter" data-element-filter="Electro" title="Electro"><i class="element-symbol">ϟ</i><span>Electro</span></button>
+            <button type="button" class="element-filter" data-element-filter="Fusion" title="Fusion"><i class="element-symbol">♨</i><span>Fusion</span></button>
+            <button type="button" class="element-filter" data-element-filter="Glacio" title="Glacio"><i class="element-symbol">❄</i><span>Glacio</span></button>
+            <button type="button" class="element-filter" data-element-filter="Havoc" title="Havoc"><i class="element-symbol">◈</i><span>Havoc</span></button>
+            <button type="button" class="element-filter" data-element-filter="Spectro" title="Spectro"><i class="element-symbol">☼</i><span>Spectro</span></button>
+          </div>
+          <div class="catalog-toolbar-footer"><button type="button" id="reset-character-filters" class="reset-filters">Reset filters</button><div class="catalog-meta"><b id="catalog-count">Loading characters…</b><span id="catalog-source">Loading character portraits…</span></div></div>
         </div>
         <div id="character-database" class="resonator-grid" aria-live="polite"><div class="empty-state">جارٍ تحميل قاعدة الشخصيات والصور…</div></div>
         <section id="character-profile-page" class="character-profile-page hidden" aria-live="polite">
