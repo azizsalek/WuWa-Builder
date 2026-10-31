@@ -81,9 +81,22 @@
         <div id="echo-list" class="saved-list empty-state">لم تحفظ أي Echo بعد.</div>
       </section>
       <section class="view" id="characters">
-        <div class="intro-row"><div><span class="eyebrow">RESONATOR DATABASE</span><h2>قاعدة الشخصيات</h2><p>سجل شخصياتك المفضلة. سيتم توسيع البيانات الموثقة تدريجياً.</p></div><span class="big-symbol">♙</span></div>
-        <div class="panel database-note"><span class="note-icon">ⓘ</span><div><b>قاعدة البيانات قيد الإعداد</b><p>لن نعرض توصيات أسلحة أو Echo Sets غير مؤكدة. يمكنك إضافة شخصياتك يدوياً الآن.</p></div></div>
-        <form id="character-form" class="panel inline-form"><label class="field">اسم الشخصية<input id="character-name" required placeholder="اكتب اسم الشخصية"></label><label class="field">العنصر<input id="character-element" placeholder="مثال: Aero"></label><label class="field">السلاح<input id="character-weapon" placeholder="مثال: Sword"></label><button class="primary" type="submit">إضافة شخصية</button></form>
+        <div class="intro-row"><div><span class="eyebrow">RESONATOR DATABASE • LIVE DATA</span><h2>قاعدة شخصيات Wuthering Waves</h2><p>استكشف الشخصيات، الصور، العناصر، الندرة، الإحصائيات الأساسية، المهارات وسلاسل الرنين.</p></div><span class="big-symbol">♙</span></div>
+        <div class="catalog-toolbar panel">
+          <div class="catalog-search"><input id="character-search" type="search" placeholder="ابحث عن شخصية..." aria-label="ابحث عن شخصية"><span>⌕</span></div>
+          <div class="catalog-filters">
+            <select id="filter-rarity" aria-label="فلتر الندرة"><option value="">كل الندرات</option><option value="5">5 نجوم</option><option value="4">4 نجوم</option></select>
+            <select id="filter-element" aria-label="فلتر العنصر"><option value="">كل العناصر</option><option>Aero</option><option>Electro</option><option>Fusion</option><option>Glacio</option><option>Havoc</option><option>Spectro</option></select>
+          </div>
+          <div class="catalog-meta"><b id="catalog-count">جارٍ تحميل الشخصيات…</b><span id="catalog-source">يتم جلب البيانات والصور</span></div>
+        </div>
+        <div id="character-database" class="resonator-grid" aria-live="polite"><div class="empty-state">جارٍ تحميل قاعدة الشخصيات والصور…</div></div>
+        <div id="character-detail" class="character-modal hidden" role="dialog" aria-modal="true" aria-label="تفاصيل الشخصية">
+          <div class="character-modal-backdrop" data-close-character></div>
+          <article class="character-detail-card"><button class="modal-close" data-close-character aria-label="إغلاق">×</button><div id="character-detail-content"></div></article>
+        </div>
+        <div class="section-heading"><div><span class="eyebrow">PERSONAL COLLECTION</span><h2>شخصياتي المحفوظة يدوياً</h2></div></div>
+        <form id="character-form" class="panel inline-form"><label class="field">اسم الشخصية<input id="character-name" required placeholder="اكتب اسم الشخصية"></label><label class="field">العنصر<input id="character-element" placeholder="مثال: Aero"></label><label class="field">ملاحظة<input id="character-weapon" placeholder="ملاحظة شخصية (اختياري)"></label><button class="primary" type="submit">إضافة إلى مجموعتي</button></form>
         <div id="character-list" class="character-grid"></div>
       </section>
       <section class="view" id="profile">
