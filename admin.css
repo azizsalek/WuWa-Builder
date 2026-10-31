@@ -230,3 +230,62 @@
  .posts-bulk-actions select{flex:1;min-width:120px}
  .posts-pagination{align-items:flex-start;flex-direction:column}
 }
+
+
+/* Mobile-first overflow and touch fixes for the administration area */
+html,body{max-width:100%;overflow-x:hidden}
+.admin-app,.admin-main,.admin-view,.admin-topbar,.topbar-heading{min-width:0}
+.admin-view{width:100%;overflow-wrap:anywhere}
+.admin-view .panel,.admin-view .section-banner,.admin-view .welcome-card{min-width:0;max-width:100%}
+.admin-view input,.admin-view select,.admin-view textarea{max-width:100%;min-width:0}
+.posts-table-wrap,.table-wrap,.data-table-wrap{max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.posts-table{min-width:720px}
+.admin-sidebar{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.admin-nav-item,.sidebar-new-post,.admin-topbar button,.admin-topbar a{min-height:42px}
+@media(max-width:950px){
+ .admin-main{width:100%;min-width:0}
+ .admin-sidebar{padding-bottom:max(18px,env(safe-area-inset-bottom))}
+}
+@media(max-width:650px){
+ .admin-main{padding:10px!important}
+ .admin-topbar{width:100%;padding:12px!important;border-radius:13px;gap:10px;margin-bottom:14px}
+ .topbar-heading{align-items:center;gap:9px}
+ .topbar-heading>div{min-width:0}
+ .admin-topbar h1{font-size:18px;line-height:1.4;overflow-wrap:anywhere}
+ .admin-topbar .admin-muted{font-size:10px;line-height:1.7}
+ .top-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+ .top-actions>*{width:100%;min-width:0;justify-content:center;padding:8px 6px;font-size:10px}
+ .admin-section-head,.blogger-toolbar,.posts-page-heading{gap:10px}
+ .admin-stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .admin-stats .stat-card:last-child{grid-column:1/-1}
+ .admin-two-col,.admin-layout,.blogger-workspace,.settings-toggles{grid-template-columns:minmax(0,1fr)!important}
+ .admin-form,.form-grid{grid-template-columns:minmax(0,1fr)!important}
+ .admin-form>* ,.form-grid>*{min-width:0;grid-column:1/-1}
+ .admin-actions,.form-actions{display:grid;grid-template-columns:1fr;gap:8px}
+ .admin-actions button,.form-actions button{width:100%;min-height:44px}
+ .posts-status-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}
+ .posts-status-tabs .filter-chip{justify-content:center;padding:8px 5px;font-size:10px}
+ .posts-filterbar{padding:11px;gap:7px}
+ .posts-search{flex:1 1 100%;min-width:0}
+ .posts-filterbar select{min-width:0;max-width:100%;font-size:10px}
+ .posts-bulkbar{padding:10px;gap:9px}
+ .posts-bulk-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px}
+ .posts-bulk-actions select,.posts-bulk-actions input{width:100%;min-width:0}
+ .posts-bulk-actions button{min-height:40px}
+ .posts-pagination{padding:11px;gap:8px}
+ .posts-pagination>div{width:100%}
+ .posts-pagination button{flex:1;min-height:40px}
+ .record-list{max-height:220px}
+ .admin-auth{width:calc(100% - 24px);margin:24px auto;padding:16px}
+ .admin-auth h1{font-size:21px}
+ .json-editor{min-height:250px;max-width:100%;overflow:auto}
+ .media-grid,.character-shortcuts,.quick-grid{grid-template-columns:minmax(0,1fr)!important}
+ .reading-item{align-items:flex-start;flex-wrap:wrap}
+}
+@media(max-width:360px){
+ .admin-main{padding:8px!important}
+ .admin-topbar{padding:10px!important}
+ .top-actions{grid-template-columns:1fr}
+ .posts-status-tabs{grid-template-columns:1fr}
+ .posts-bulk-actions{grid-template-columns:1fr}
+}
