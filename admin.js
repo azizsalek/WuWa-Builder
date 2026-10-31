@@ -33,7 +33,7 @@ async function renderSession(session) {
       return;
     }
     show("admin-app", true);
-    switchAdminView("posts");
+    switchAdminView("characters");
     await loadRecords();
     await loadSiteSettings();
     renderCmsList("post","posts-list","posts-count");
