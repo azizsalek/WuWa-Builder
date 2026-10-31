@@ -290,3 +290,15 @@ $("site-settings-form").addEventListener("submit", async (event) => {
     queueMicrotask(() => renderSession(session));
   });
 })();
+
+function switchAdminView(name){
+  document.querySelectorAll(".admin-view").forEach(v=>v.classList.toggle("active",v.dataset.panel===name));
+  document.querySelectorAll(".admin-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.view===name));
+  const meta={overview:["نظرة عامة","ملخص سريع لحالة محتوى موقعك."],content:["المحتوى والسجلات","إدارة السجلات المنشورة والمسودات."],characters:["قاعدة الشخصيات","إدارة قائمة الشخصيات وأدلة اللعب."],media:["مكتبة الوسائط","رفع صور الموقع وإدارة روابطها."],settings:["إعدادات الموقع","تخصيص هوية الواجهة والأقسام."],backup:["النسخ الاحتياطي","تصدير المحتوى واستيراد نسخة محفوظة."]};
+  $("view-title").textContent=meta[name][0];$("view-description").textContent=meta[name][1];
+}
+document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>switchAdminView(b.dataset.view)));
+document.querySelectorAll("[data-go]").forEach(b=>b.addEventListener("click",()=>switchAdminView(b.dataset.go)));
+document.querySelectorAll("[data-load-record]").forEach(b=>b.addEventListener("click",()=>{const r=records.find(x=>x.slug===b.dataset.loadRecord);if(r){selectRecord(r);switchAdminView("content");}else setMessage("save-message","هذا السجل غير موجود في قاعدة البيانات.",true);}));
+$("export-backup").addEventListener("click",()=>{const blob=new Blob([JSON.stringify({format:"wuwa-builder-backup-v1",exportedAt:new Date().toISOString(),records},null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="wuwa-builder-backup-"+new Date().toISOString().slice(0,10)+".json";a.click();URL.revokeObjectURL(a.href);setMessage("backup-message","تم تجهيز النسخة الاحتياطية.");});
+$("import-backup").addEventListener("click",async()=>{const file=$("backup-file").files[0];if(!file)return setMessage("backup-message","اختر ملف JSON أولاً.",true);try{const parsed=JSON.parse(await file.text());const incoming=Array.isArray(parsed)?parsed:parsed.records;if(!Array.isArray(incoming))throw new Error("بنية الملف غير صحيحة");if(!confirm("سيتم استيراد "+incoming.length+" سجل. قد يتم تحديث سجلات موجودة. هل تريد المتابعة؟"))return;for(const r of incoming){if(!r.slug||!r.title||typeof r.content!=="object")throw new Error("يوجد سجل ناقص أو غير صالح");const payload={slug:String(r.slug),title:String(r.title),content:r.content,published:!!r.published,updated_at:new Date().toISOString()};const {error}=await db.from("site_content").upsert(payload,{onConflict:"slug"});if(error)throw error;}await loadRecords();setMessage("backup-message","اكتمل استيراد "+incoming.length+" سجل.");$("backup-file").value="";}catch(e){setMessage("backup-message","تعذر الاستيراد: "+e.message,true);}});
