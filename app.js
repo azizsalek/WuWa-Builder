@@ -63,6 +63,8 @@ async function applyPublicSiteSettings() {
    .from("site_content").select("content").eq("slug","site-settings").eq("published",true).maybeSingle();
   if (error || !data?.content) return;
   const s = data.content;
+  if (s.themePrimary) document.documentElement.style.setProperty("--cyan", s.themePrimary);
+  if (s.themeSecondary) document.documentElement.style.setProperty("--blue", s.themeSecondary);
   if (s.siteName) {
    document.title = s.siteName;
    document.querySelectorAll(".brand b").forEach(el => el.textContent = s.siteName);
