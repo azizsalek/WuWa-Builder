@@ -95,3 +95,87 @@ a.nav-item{ text-decoration:none; }
 .maintenance-card{width:min(520px,100%);text-align:center;background:#111d30;border:1px solid #29445d;border-radius:18px;padding:34px;box-shadow:0 20px 70px #0008}
 .maintenance-card h2{font-size:26px;margin:12px 0}
 .maintenance-card p{color:#9fb0c7;line-height:1.8}
+
+
+/* Mobile layout refinement */
+html{max-width:100%;overflow-x:hidden;scroll-padding-top:12px}
+body{max-width:100%;overflow-x:clip}
+.app-shell,.main,.view,.panel,.form-grid,.intro-row,.section-heading{min-width:0}
+img,video,iframe{max-width:100%}
+button,a,input,select,textarea{touch-action:manipulation}
+@media(max-width:850px){
+ .sidebar{position:relative;min-width:0;padding:12px 12px 10px;gap:12px}
+ .brand{padding:2px 4px}
+ .sidebar nav{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding:2px 0 7px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+ .sidebar nav::-webkit-scrollbar{display:none}
+ .nav-item{flex:0 0 auto;min-height:42px}
+ .main{width:100%;padding:16px 14px 24px}
+}
+@media(max-width:600px){
+ .topbar{gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+ .topbar>div{min-width:0;flex:1}
+ .topbar h1{font-size:20px;line-height:1.35}
+ .eyebrow{font-size:9px;letter-spacing:1px}
+ .profile-chip{flex:0 0 auto;max-width:48%;font-size:10px;gap:6px}
+ .hero{min-height:0;padding:22px 17px;border-radius:16px}
+ .hero-copy{min-width:0}
+ .hero h2{font-size:clamp(23px,7vw,29px);line-height:1.45}
+ .hero p,.intro-row p{font-size:12px;line-height:1.85}
+ .hero .primary{width:100%;min-height:44px}
+ .section-heading{align-items:flex-start;gap:8px;margin:23px 0 12px}
+ .section-heading h2,.intro-row h2{font-size:17px;line-height:1.5}
+ .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .stat-card{min-width:0;padding:12px}
+ .stat-card:last-child:nth-child(odd){grid-column:1/-1}
+ .stat-card strong{font-size:24px}
+ .stat-card small{font-size:10px}
+ .quick-grid{grid-template-columns:1fr;gap:9px}
+ .quick-card{min-height:0;padding:14px 15px}
+ .intro-row{align-items:flex-start;gap:10px;margin:5px 0 16px}
+ .intro-row>div{min-width:0}
+ .big-symbol{font-size:32px;line-height:1}
+ .form-grid,.inline-form{grid-template-columns:minmax(0,1fr);gap:12px;padding:14px}
+ .form-grid .wide,.inline-form .field{grid-column:1/-1;min-width:0}
+ .field{min-width:0;font-size:12px}
+ .field input,.field select,.field textarea,input,select,textarea{max-width:100%;min-width:0}
+ .form-actions{display:grid;grid-template-columns:1fr;gap:8px}
+ .form-actions button,.inline-form button,.profile-panel button{width:100%;min-height:44px}
+ .panel,.result-panel{padding:14px;border-radius:13px}
+ .saved-item,.reading-item{align-items:flex-start;flex-wrap:wrap}
+ .catalog-controls{gap:11px;padding:12px}
+ .catalog-controls .catalog-search input{width:100%;min-width:0}
+ .element-row{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .element-filter{min-width:0;min-height:40px}
+ .resonator-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+ .resonator-art{height:clamp(125px,42vw,165px);padding:6px}
+ .resonator-info{min-width:0;padding:8px 5px}
+ .resonator-info b{font-size:11px;overflow-wrap:anywhere}
+ .resonator-info span{font-size:9px}
+ .profile-banner{display:grid;grid-template-columns:88px minmax(0,1fr);gap:12px;min-height:0;padding:12px}
+ .profile-image-frame{width:88px;height:118px;flex-basis:auto}
+ .profile-title{min-width:0}
+ .profile-title h2{font-size:18px;overflow-wrap:anywhere}
+ .profile-facts{gap:5px}
+ .profile-facts span{font-size:9px;padding:4px 7px}
+ .guide-panel{padding:13px;margin:10px 0}
+ .guide-panel h3{font-size:15px}
+ .guide-panel p,.guide-list{font-size:12px}
+ .guide-highlight{padding:11px;overflow-wrap:anywhere}
+ .character-detail-card{width:100%;max-height:92dvh;padding:13px}
+ .detail-hero{align-items:center;padding:12px}
+ .detail-art{flex:0 0 86px;width:86px;height:105px}
+ .detail-heading{min-width:0}
+ .detail-heading h2{font-size:18px;overflow-wrap:anywhere}
+ .detail-stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .profile-panel{grid-template-columns:1fr;gap:12px}
+ .profile-panel .field,.profile-panel button{grid-column:1/-1}
+ footer{font-size:10px;line-height:1.8;padding:12px 2px}
+}
+@media(max-width:360px){
+ .main{padding:12px 10px 20px}
+ .nav-item{padding:8px 9px;font-size:11px}
+ .profile-chip{max-width:46%;padding:5px 7px}
+ .resonator-info b{font-size:10px}
+ .stats-grid{gap:7px}
+ .stat-card{padding:10px}
+}
