@@ -13,73 +13,20 @@
       <div class="brand"><div class="brand-mark">W</div><div><b>WuWa Builder</b><small>دليلك لبناء شخصياتك</small></div></div>
       <nav>
         <button class="nav-item active" data-view="dashboard"><span>⌂</span> الرئيسية</button>
-        <button class="nav-item" data-view="builds"><span>◈</span> تقييم Builds</button>
-        <button class="nav-item" data-view="echoes"><span>✧</span> محلل Echoes</button>
-        <button class="nav-item" data-view="characters"><span>♙</span> الشخصيات</button>
-        <button class="nav-item" data-view="profile"><span>◎</span> ملف اللاعب</button>
-        <a class="nav-item admin-nav-link" href="/admin"><span>⚙</span> إدارة الموقع</a>
+        <button class="nav-item" data-view="characters"><span>♙</span> قائمة الشخصيات</button>
       </nav>
-      <div class="sidebar-bottom"><span class="status-dot"></span> نسخة تجريبية محلية <small>البيانات محفوظة على هذا الجهاز</small></div>
+      <div class="sidebar-bottom"><span class="status-dot"></span> WuWa Builder <small>دليل الشخصيات</small></div>
     </aside>
     <main class="main">
       <header class="topbar">
         <div><span class="eyebrow">WUTHERING WAVES COMPANION</span><h1 id="page-title">لوحة التحكم</h1></div>
-        <button class="profile-chip" data-go="profile"><span class="avatar">W</span><span>حساب اللاعب<small>ضيف</small></span></button>
+        <button class="profile-chip" data-go="characters"><span class="avatar">W</span><span>قائمة الشخصيات<small>استكشف الشخصيات</small></span></button>
       </header>
       <section class="view active" id="dashboard">
         <div class="hero">
-          <div class="hero-copy"><span class="pill">BUILD • ANALYZE • IMPROVE</span><h2>خلّ بناء شخصياتك<br><em>أكثر وضوحاً.</em></h2><p>تابع إحصائيات شخصياتك، قيّم الـ Echoes، واحتفظ ببناءاتك في مكان واحد.</p><button class="primary" data-go="builds">ابدأ تقييم بناء <b>←</b></button></div>
+          <div class="hero-copy"><span class="pill">WUTHERING WAVES DATABASE</span><h2>كل شخصيات اللعبة<br><em>في مكان واحد.</em></h2><p>استكشف قائمة الشخصيات، تعرّف على العناصر والندرة، واطّلع على الأدلة والتفاصيل المتاحة.</p><button class="primary" data-go="characters">استعرض قائمة الشخصيات <b>←</b></button></div>
           <div class="hero-orbit"><div class="orbit-ring"></div><div class="orbit-core">W</div><span class="orbit-label one">RESONATOR</span><span class="orbit-label two">ECHO DATA</span></div>
         </div>
-        <div class="section-heading"><div><span class="eyebrow">OVERVIEW</span><h2>نظرة عامة</h2></div><span class="muted">بياناتك المحفوظة</span></div>
-        <div class="stats-grid">
-          <article class="stat-card"><span class="stat-icon">♙</span><small>الشخصيات المسجلة</small><strong id="stat-builds">0</strong><span class="stat-foot">في ملفك</span></article>
-          <article class="stat-card"><span class="stat-icon">✧</span><small>Echoes المحللة</small><strong id="stat-echoes">0</strong><span class="stat-foot">تم تقييمها</span></article>
-          <article class="stat-card"><span class="stat-icon">◈</span><small>البناءات المحفوظة</small><strong id="stat-saved">0</strong><span class="stat-foot">يمكنك تعديلها لاحقاً</span></article>
-        </div>
-        <div class="section-heading"><div><span class="eyebrow">QUICK ACCESS</span><h2>الوصول السريع</h2></div></div>
-        <div class="quick-grid">
-          <button class="quick-card" data-go="builds"><span>◈</span><b>تقييم بناء جديد</b><small>أدخل إحصائيات الشخصية واحفظ النتيجة.</small><i>←</i></button>
-          <button class="quick-card" data-go="echoes"><span>✧</span><b>تحليل Echo</b><small>سجّل الإحصائيات الفرعية واحصل على قراءة أولية.</small><i>←</i></button>
-          <button class="quick-card" data-go="characters"><span>♙</span><b>قاعدة الشخصيات</b><small>استعرض الشخصيات وأضفها إلى ملفك.</small><i>←</i></button>
-        </div>
-        <p class="notice">تنبيه: هذه نسخة أولية. التقييم الحالي إرشادي عام، وليس حكماً نهائياً على قوة الشخصية. ستُضاف معايير منفصلة لكل شخصية بعد توثيق بياناتها.</p>
-      </section>
-      <section class="view" id="builds">
-        <div class="intro-row"><div><span class="eyebrow">BUILD RATING</span><h2>تقييم بناء الشخصية</h2><p>أدخل الإحصائيات الأساسية للحصول على تقرير أولي وحفظ البناء.</p></div><span class="big-symbol">◈</span></div>
-        <form id="build-form" class="panel form-grid">
-          <label class="field wide">اسم الشخصية<input id="build-name" required placeholder="مثال: اسم الشخصية"></label>
-          <label class="field">نوع السلاح<select id="weapon-type"><option value="">اختر النوع</option><option>السيف</option><option>المسدسات</option><option>القفاز</option><option>الموصل</option><option>الشفرة الثقيلة</option></select></label>
-          <label class="field">مجموعة Echo<select id="echo-set"><option value="">اختر المجموعة</option><option>مجموعة 5 قطع</option><option>مجموعتان 2+2</option><option>غير محدد</option></select></label>
-          <label class="field">ATK<input id="atk" type="number" min="0" step="1" placeholder="مثال: 2200"></label>
-          <label class="field">HP<input id="hp" type="number" min="0" step="1" placeholder="مثال: 15000"></label>
-          <label class="field">DEF<input id="def" type="number" min="0" step="1" placeholder="مثال: 1200"></label>
-          <label class="field">Crit Rate %<input id="cr" type="number" min="0" max="100" step=".1" placeholder="مثال: 70"></label>
-          <label class="field">Crit DMG %<input id="cd" type="number" min="0" step=".1" placeholder="مثال: 250"></label>
-          <label class="field">Energy Regen %<input id="er" type="number" min="0" step=".1" placeholder="مثال: 120"></label>
-          <label class="field">Element DMG %<input id="element" type="number" min="0" step=".1" placeholder="مثال: 40"></label>
-          <div class="wide form-actions"><button class="primary" type="submit">حلّل واحفظ البناء</button><button class="secondary" type="reset">مسح الحقول</button></div>
-        </form>
-        <div id="build-result" class="result-panel hidden" aria-live="polite"></div>
-        <div class="section-heading"><div><span class="eyebrow">SAVED BUILDS</span><h2>البناءات المحفوظة</h2></div></div>
-        <div id="build-list" class="saved-list empty-state">لم تحفظ أي بناء بعد.</div>
-      </section>
-      <section class="view" id="echoes">
-        <div class="intro-row"><div><span class="eyebrow">ECHO ANALYZER</span><h2>محلل Echoes</h2><p>سجّل نوع الـ Echo وإحصائياته لتكوين سجل منظم وتقييم مبدئي.</p></div><span class="big-symbol">✧</span></div>
-        <form id="echo-form" class="panel form-grid">
-          <label class="field wide">اسم Echo<input id="echo-name" required placeholder="اسم الـ Echo"></label>
-          <label class="field">Cost<select id="echo-cost"><option value="1">1 Cost</option><option value="3">3 Cost</option><option value="4">4 Cost</option></select></label>
-          <label class="field">Main Stat<input id="echo-main" placeholder="مثال: Crit Rate"></label>
-          <label class="field">Sub Stat 1<input id="sub1" placeholder="مثال: Crit DMG + 10.5%"></label>
-          <label class="field">Sub Stat 2<input id="sub2" placeholder="مثال: ATK + 8.1%"></label>
-          <label class="field">Sub Stat 3<input id="sub3" placeholder="إحصائية فرعية"></label>
-          <label class="field">Sub Stat 4<input id="sub4" placeholder="إحصائية فرعية"></label>
-          <label class="field">Sub Stat 5<input id="sub5" placeholder="إحصائية فرعية"></label>
-          <div class="wide form-actions"><button class="primary" type="submit">حلّل واحفظ Echo</button><button class="secondary" type="reset">مسح الحقول</button></div>
-        </form>
-        <div id="echo-result" class="result-panel hidden" aria-live="polite"></div>
-        <div class="section-heading"><div><span class="eyebrow">YOUR INVENTORY</span><h2>Echoes المحفوظة</h2></div></div>
-        <div id="echo-list" class="saved-list empty-state">لم تحفظ أي Echo بعد.</div>
       </section>
       <section class="view" id="characters">
         <div class="intro-row"><div><span class="eyebrow">RESONATOR DATABASE • LIVE DATA</span><h2>قاعدة شخصيات Wuthering Waves</h2><p>استكشف الشخصيات، الصور، العناصر، الندرة، الإحصائيات الأساسية، المهارات وسلاسل الرنين.</p></div><span class="big-symbol">♙</span></div>
@@ -108,14 +55,6 @@
           <div class="character-modal-backdrop" data-close-character></div>
           <article class="character-detail-card"><button class="modal-close" data-close-character aria-label="إغلاق">×</button><div id="character-detail-content"></div></article>
         </div>
-        <div class="section-heading"><div><span class="eyebrow">PERSONAL COLLECTION</span><h2>شخصياتي المحفوظة يدوياً</h2></div></div>
-        <form id="character-form" class="panel inline-form"><label class="field">اسم الشخصية<input id="character-name" required placeholder="اكتب اسم الشخصية"></label><label class="field">العنصر<input id="character-element" placeholder="مثال: Aero"></label><label class="field">ملاحظة<input id="character-note" placeholder="ملاحظة شخصية (اختياري)"></label><button class="primary" type="submit">إضافة إلى مجموعتي</button></form>
-        <div id="character-list" class="character-grid"></div>
-      </section>
-      <section class="view" id="profile">
-        <div class="intro-row"><div><span class="eyebrow">PLAYER PROFILE</span><h2>ملف اللاعب</h2><p>إعدادات وبيانات الملف المحلي.</p></div><span class="big-symbol">◎</span></div>
-        <div class="panel profile-panel"><div class="large-avatar">W</div><div class="profile-info"><b id="profile-name">لاعب زائر</b><span>حساب محلي تجريبي</span></div><label class="field">اسم العرض<input id="display-name" placeholder="اكتب اسمك داخل الموقع"></label><button id="save-profile" class="primary">حفظ الاسم</button></div>
-        <div class="panel data-panel"><h3>إدارة البيانات</h3><p>يمكنك تصدير نسخة احتياطية من بياناتك أو حذف البيانات المحلية من هذا الجهاز.</p><div class="form-actions"><button id="export-data" class="secondary">تصدير البيانات JSON</button><button id="clear-data" class="danger">حذف كل البيانات</button></div></div>
       </section>
       <footer>WuWa Builder <span>نسخة تجريبية مستقلة من صنع المجتمع • غير مرتبطة رسمياً بـ Kuro Games</span></footer>
     </main>
