@@ -60,6 +60,28 @@ function render() {
   updateFilterButtons();
 }
 
+function safeRichHtml(raw) {
+  const parsed = new DOMParser().parseFromString(String(raw||""), "text/html");
+  const allowed = new Set(["P","BR","B","STRONG","I","EM","U","UL","OL","LI","H2","H3","H4","BLOCKQUOTE","A","IMG"]);
+  function clean(node) {
+    [...node.childNodes].forEach(child=>{
+      if(child.nodeType===Node.TEXT_NODE)return;
+      if(child.nodeType!==Node.ELEMENT_NODE){child.remove();return;}
+      if(!allowed.has(child.tagName)){clean(child);child.replaceWith(...child.childNodes);return;}
+      [...child.attributes].forEach(attr=>child.removeAttribute(attr.name));
+      if(child.tagName==="A"){
+        const href=child.getAttribute("href")||"";
+        if(/^https?:\/\//i.test(href)){child.setAttribute("href",href);child.setAttribute("target","_blank");child.setAttribute("rel","noopener noreferrer");}
+      }
+      if(child.tagName==="IMG"){
+        const src=child.getAttribute("src")||"";
+        if(/^https:\/\//i.test(src)){child.setAttribute("src",src);child.setAttribute("loading","lazy");child.setAttribute("alt","");}
+        else child.replaceWith(document.createTextNode("[صورة غير صالحة]"));
+      } else clean(child);
+    });
+  }
+  clean(parsed.body);return parsed.body.innerHTML;
+}
 function section(title, body) { return '<section class="guide-panel"><h3>' + title + '</h3>' + body + '</section>'; }
 function openProfile(name) {
   const c = characters.find(item => item.name === name); if (!c) return;
@@ -70,6 +92,7 @@ function openProfile(name) {
   let html = '<div class="profile-banner"><div class="profile-image-frame">' + art + '</div><div class="profile-title"><span class="eyebrow">RESONATOR PROFILE</span><h2>' + esc(c.name) + '</h2>' + facts + '<p>ملف الشخصية ودليل اللعب</p></div></div>';
   if (guide) {
     if (guide.summary) html += section("نبذة عن الشخصية", '<p>' + esc(guide.summary) + '</p>');
+    if (guide.richContent) html += section("معلومات إضافية", safeRichHtml(guide.richContent));
     html += section("Kit · أسلوب اللعب والقدرات", '<p>' + esc(guide.kit || "لم تتم إضافة وصف بعد.") + '</p>');
     if (guide.skills) html += section("Skills · المهارات", '<div class="guide-highlight">' + guide.skills.map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
     if (guide.passives) html += section("Passive Skills · المهارات السلبية", '<div class="guide-highlight">' + guide.passives.map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
