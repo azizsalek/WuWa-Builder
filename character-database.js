@@ -68,13 +68,15 @@ function safeRichHtml(raw) {
       if(child.nodeType===Node.TEXT_NODE)return;
       if(child.nodeType!==Node.ELEMENT_NODE){child.remove();return;}
       if(!allowed.has(child.tagName)){clean(child);child.replaceWith(...child.childNodes);return;}
+      const savedHref=child.getAttribute("href")||"";
+      const savedSrc=child.getAttribute("src")||"";
       [...child.attributes].forEach(attr=>child.removeAttribute(attr.name));
       if(child.tagName==="A"){
-        const href=child.getAttribute("href")||"";
+        const href=savedHref;
         if(/^https?:\/\//i.test(href)){child.setAttribute("href",href);child.setAttribute("target","_blank");child.setAttribute("rel","noopener noreferrer");}
       }
       if(child.tagName==="IMG"){
-        const src=child.getAttribute("src")||"";
+        const src=savedSrc;
         if(/^https:\/\//i.test(src)){child.setAttribute("src",src);child.setAttribute("loading","lazy");child.setAttribute("alt","");}
         else child.replaceWith(document.createTextNode("[صورة غير صالحة]"));
       } else clean(child);
