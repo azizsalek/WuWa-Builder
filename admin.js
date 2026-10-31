@@ -152,6 +152,7 @@ async function loadRecords() {
   const latest = records.map(item => item.updated_at).filter(Boolean).sort().at(-1);
   $("last-updated").textContent = latest ? new Date(latest).toLocaleDateString("ar") : "—";
   renderRecordList();
+  renderCharacterManager();
   if (activeId) {
     const current = records.find(item => item.id === activeId);
     if (current) selectRecord(current);
@@ -429,3 +430,97 @@ $("reading-form").addEventListener("submit",e=>{e.preventDefault();const list=[.
  document.addEventListener("keydown",event=>{if(event.key==="Escape")close();});
  window.addEventListener("resize",()=>{if(window.innerWidth>950)close();});
 })();
+
+
+// Visual character editor — keeps the existing Supabase record schema intact.
+let ceRoster = [], ceGuides = {}, ceCurrentName = "";
+const ce = id => document.getElementById(id);
+function ceLines(value){return Array.isArray(value)?value.join("\n"):"";}
+function ceParseArray(id,label){const raw=ce(id).value.trim();if(!raw)return [];try{const v=JSON.parse(raw);if(!Array.isArray(v))throw new Error("يجب أن تكون القيمة قائمة JSON.");return v;}catch(e){throw new Error(label+": "+e.message);}}
+function ceJson(value){return JSON.stringify(value??[],null,2);}
+function renderCharacterManager(){
+ const rosterRecord=records.find(r=>r.slug==="characters-roster");
+ const guidesRecord=records.find(r=>r.slug==="character-guides");
+ ceRoster=Array.isArray(rosterRecord?.content)?rosterRecord.content:[];
+ ceGuides=guidesRecord?.content&&typeof guidesRecord.content==="object"?guidesRecord.content:{};
+ const select=ce("character-editor-select");if(!select)return;
+ const chosen=select.value||ceCurrentName;
+ select.innerHTML='<option value="">اختر شخصية…</option>'+ceRoster.map(c=>'<option value="'+escapeHtml(c.name)+'">'+escapeHtml(c.name)+'</option>').join("");
+ if(ceRoster.some(c=>c.name===chosen))select.value=chosen;else if(ceRoster.length)select.value=ceRoster[0].name;
+ if(select.value)loadCharacterIntoEditor(select.value);
+}
+function loadCharacterIntoEditor(name){
+ const c=ceRoster.find(x=>x.name===name);if(!c)return;
+ ceCurrentName=name;const g=ceGuides[name]||{};
+ const known=["role","summary","kit","skills","passives","teams","echoSet","echoOptions","mainEcho","mainStats","subStats","recommendedStats","skillPriority","rotation","advancedRotation","sequences","source","sourceName","sourceLastVerified","voiceActors","notes","materials","baseStats","minorFortes","review"];
+ ce("ce-name").value=c.name||"";ce("ce-element").value=c.element||"";ce("ce-rarity").value=String(c.rarity||5);
+ ce("ce-role").value=g.role||"";ce("ce-image").value=c.image||"";
+ ce("ce-summary").value=g.summary||"";ce("ce-kit").value=g.kit||"";
+ ce("ce-skills").value=ceJson(g.skills);ce("ce-passives").value=ceJson(g.passives);
+ ce("ce-teams").value=ceLines(g.teams);ce("ce-echo-set").value=g.echoSet||"";ce("ce-main-echo").value=g.mainEcho||"";
+ ce("ce-echo-options").value=ceJson(g.echoOptions);ce("ce-main-stats").value=g.mainStats||"";ce("ce-sub-stats").value=g.subStats||"";
+ ce("ce-recommended-stats").value=ceLines(g.recommendedStats);ce("ce-skill-priority").value=ceLines(g.skillPriority);
+ ce("ce-rotation").value=g.rotation||"";ce("ce-advanced-rotation").value=g.advancedRotation||"";
+ ce("ce-sequences").value=ceJson(g.sequences);ce("ce-source").value=g.source||"";ce("ce-source-name").value=g.sourceName||"";
+ ce("ce-source-verified").value=g.sourceLastVerified||"";ce("ce-voice-actors").value=ceLines(g.voiceActors);
+ ce("ce-notes").value=g.notes||"";ce("ce-materials").value=JSON.stringify(g.materials||{},null,2);
+ ce("ce-base-stats").value=JSON.stringify(g.baseStats||{},null,2);
+ const extra={};Object.entries(g).forEach(([k,v])=>{if(!known.includes(k))extra[k]=v;});
+ ce("ce-extra").value=JSON.stringify(extra,null,2);updateCharacterImagePreview();
+ setMessage("character-editor-message","تم تحميل بيانات "+name+".",false);
+}
+function updateCharacterImagePreview(){const img=ce("ce-image-preview");const url=ce("ce-image").value.trim();img.src=url;img.classList.toggle("visible",!!url);img.onerror=()=>img.classList.remove("visible");}
+ce("character-editor-select")?.addEventListener("change",e=>loadCharacterIntoEditor(e.target.value));
+ce("character-editor-refresh")?.addEventListener("click",async()=>{await loadRecords();renderCharacterManager();setMessage("character-editor-message","تم تحديث قائمة الشخصيات.");});
+ce("ce-image")?.addEventListener("input",updateCharacterImagePreview);
+ce("ce-upload-image")?.addEventListener("click",async()=>{
+ const file=ce("ce-image-file").files[0];if(!file)return setMessage("character-editor-message","اختر صورة أولاً.",true);
+ if(!/^image\/(png|jpeg|webp|gif)$/.test(file.type)||file.size>5*1024*1024)return setMessage("character-editor-message","الصيغ PNG/JPG/WEBP/GIF وبحد أقصى 5MB.",true);
+ const safe=file.name.toLowerCase().replace(/[^a-z0-9._-]+/g,"-");const path="characters/"+Date.now()+"-"+safe;
+ setMessage("character-editor-message","جارٍ رفع الصورة…");
+ const {error}=await db.storage.from("site-media").upload(path,file,{cacheControl:"3600",upsert:false});
+ if(error)return setMessage("character-editor-message","فشل الرفع: "+error.message,true);
+ const {data}=db.storage.from("site-media").getPublicUrl(path);ce("ce-image").value=data.publicUrl;updateCharacterImagePreview();ce("ce-image-file").value="";
+ setMessage("character-editor-message","تم رفع الصورة وربطها بالشخصية. احفظ التغييرات لتثبيتها.");
+});
+ce("ce-reset")?.addEventListener("click",()=>loadCharacterIntoEditor(ceCurrentName));
+ce("character-editor-preview")?.addEventListener("click",()=>{
+ const name=ce("ce-name").value.trim();const url=ce("ce-image").value.trim();
+ ce("character-editor-preview-content").innerHTML='<div class="ce-preview-head">'+(url?'<img src="'+escapeHtml(url)+'" alt="">':'')+'<div><h3>'+escapeHtml(name)+'</h3><p>'+escapeHtml(ce("ce-role").value)+' · '+escapeHtml(ce("ce-element").value)+' · '+escapeHtml(ce("ce-rarity").value)+'★</p></div></div><p>'+escapeHtml(ce("ce-summary").value)+'</p><p>'+escapeHtml(ce("ce-kit").value)+'</p>';
+ ce("character-editor-preview-panel").classList.remove("hidden");
+});
+ce("character-editor-form")?.addEventListener("submit",async event=>{
+ event.preventDefault();const oldName=ceCurrentName;const newName=ce("ce-name").value.trim();
+ if(!newName)return setMessage("character-editor-message","اسم الشخصية مطلوب.",true);
+ let skills,passives,echoOptions,sequences,materials,baseStats,extra;
+ try{
+  skills=ceParseArray("ce-skills","المهارات");passives=ceParseArray("ce-passives","المهارات السلبية");
+  echoOptions=ceParseArray("ce-echo-options","خيارات Echo");sequences=ceParseArray("ce-sequences","العقد");
+  materials=JSON.parse(ce("ce-materials").value||"{}");baseStats=JSON.parse(ce("ce-base-stats").value||"{}");extra=JSON.parse(ce("ce-extra").value||"{}");
+  if(!materials||Array.isArray(materials)||typeof materials!=="object")throw new Error("مواد التطوير يجب أن تكون كائن JSON.");
+  if(!baseStats||Array.isArray(baseStats)||typeof baseStats!=="object")throw new Error("الإحصائيات الأساسية يجب أن تكون كائن JSON.");
+  if(!extra||Array.isArray(extra)||typeof extra!=="object")throw new Error("البيانات الإضافية يجب أن تكون كائن JSON.");
+ }catch(error){return setMessage("character-editor-message","تحقق من البيانات: "+error.message,true);}
+ const roster=ceRoster.map(c=>c.name===oldName?{...c,name:newName,element:ce("ce-element").value,rarity:Number(ce("ce-rarity").value),image:ce("ce-image").value.trim()}:c);
+ const previous={...(ceGuides[oldName]||{})};
+ const guide={...previous,...extra,role:ce("ce-role").value.trim(),summary:ce("ce-summary").value.trim(),kit:ce("ce-kit").value.trim(),
+ skills,passives,teams:ce("ce-teams").value.split("\n").map(x=>x.trim()).filter(Boolean),echoSet:ce("ce-echo-set").value.trim(),
+ echoOptions,mainEcho:ce("ce-main-echo").value.trim(),mainStats:ce("ce-main-stats").value.trim(),subStats:ce("ce-sub-stats").value.trim(),
+ recommendedStats:ce("ce-recommended-stats").value.split("\n").map(x=>x.trim()).filter(Boolean),
+ skillPriority:ce("ce-skill-priority").value.split("\n").map(x=>x.trim()).filter(Boolean),
+ rotation:ce("ce-rotation").value.trim(),advancedRotation:ce("ce-advanced-rotation").value.trim(),sequences,
+ source:ce("ce-source").value.trim(),sourceName:ce("ce-source-name").value.trim(),sourceLastVerified:ce("ce-source-verified").value.trim(),
+ voiceActors:ce("ce-voice-actors").value.split("\n").map(x=>x.trim()).filter(Boolean),notes:ce("ce-notes").value.trim(),materials,baseStats};
+ const guides={...ceGuides};if(oldName!==newName)delete guides[oldName];guides[newName]=guide;
+ const rosterRow=records.find(r=>r.slug==="characters-roster"),guideRow=records.find(r=>r.slug==="character-guides");
+ if(!rosterRow||!guideRow)return setMessage("character-editor-message","لم يتم العثور على سجلي قائمة الشخصيات أو الأدلة. لم تُحفظ أي تغييرات.",true);
+ const btn=event.submitter;if(btn)btn.disabled=true;
+ const [rosterSave,guideSave]=await Promise.all([
+  db.from("site_content").update({content:roster,updated_at:new Date().toISOString()}).eq("id",rosterRow.id),
+  db.from("site_content").update({content:guides,updated_at:new Date().toISOString()}).eq("id",guideRow.id)
+ ]);
+ if(btn)btn.disabled=false;
+ if(rosterSave.error||guideSave.error)return setMessage("character-editor-message","تعذر الحفظ: "+(rosterSave.error||guideSave.error).message,true);
+ ceCurrentName=newName;await loadRecords();ce("character-editor-select").value=newName;loadCharacterIntoEditor(newName);
+ setMessage("character-editor-message","تم حفظ بيانات "+newName+" بنجاح.");
+});
