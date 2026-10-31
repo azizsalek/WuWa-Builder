@@ -336,3 +336,17 @@ $("page-create").addEventListener("click",resetPage);$("page-form").addEventList
 $("layout-form").addEventListener("submit",e=>{e.preventDefault();saveSettingsPatch({showBuilds:$("layout-show-builds").checked,showEchoes:$("layout-show-echoes").checked,showCharacters:$("layout-show-characters").checked,showProfile:$("layout-show-profile").checked,layoutOrder:$("layout-order").value.split(",").map(x=>x.trim()).filter(Boolean)},"layout-message");});
 $("theme-form").addEventListener("submit",e=>{e.preventDefault();saveSettingsPatch({themePrimary:$("theme-primary").value,themeSecondary:$("theme-secondary").value,themeMode:$("theme-mode").value},"theme-message");});
 $("reading-form").addEventListener("submit",e=>{e.preventDefault();const list=[...(currentSettings().readingList||[]),{title:$("reading-title").value.trim(),url:$("reading-url").value.trim()}];saveSettingsPatch({readingList:list},"reading-message").then(()=>$("reading-form").reset());});
+
+
+// Responsive off-canvas navigation for phones and tablets.
+(function setupSidebarDrawer(){
+ const app=$("admin-app"),toggle=$("sidebar-toggle"),backdrop=$("sidebar-backdrop");
+ if(!app||!toggle||!backdrop)return;
+ const close=()=>{app.classList.remove("sidebar-open");toggle.setAttribute("aria-expanded","false");document.body.style.overflow="";};
+ const open=()=>{app.classList.add("sidebar-open");toggle.setAttribute("aria-expanded","true");document.body.style.overflow="hidden";};
+ toggle.addEventListener("click",()=>app.classList.contains("sidebar-open")?close():open());
+ backdrop.addEventListener("click",close);
+ document.querySelectorAll(".admin-nav-item").forEach(item=>item.addEventListener("click",close));
+ document.addEventListener("keydown",event=>{if(event.key==="Escape")close();});
+ window.addEventListener("resize",()=>{if(window.innerWidth>950)close();});
+})();
