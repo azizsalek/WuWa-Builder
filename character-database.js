@@ -6,8 +6,10 @@ const profilePage = document.getElementById("character-profile-page");
 const profileContent = document.getElementById("character-profile-content");
 const backButton = document.getElementById("character-back");
 const search = document.getElementById("character-search");
-const rarityFilter = document.getElementById("filter-rarity");
-const elementFilter = document.getElementById("filter-element");
+const rarityButtons = [...document.querySelectorAll("[data-rarity-filter]")];
+const elementButtons = [...document.querySelectorAll("[data-element-filter]")];
+const resetFilters = document.getElementById("reset-character-filters");
+let activeRarity = "", activeElement = "";
 const count = document.getElementById("catalog-count");
 const sourceLabel = document.getElementById("catalog-source");
 const charactersView = document.getElementById("characters");
@@ -23,20 +25,41 @@ function setListVisible(visible) {
   listOnlySelectors.forEach(selector => charactersView.querySelectorAll(selector).forEach(el => el.classList.toggle("profile-list-hidden", !visible)));
   profilePage.classList.toggle("hidden", visible);
 }
+const elementMeta = {
+  Aero:{symbol:"✧",label:"Aero"}, Electro:{symbol:"ϟ",label:"Electro"},
+  Fusion:{symbol:"♨",label:"Fusion"}, Glacio:{symbol:"❄",label:"Glacio"},
+  Havoc:{symbol:"◈",label:"Havoc"}, Spectro:{symbol:"☼",label:"Spectro"}
+};
+function updateFilterButtons() {
+  rarityButtons.forEach(button => button.classList.toggle("selected", button.dataset.rarityFilter === activeRarity));
+  elementButtons.forEach(button => button.classList.toggle("selected", button.dataset.elementFilter === activeElement));
+}
 function render() {
-  const query = search.value.trim().toLowerCase(), rarity = rarityFilter.value, element = elementFilter.value;
-  const filtered = characters.filter(c => c.name.toLowerCase().includes(query) && (!rarity || String(c.rarity) === rarity) && (!element || c.element === element));
-  count.textContent = filtered.length + " / " + characters.length + " شخصية";
+  const query = search.value.trim().toLowerCase();
+  const filtered = characters.filter(c =>
+    c.name.toLowerCase().includes(query) &&
+    (!activeRarity || String(c.rarity) === activeRarity) &&
+    (!activeElement || c.element === activeElement)
+  );
+  count.textContent = "Showing " + filtered.length + " / " + characters.length + " characters";
   box.innerHTML = filtered.map(c => {
-    const image = getImage(c);
-    const art = image ? '<img class="resonator-portrait" src="' + esc(image) + '" alt="' + esc(c.name) + '" loading="lazy" referrerpolicy="no-referrer">' : '<span class="art-placeholder">' + esc(c.name.slice(0,1)) + '</span>';
-    return '<button type="button" class="resonator-card element-' + esc(c.element || "unknown") + '" data-character="' + esc(c.name) + '"><div class="resonator-art">' + art + '<span class="rarity-stars">' + "★".repeat(Number(c.rarity)||0) + '</span></div><div class="resonator-info"><b>' + esc(c.name) + '</b><span>' + esc(c.element || "العنصر غير متوفر") + ' · ' + esc(c.rarity) + ' نجوم</span></div></button>';
-  }).join("") || '<div class="empty-state">لا توجد نتائج مطابقة.</div>';
+    const image = getImage(c), meta = elementMeta[c.element] || {symbol:"◇",label:c.element || "Unknown"};
+    const art = image
+      ? '<img class="resonator-portrait" src="' + esc(image) + '" alt="' + esc(c.name) + '" loading="lazy" referrerpolicy="no-referrer">'
+      : '<span class="art-placeholder">' + esc(c.name.slice(0,1)) + '</span>';
+    return '<button type="button" class="resonator-card element-' + esc(c.element || "unknown") + '" data-character="' + esc(c.name) + '">' +
+      '<div class="resonator-art">' + art +
+      '<span class="rarity-stars" aria-label="' + esc(c.rarity) + ' stars">' + "★".repeat(Number(c.rarity)||0) + '</span>' +
+      '<span class="element-badge" title="' + esc(meta.label) + '">' + esc(meta.symbol) + '</span></div>' +
+      '<div class="resonator-info"><b>' + esc(c.name) + '</b><span>' + esc(meta.label) + ' · ' + esc(c.rarity) + '★</span></div></button>';
+  }).join("") || '<div class="empty-state">لا توجد نتائج مطابقة. جرّب تغيير البحث أو الفلاتر.</div>';
   box.querySelectorAll("[data-character]").forEach(card => card.addEventListener("click", () => openProfile(card.dataset.character)));
   box.querySelectorAll("img").forEach(img => img.addEventListener("error", () => {
     const placeholder=document.createElement("span"); placeholder.className="art-placeholder"; placeholder.textContent=img.alt.slice(0,1); img.replaceWith(placeholder);
   }, {once:true}));
+  updateFilterButtons();
 }
+
 function section(title, body) { return '<section class="guide-panel"><h3>' + title + '</h3>' + body + '</section>'; }
 function openProfile(name) {
   const c = characters.find(item => item.name === name); if (!c) return;
@@ -73,7 +96,18 @@ function closeProfile() {
 }
 backButton.addEventListener("click", closeProfile);
 window.addEventListener("popstate", () => { if (currentCharacter) closeProfile(); });
-search.addEventListener("input", render); rarityFilter.addEventListener("change", render); elementFilter.addEventListener("change", render);
+search.addEventListener("input", render);
+rarityButtons.forEach(button => button.addEventListener("click", () => {
+  activeRarity = activeRarity === button.dataset.rarityFilter ? "" : button.dataset.rarityFilter;
+  render();
+}));
+elementButtons.forEach(button => button.addEventListener("click", () => {
+  activeElement = activeElement === button.dataset.elementFilter ? "" : button.dataset.elementFilter;
+  render();
+}));
+resetFilters.addEventListener("click", () => {
+  search.value = ""; activeRarity = ""; activeElement = ""; render();
+});
 
 async function loadCharacters() {
   try {
