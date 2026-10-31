@@ -104,7 +104,40 @@
 <section class="panel admin-editor"><div class="admin-section-head"><div><h2 id="editor-heading">محرر المحتوى</h2><small>تحرير بيانات السجل المختار</small></div><span id="editor-status" class="status-pill">غير محفوظ</span></div>
 <form id="content-form" class="admin-form"><input id="record-id" type="hidden"><div class="admin-two-col"><label class="field">معرّف السجل (Slug)<input id="record-slug" required pattern="[a-z0-9-]+" placeholder="home-announcement"></label><label class="field">عنوان السجل<input id="record-title" required></label></div><label class="field">بيانات السجل (JSON)<textarea id="record-content" class="json-editor" spellcheck="false" required>{}</textarea><small class="admin-muted">يمكنك تعديل النصوص والروابط والصور والحقول والقوائم داخل السجل. حافظ على صيغة JSON صحيحة حتى لا يتعطل عرض البيانات.</small></label><label class="publish-toggle"><input id="record-published" type="checkbox"> نشر هذا المحتوى للزوار</label><div class="admin-actions"><button class="primary" type="submit">حفظ التغييرات</button><button class="secondary" type="button" id="reset-editor">إلغاء التعديلات</button><button class="danger" type="button" id="delete-record">حذف السجل</button></div></form><p id="save-message" class="admin-message" aria-live="polite"></p></section></div>
 </section>
-<section class="admin-view" data-panel="characters"><div class="section-banner"><div><span class="eyebrow">CHARACTER DATABASE</span><h2>قاعدة الشخصيات والأدلة</h2><p>إدارة بيانات الشخصيات وأدلة اللعب الموجودة في قاعدة المحتوى.</p></div><span class="banner-icon">✦</span></div><div class="character-shortcuts"><button class="panel shortcut-card" data-load-record="characters-roster"><b>قائمة الشخصيات</b><small>تعديل سجل characters-roster الذي يحتوي قائمة الشخصيات.</small><span>فتح السجل ←</span></button><button class="panel shortcut-card" data-load-record="character-guides"><b>أدلة الشخصيات</b><small>تعديل سجل character-guides الذي يحتوي أدلة الشخصيات.</small><span>فتح السجل ←</span></button></div><p class="admin-muted">للحفاظ على صحة البيانات، يتم تحرير الحقول الحالية بصيغة JSON ولا تُنشأ مهارات أو إحصائيات تلقائياً.</p></section>
+<section class="admin-view" data-panel="characters">
+<div class="section-banner"><div><span class="eyebrow">CHARACTER DATABASE</span><h2>محرر الشخصيات المرئي</h2><p>اختر شخصية وعدّل معلوماتها وصورها ودليلها ثم احفظها مباشرة.</p></div><span class="banner-icon">✦</span></div>
+<div class="panel character-editor-panel">
+<div class="character-editor-toolbar"><label class="field">الشخصية<select id="character-editor-select"><option value="">جارٍ تحميل الشخصيات…</option></select></label><div class="character-editor-actions"><button type="button" class="secondary" id="character-editor-refresh">تحديث القائمة</button><button type="button" class="secondary" id="character-editor-preview">معاينة الملف</button></div></div>
+<div id="character-editor-message" class="admin-message" aria-live="polite"></div>
+<form id="character-editor-form" class="admin-form">
+<div class="character-editor-section"><h3>المعلومات الأساسية</h3><div class="admin-two-col">
+<label class="field">اسم الشخصية<input id="ce-name" required></label><label class="field">العنصر<select id="ce-element"><option value="">غير محدد</option><option>Aero</option><option>Electro</option><option>Fusion</option><option>Glacio</option><option>Havoc</option><option>Spectro</option></select></label>
+<label class="field">الندرة<select id="ce-rarity"><option value="4">4 نجوم</option><option value="5">5 نجوم</option></select></label><label class="field">الدور / التصنيف<input id="ce-role" placeholder="مثال: مهاجم رئيسي · Aero"></label>
+</div><label class="field">الصورة الرئيسية URL<input id="ce-image" type="url" placeholder="https://..."></label><div class="character-image-upload"><input id="ce-image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif"><button type="button" class="secondary" id="ce-upload-image">رفع صورة</button><img id="ce-image-preview" alt="معاينة صورة الشخصية"></div>
+<label class="field">ملخص الشخصية<textarea id="ce-summary" rows="3"></textarea></label><label class="field">أسلوب اللعب / القدرات<textarea id="ce-kit" rows="4"></textarea></label></div>
+<div class="character-editor-section"><h3>المهارات والمحتوى</h3>
+<label class="field">المهارات (JSON)<textarea id="ce-skills" rows="5" spellcheck="false" placeholder='[{"name":"اسم المهارة","desc":"الوصف"}]'></textarea></label>
+<label class="field">المهارات السلبية (JSON)<textarea id="ce-passives" rows="4" spellcheck="false"></textarea></label>
+<label class="field">الفرق المقترحة — سطر لكل فريق<textarea id="ce-teams" rows="4"></textarea></label>
+<div class="admin-two-col"><label class="field">مجموعة Echo<input id="ce-echo-set"></label><label class="field">Main Echo<input id="ce-main-echo"></label></div>
+<label class="field">خيارات Echo (JSON)<textarea id="ce-echo-options" rows="4" spellcheck="false"></textarea></label>
+<div class="admin-two-col"><label class="field">Main Stats<textarea id="ce-main-stats" rows="3"></textarea></label><label class="field">Sub Stats<textarea id="ce-sub-stats" rows="3"></textarea></label></div>
+<label class="field">الإحصائيات المقترحة — سطر لكل عنصر<textarea id="ce-recommended-stats" rows="4"></textarea></label>
+<label class="field">أولوية تطوير المهارات — سطر لكل عنصر<textarea id="ce-skill-priority" rows="3"></textarea></label>
+<label class="field">تسلسل اللعب / Rotation<textarea id="ce-rotation" rows="4"></textarea></label><label class="field">تدوير متقدم<textarea id="ce-advanced-rotation" rows="3"></textarea></label>
+<label class="field">العقد / Sequences (JSON)<textarea id="ce-sequences" rows="4" spellcheck="false"></textarea></label>
+</div>
+<div class="character-editor-section"><h3>المصادر والتفاصيل الإضافية</h3>
+<div class="admin-two-col"><label class="field">رابط المصدر<input id="ce-source" type="url"></label><label class="field">اسم المصدر<input id="ce-source-name"></label><label class="field">آخر تحقق من المصدر<input id="ce-source-verified" placeholder="YYYY-MM-DD"></label><label class="field">المؤدون الصوتيون — سطر لكل عنصر<textarea id="ce-voice-actors" rows="3"></textarea></label></div>
+<label class="field">ملاحظات المحرر<textarea id="ce-notes" rows="3"></textarea></label>
+<label class="field">مواد التطوير (JSON)<textarea id="ce-materials" rows="4" spellcheck="false"></textarea></label>
+<label class="field">الإحصائيات الأساسية (JSON)<textarea id="ce-base-stats" rows="4" spellcheck="false"></textarea></label>
+<label class="field">بيانات إضافية غير ممثلة في الحقول السابقة (JSON)<textarea id="ce-extra" rows="5" spellcheck="false"></textarea><small class="admin-muted">تُحفظ الحقول القديمة غير المعروضة هنا تلقائياً. استخدم هذا الحقل فقط لإضافة مفاتيح جديدة.</small></label>
+</div>
+<div class="character-editor-footer"><button class="primary" type="submit">حفظ بيانات الشخصية</button><button class="secondary" type="button" id="ce-reset">إلغاء التعديلات</button></div>
+</form>
+<div id="character-editor-preview-panel" class="character-editor-preview hidden"><h3>معاينة سريعة</h3><div id="character-editor-preview-content"></div></div>
+</div></section>
 <section class="admin-view" data-panel="media"><div class="section-banner"><div><span class="eyebrow">MEDIA LIBRARY</span><h2>مكتبة الوسائط</h2><p>رفع الصور إلى التخزين السحابي ونسخ روابطها لاستخدامها في المحتوى.</p></div><span class="banner-icon">▧</span></div><section class="panel media-panel"><form id="media-form" class="media-form"><input id="media-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" required><button class="primary" type="submit">رفع صورة</button></form><p class="admin-muted">الصيغ المدعومة PNG وJPG وWEBP وGIF، بحد أقصى 5MB للصورة.</p><div id="media-result" class="admin-message" aria-live="polite"></div></section></section>
 <section class="admin-view" data-panel="settings">
 <section class="panel site-settings-panel"><div class="admin-section-head"><div><h2>إعدادات الموقع العامة</h2><small>تخصيص هوية الواجهة والأقسام الظاهرة للزوار</small></div><span class="status-pill" id="settings-status">جارٍ التحميل</span></div>
