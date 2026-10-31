@@ -310,25 +310,104 @@ $("import-backup").addEventListener("click",async()=>{const file=$("backup-file"
 const blogType=(r)=>r?.content?.cmsType||"";
 const slugFor=(kind,value)=>kind+"-"+value.trim().toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-+|-+$/g,"");
 function cmsRows(kind){return records.filter(r=>blogType(r)===kind);}
+let postFilter="all";
+let postPage=1;
+const POSTS_PER_PAGE=10;
+let selectedPostIds=new Set();
+function postDate(r){const value=r.updated_at||r.created_at;return value?new Date(value).toLocaleDateString("ar",{year:"numeric",month:"short",day:"numeric"}):"—";}
+function postLabels(r){return Array.isArray(r.content?.labels)?r.content.labels:[];}
+function postSearchMatch(r,query){
+ if(!query)return true;
+ const terms=query.match(/(?:title|body|label|status):(?:"[^"]+"|[^\\s]+)|"[^"]+"|[^\\s]+/g)||[query];
+ return terms.every(raw=>{
+  let field="",value=raw;
+  const colon=raw.indexOf(":");
+  if(colon>0){field=raw.slice(0,colon).toLowerCase();value=raw.slice(colon+1);}
+  value=value.replace(/^"|"$/g,"").toLowerCase();
+  const title=(r.title||"").toLowerCase(),body=(r.content?.body||"").toLowerCase(),labels=postLabels(r).join(" ").toLowerCase();
+  if(field==="title")return title.includes(value);
+  if(field==="body")return body.includes(value);
+  if(field==="label")return labels.includes(value);
+  if(field==="status")return value==="draft"?!r.published:value==="published"?!!r.published:true;
+  return (title+" "+body+" "+labels).includes(value);
+ });
+}
+function filteredPosts(){
+ let rows=cmsRows("post");
+ if(postFilter==="published")rows=rows.filter(r=>r.published);
+ if(postFilter==="draft")rows=rows.filter(r=>!r.published);
+ const label=$("post-label-filter")?.value||"";
+ if(label)rows=rows.filter(r=>postLabels(r).includes(label));
+ const query=$("post-search-input")?.value.trim()||"";
+ rows=rows.filter(r=>postSearchMatch(r,query));
+ const sort=$("post-sort")?.value||"updated";
+ rows.sort((a,b)=>sort==="title"?(a.title||"").localeCompare(b.title||"","ar"):new Date((sort==="created"?b.created_at||b.updated_at:b.updated_at||b.created_at)||0)-new Date((sort==="created"?a.created_at||a.updated_at:a.updated_at||a.created_at)||0));
+ return rows;
+}
+function refreshPostLabels(){
+ const select=$("post-label-filter"),chosen=select.value;
+ const labels=[...new Set(cmsRows("post").flatMap(postLabels))].sort((a,b)=>a.localeCompare(b,"ar"));
+ select.innerHTML='<option value="">كل التصنيفات</option>'+labels.map(x=>'<option value="'+escapeHtml(x)+'">'+escapeHtml(x)+'</option>').join("");
+ select.value=labels.includes(chosen)?chosen:"";
+}
 function renderCmsList(kind,containerId,countId,filter="all"){
+ if(kind==="post"){renderPostsTable();return;}
  const rows=cmsRows(kind).filter(r=>filter==="all"||(filter==="published"?r.published:!r.published));
  $(countId).textContent=rows.length+(kind==="post"?" مشاركة":" صفحة");
  $(containerId).innerHTML=rows.length?rows.map(r=>'<button type="button" class="blog-post-item" data-cms-id="'+escapeHtml(r.id)+'"><b>'+escapeHtml(r.title)+'</b><small>'+escapeHtml(r.slug)+'</small><span class="record-state '+(r.published?"":"draft")+'">'+(r.published?"منشورة":"مسودة")+'</span></button>').join(""):'<p class="admin-muted">لا توجد عناصر بعد. أنشئ أول عنصر.</p>';
- $(containerId).querySelectorAll("[data-cms-id]").forEach(b=>b.addEventListener("click",()=>kind==="post"?editPost(b.dataset.cmsId):editPage(b.dataset.cmsId)));
+ $(containerId).querySelectorAll("[data-cms-id]").forEach(b=>b.addEventListener("click",()=>kind==="post"?openPostEditor(b.dataset.cmsId):editPage(b.dataset.cmsId)));
 }
-let postFilter="all";
-function resetPost(){ $("post-form").reset();$("post-id").value="";$("post-editor-heading").textContent="مشاركة جديدة";$("post-editor-state").textContent="مسودة جديدة";$("post-delete").disabled=true;setMessage("post-message","");}
-function editPost(id){const r=records.find(x=>x.id===id);if(!r)return;const c=r.content||{};$("post-id").value=r.id;$("post-title").value=r.title;$("post-slug").value=r.slug.replace(/^post-/,"");$("post-labels").value=(c.labels||[]).join(", ");$("post-excerpt").value=c.excerpt||"";$("post-body").value=c.body||"";$("post-published").checked=!!r.published;$("post-editor-heading").textContent="تعديل المشاركة";$("post-editor-state").textContent=r.published?"منشورة":"مسودة";$("post-delete").disabled=false;setMessage("post-message","");}
-async function saveCms(kind,form){const id=$(kind+"-id").value;const rawSlug=$(kind+"-slug").value.trim();const slug=slugFor(kind,rawSlug);const title=$(kind+"-title").value.trim();const body=$(kind+"-body").value;const published=$(kind+"-published").checked;if(!rawSlug||!title||!body.trim())return setMessage(kind+"-message","أكمل العنوان والرابط والمحتوى.",true);const content=kind==="post"?{cmsType:"post",body,excerpt:$("post-excerpt").value.trim(),labels:$("post-labels").value.split(",").map(x=>x.trim()).filter(Boolean)}:{cmsType:"page",body};const payload={slug,title,content,published,updated_at:new Date().toISOString()};const req=id?db.from("site_content").update(payload).eq("id",id).select().single():db.from("site_content").insert(payload).select().single();const {data,error}=await req;if(error)return setMessage(kind+"-message","تعذر الحفظ: "+error.message,true);await loadRecords();if(kind==="post"){editPost(data.id);renderCmsList("post","posts-list","posts-count",postFilter);}else{editPage(data.id);renderCmsList("page","pages-list","pages-count");}setMessage(kind+"-message","تم حفظ "+(kind==="post"?"المشاركة":"الصفحة")+" بنجاح.");}
+function renderPostsTable(){
+ const all=cmsRows("post"),rows=filteredPosts(),pages=Math.max(1,Math.ceil(rows.length/POSTS_PER_PAGE));
+ postPage=Math.min(postPage,pages);
+ $("post-count-all").textContent=all.length;
+ $("post-count-published").textContent=all.filter(x=>x.published).length;
+ $("post-count-draft").textContent=all.filter(x=>!x.published).length;
+ refreshPostLabels();
+ const begin=(postPage-1)*POSTS_PER_PAGE,visible=rows.slice(begin,begin+POSTS_PER_PAGE);
+ $("posts-table-body").innerHTML=visible.length?visible.map(r=>{
+  const labels=postLabels(r).map(x=>'<span class="post-label-chip">'+escapeHtml(x)+'</span>').join(" ")||'<span class="admin-muted">—</span>';
+  return '<tr><td><input type="checkbox" class="post-row-check" data-post-check="'+escapeHtml(r.id)+'" '+(selectedPostIds.has(r.id)?"checked":"")+'></td><td class="post-title-cell"><button type="button" class="post-title-button" data-edit-post="'+escapeHtml(r.id)+'">'+escapeHtml(r.title)+'</button><small>'+escapeHtml(r.slug.replace(/^post-/,""))+'</small></td><td>'+labels+'</td><td><span class="record-state '+(r.published?"":"draft")+'">'+(r.published?"منشورة":"مسودة")+'</span></td><td class="post-date-cell">'+postDate(r)+'</td><td><div class="post-row-actions"><button type="button" data-edit-post="'+escapeHtml(r.id)+'" title="تعديل"><i class="fa-solid fa-pen"></i></button><button type="button" data-toggle-post="'+escapeHtml(r.id)+'" title="'+(r.published?"تحويل إلى مسودة":"نشر")+'"><i class="fa-solid '+(r.published?"fa-eye-slash":"fa-paper-plane")+'"></i></button><button type="button" class="delete-row" data-delete-post="'+escapeHtml(r.id)+'" title="حذف"><i class="fa-solid fa-trash"></i></button></div></td></tr>';
+ }).join(""):'<tr><td colspan="6" class="posts-empty">لا توجد مشاركات تطابق البحث أو عوامل التصفية.</td></tr>';
+ $("posts-page-summary").textContent=rows.length?("عرض "+(begin+1)+"–"+Math.min(begin+POSTS_PER_PAGE,rows.length)+" من "+rows.length+" مشاركة"):"0 مشاركة";
+ $("posts-prev-page").disabled=postPage<=1;$("posts-next-page").disabled=postPage>=pages;
+ $("posts-select-all").checked=visible.length>0&&visible.every(r=>selectedPostIds.has(r.id));
+ $("posts-selection-count").textContent=selectedPostIds.size?("تم تحديد "+selectedPostIds.size+" مشاركة"):"لم يتم تحديد أي مشاركة";
+ $("posts-table-body").querySelectorAll("[data-edit-post]").forEach(b=>b.addEventListener("click",()=>openPostEditor(b.dataset.editPost)));
+ $("posts-table-body").querySelectorAll("[data-toggle-post]").forEach(b=>b.addEventListener("click",()=>togglePostStatus(b.dataset.togglePost)));
+ $("posts-table-body").querySelectorAll("[data-delete-post]").forEach(b=>b.addEventListener("click",()=>deletePostById(b.dataset.deletePost)));
+ $("posts-table-body").querySelectorAll("[data-post-check]").forEach(b=>b.addEventListener("change",()=>{b.checked?selectedPostIds.add(b.dataset.postCheck):selectedPostIds.delete(b.dataset.postCheck);renderPostsTable();}));
+}
+
+function showPostEditor(showEditor){$("posts-manager-view").classList.toggle("hidden",showEditor);$("post-editor-view").classList.toggle("hidden",!showEditor);if(showEditor)window.scrollTo({top:0,behavior:"smooth"});}
+function openPostEditor(id){if(id)editPost(id);else resetPost();showPostEditor(true);}
+function resetPost(){ $("post-form").reset();$("post-id").value="";$("post-editor-heading").textContent="مشاركة جديدة";$("post-editor-page-title").textContent="مشاركة جديدة";$("post-editor-state").textContent="مسودة جديدة";$("post-delete").disabled=true;setMessage("post-message","");}
+function editPost(id){const r=records.find(x=>x.id===id);if(!r)return;const c=r.content||{};$("post-id").value=r.id;$("post-title").value=r.title;$("post-editor-page-title").textContent="تعديل المشاركة";$("post-slug").value=r.slug.replace(/^post-/,"");$("post-labels").value=(c.labels||[]).join(", ");$("post-excerpt").value=c.excerpt||"";$("post-body").value=c.body||"";$("post-published").checked=!!r.published;$("post-editor-heading").textContent="تعديل المشاركة";$("post-editor-state").textContent=r.published?"منشورة":"مسودة";$("post-delete").disabled=false;setMessage("post-message","");}
+async function saveCms(kind,form){const id=$(kind+"-id").value;const rawSlug=$(kind+"-slug").value.trim();const slug=slugFor(kind,rawSlug);const title=$(kind+"-title").value.trim();const body=$(kind+"-body").value;const published=$(kind+"-published").checked;if(!rawSlug||!title||!body.trim())return setMessage(kind+"-message","أكمل العنوان والرابط والمحتوى.",true);const content=kind==="post"?{cmsType:"post",body,excerpt:$("post-excerpt").value.trim(),labels:$("post-labels").value.split(",").map(x=>x.trim()).filter(Boolean)}:{cmsType:"page",body};const payload={slug,title,content,published,updated_at:new Date().toISOString()};const req=id?db.from("site_content").update(payload).eq("id",id).select().single():db.from("site_content").insert(payload).select().single();const {data,error}=await req;if(error)return setMessage(kind+"-message","تعذر الحفظ: "+error.message,true);await loadRecords();if(kind==="post"){editPost(data.id);selectedPostIds.delete(data.id);showPostEditor(false);renderPostsTable();}else{editPage(data.id);renderCmsList("page","pages-list","pages-count");}setMessage(kind+"-message","تم حفظ "+(kind==="post"?"المشاركة":"الصفحة")+" بنجاح.");}
+async function togglePostStatus(id){const r=records.find(x=>x.id===id);if(!r)return;const {error}=await db.from("site_content").update({published:!r.published,updated_at:new Date().toISOString()}).eq("id",id);if(error)return setMessage("post-message","تعذر تحديث الحالة: "+error.message,true);await loadRecords();renderPostsTable();}
+async function deletePostById(id){if(!confirm("هل تريد حذف هذه المشاركة نهائياً؟"))return;const {error}=await db.from("site_content").delete().eq("id",id);if(error)return setMessage("post-message","تعذر الحذف: "+error.message,true);selectedPostIds.delete(id);await loadRecords();renderPostsTable();}
+async function applyBulkPostAction(){const action=$("posts-bulk-action").value,ids=[...selectedPostIds];if(!action)return setMessage("post-message","اختر إجراءً جماعياً أولاً.",true);if(!ids.length)return setMessage("post-message","حدد مشاركة واحدة على الأقل.",true);if(action==="delete"&&!confirm("سيتم حذف "+ids.length+" مشاركة نهائياً. هل تريد المتابعة؟"))return;try{for(const id of ids){const row=records.find(r=>r.id===id);if(!row)continue;let result;if(action==="publish"||action==="draft")result=await db.from("site_content").update({published:action==="publish",updated_at:new Date().toISOString()}).eq("id",id);else if(action==="delete")result=await db.from("site_content").delete().eq("id",id);else if(action==="add-label"){const label=$("posts-bulk-label").value.trim();if(!label)return setMessage("post-message","اكتب اسم التصنيف قبل التطبيق.",true);const labels=[...new Set([...postLabels(row),label])];result=await db.from("site_content").update({content:{...(row.content||{}),labels},updated_at:new Date().toISOString()}).eq("id",id);}if(result?.error)throw result.error;}selectedPostIds.clear();$("posts-bulk-action").value="";$("posts-bulk-label").value="";$("posts-bulk-label").classList.add("hidden");await loadRecords();renderPostsTable();setMessage("post-message","تم تنفيذ الإجراء الجماعي بنجاح.");}catch(error){setMessage("post-message","تعذر إكمال الإجراء: "+error.message,true);}}
 function resetPage(){$("page-form").reset();$("page-id").value="";$("page-editor-heading").textContent="إنشاء صفحة";$("page-editor-state").textContent="مسودة جديدة";$("page-delete").disabled=true;setMessage("page-message","");}
 function editPage(id){const r=records.find(x=>x.id===id);if(!r)return;$("page-id").value=r.id;$("page-title").value=r.title;$("page-slug").value=r.slug.replace(/^page-/,"");$("page-body").value=r.content?.body||"";$("page-published").checked=!!r.published;$("page-editor-heading").textContent="تعديل الصفحة";$("page-editor-state").textContent=r.published?"منشورة":"مسودة";$("page-delete").disabled=false;setMessage("page-message","");}
-async function deleteCms(kind){const id=$(kind+"-id").value;if(!id||!confirm("هل تريد حذف هذا العنصر نهائياً؟"))return;const {error}=await db.from("site_content").delete().eq("id",id);if(error)return setMessage(kind+"-message","تعذر الحذف: "+error.message,true);await loadRecords();kind==="post"?resetPost():resetPage();renderCmsList(kind,kind==="post"?"posts-list":"pages-list",kind==="post"?"posts-count":"pages-count",kind==="post"?postFilter:"all");setMessage(kind+"-message","تم الحذف.");}
+async function deleteCms(kind){const id=$(kind+"-id").value;if(!id||!confirm("هل تريد حذف هذا العنصر نهائياً؟"))return;const {error}=await db.from("site_content").delete().eq("id",id);if(error)return setMessage(kind+"-message","تعذر الحذف: "+error.message,true);await loadRecords();kind==="post"?resetPost():resetPage();if(kind==="post")renderPostsTable();else renderCmsList("page","pages-list","pages-count");setMessage(kind+"-message","تم الحذف.");}
 function currentSettings(){return records.find(r=>r.slug==="site-settings")?.content||{};}
 async function saveSettingsPatch(patch,messageId){const row=records.find(r=>r.slug==="site-settings");if(!row)return setMessage(messageId,"لم يتم العثور على إعدادات الموقع.",true);const {error}=await db.from("site_content").update({content:{...currentSettings(),...patch},updated_at:new Date().toISOString()}).eq("id",row.id);if(error)return setMessage(messageId,"تعذر الحفظ: "+error.message,true);await loadRecords();await loadSiteSettings();setMessage(messageId,"تم الحفظ بنجاح.");}
 function loadAdvancedSettings(){const s=currentSettings();$("layout-show-builds").checked=s.showBuilds!==false;$("layout-show-echoes").checked=s.showEchoes!==false;$("layout-show-characters").checked=s.showCharacters!==false;$("layout-show-profile").checked=s.showProfile!==false;$("layout-order").value=(s.layoutOrder||["builds","echoes","characters","profile"]).join(", ");$("theme-primary").value=s.themePrimary||"#72d7e7";$("theme-secondary").value=s.themeSecondary||"#8dbbff";$("theme-mode").value=s.themeMode||"dark";renderReading();}
 function renderReading(){const items=currentSettings().readingList||[];$("reading-list").innerHTML=items.map((x,i)=>'<div class="reading-item"><a href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener">'+escapeHtml(x.title)+'</a><button type="button" data-remove-reading="'+i+'">حذف</button></div>').join("")||'<p class="admin-muted">قائمة القراءة فارغة.</p>';$("reading-list").querySelectorAll("[data-remove-reading]").forEach(b=>b.addEventListener("click",async()=>{const next=[...(currentSettings().readingList||[])];next.splice(Number(b.dataset.removeReading),1);await saveSettingsPatch({readingList:next},"reading-message");}));}
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{switchAdminView(b.dataset.view);if(b.dataset.view==="posts")renderCmsList("post","posts-list","posts-count",postFilter);if(b.dataset.view==="pages")renderCmsList("page","pages-list","pages-count");if(["layout","theme","reading"].includes(b.dataset.view))loadAdvancedSettings();}));
-$("post-create").addEventListener("click",resetPost);$("quick-new-post").addEventListener("click",()=>{switchAdminView("posts");resetPost();});
+$("post-create").addEventListener("click",()=>openPostEditor(null));$("quick-new-post").addEventListener("click",()=>{switchAdminView("posts");openPostEditor(null);});
+$("post-editor-back").addEventListener("click",()=>{showPostEditor(false);renderPostsTable();});
+$("post-form").addEventListener("submit",e=>{e.preventDefault();saveCms("post",e.currentTarget);});
+$("post-reset").addEventListener("click",()=>openPostEditor(null));$("post-delete").addEventListener("click",()=>deleteCms("post"));
+document.querySelectorAll("[data-post-filter]").forEach(b=>b.addEventListener("click",()=>{postFilter=b.dataset.postFilter;postPage=1;document.querySelectorAll("[data-post-filter]").forEach(x=>x.classList.toggle("active",x===b));renderPostsTable();}));
+$("post-search-input").addEventListener("input",()=>{postPage=1;renderPostsTable();});
+$("post-label-filter").addEventListener("change",()=>{postPage=1;renderPostsTable();});
+$("post-sort").addEventListener("change",()=>{postPage=1;renderPostsTable();});
+$("posts-prev-page").addEventListener("click",()=>{postPage=Math.max(1,postPage-1);renderPostsTable();});
+$("posts-next-page").addEventListener("click",()=>{postPage++;renderPostsTable();});
+$("posts-select-all").addEventListener("change",e=>{const start=(postPage-1)*POSTS_PER_PAGE;filteredPosts().slice(start,start+POSTS_PER_PAGE).forEach(r=>e.target.checked?selectedPostIds.add(r.id):selectedPostIds.delete(r.id));renderPostsTable();});
+$("posts-bulk-action").addEventListener("change",e=>$("posts-bulk-label").classList.toggle("hidden",e.target.value!=="add-label"));
+$("posts-bulk-apply").addEventListener("click",applyBulkPostAction);
 $("post-form").addEventListener("submit",e=>{e.preventDefault();saveCms("post",e.currentTarget);});
 $("post-reset").addEventListener("click",resetPost);$("post-delete").addEventListener("click",()=>deleteCms("post"));
 document.querySelectorAll("[data-post-filter]").forEach(b=>b.addEventListener("click",()=>{postFilter=b.dataset.postFilter;document.querySelectorAll("[data-post-filter]").forEach(x=>x.classList.toggle("active",x===b));renderCmsList("post","posts-list","posts-count",postFilter);}));
