@@ -33,6 +33,7 @@ async function renderSession(session) {
       return;
     }
     show("admin-app", true);
+    switchAdminView("overview");
     await loadRecords();
     await loadSiteSettings();
   } catch (error) {
