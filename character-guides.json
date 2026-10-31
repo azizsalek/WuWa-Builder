@@ -78,5 +78,47 @@
     "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Skill DMG Bonus > Resonance Liberation DMG Bonus",
     "rotation": "اجمع Diminutive Sound بالهجمات وIntro Skill، ثم استخدم Resonance Skill المحسّنة عند تجاوز 50؛ تدوير مختصر منشور: E → A → H → A → A → E → A → R.",
     "source": "https://wuwaguide.kurogames.com/en/?role_id=1502&strategy_id=14049"
+  },
+  "Mornye": {
+    "role": "دعم / معالج · Fusion",
+    "kit": "دعم يركز على استعادة الطاقة وتعزيز الفريق مع توفير العلاج. يتضمن أسلوبها Wide Field Observation Mode وتفاعلات مرتبطة بـ Rest Mass Energy وResonance Skill وResonance Liberation.",
+    "teams": [
+      "Luuk Herssen + Lynae + Mornye (فريق Tune Strain؛ يجب ضبط Lynae على Tune Strain Mode)",
+      "Lynae + Sanhua + Mornye (Lynae كمهاجم رئيسي)"
+    ],
+    "echoSet": "Halo of Starry Radiance (5 قطع)؛ Rejuvenating Glow بديل مناسب",
+    "mainEcho": "Fallacy of No Return",
+    "mainStats": "4-Cost: Healing Bonus أو DEF% حسب إعداد الدليل؛ 3-Cost: Energy Regen؛ 1-Cost: DEF%",
+    "subStats": "Energy Regen > DEF% > Flat DEF > CRIT DMG",
+    "rotation": "ابدأ بـ Mornye ونفّذ 3 Basic Attacks لشحن Rest Mass Energy، ثم Heavy Attack للدخول إلى Wide Field Observation Mode. أكمل سلسلة الهجمات والمهارة كما يوضح دليل Game8 قبل التبديل إلى المهاجم الرئيسي.",
+    "source": "https://game8.co/games/Wuthering-Waves/archives/568193g",
+    "sourceName": "Game8",
+    "sourceLastVerified": "2026-10-31",
+    "materials": {
+      "ascension": "LF Mech Core ×4، MF Mech Core ×12، HF Mech Core ×12، FF Mech Core ×4؛ Burning Judgment ×46؛ Gemini Spore ×60؛ Shell Credit ×170,000.",
+      "forte": "LF Mech Core ×25، MF Mech Core ×28، HF Mech Core ×40، FF Mech Core ×57؛ LF Carved Crystal ×25، MF Carved Crystal ×28، HF Carved Crystal ×55، FF Carved Crystal ×67؛ The Netherworld's Stare ×26؛ Shell Credit ×2,030,000."
+    },
+    "notes": "المعلومات المتاحة من مقتطف Game8 المفهرس. لم يتم ملء أرقام أو تفاصيل مهارات غير ظاهرة في المصدر."
+  },
+  "Verina": {
+    "role": "دعم / معالج · Spectro",
+    "kit": "دعم شامل يركز على علاج الفريق وتعزيز ATK. يوفر Outro Skill تعزيز All-Type DMG Deepen، كما يمكنها تفعيل Photosynthesis Mark على الأعداء باستخدام Resonance Liberation.",
+    "teams": [
+      "Rover (Spectro) + Yangyang + Verina (فريق مجاني)",
+      "Jiyan + Mortefi + Verina (فريق متقدم؛ يذكر الدليل ملاحظة خاصة بإعداد Mortefi)"
+    ],
+    "echoSet": "Rejuvenating Glow (5 قطع)؛ Moonlit Clouds بديل",
+    "mainEcho": "Fallacy of No Return؛ Bell-Borne Geochelone بديل دفاعي",
+    "mainStats": "4-Cost: Healing Bonus أو ATK%؛ 3-Cost: Energy Regen؛ 1-Cost: ATK%",
+    "subStats": "Energy Regen > ATK% > Flat ATK",
+    "rotation": "اشحن Concerto Energy، ثم استخدم Resonance Liberation لتطبيق Photosynthesis Mark، فعّل Echo Skill عند الحاجة، ثم بدّل إلى المهاجم الرئيسي للاستفادة من تعزيزات الفريق.",
+    "source": "https://game8.co/games/Wuthering-Waves/archives/454229f",
+    "sourceName": "Game8",
+    "sourceLastVerified": "2026-10-31",
+    "materials": {
+      "ascension": "LF Howler Core ×4، MF Howler Core ×12، HF Howler Core ×12، FF Howler Core ×4؛ Elegy Tacet Core ×46؛ Belle Poppy ×60؛ Shell Credit ×170,000.",
+      "forte": "LF Howler Core ×25، MF Howler Core ×28، HF Howler Core ×40، FF Howler Core ×57؛ Lento Helix ×25، Adagio Helix ×28، Andante Helix ×55، Presto Helix ×67؛ Monument Bell ×26؛ Shell Credit ×2,030,000."
+    },
+    "notes": "المعلومات مستخلصة من مقتطف Game8 المفهرس. تفاصيل المهارات الكاملة وأولويات رفع كل مهارة لم تتوفر في المقتطف، لذلك لم تتم إضافتها تخميناً."
   }
 }
