@@ -84,3 +84,6 @@
 .resonator-info b{font-size:13px;letter-spacing:.1px}
 .resonator-info span{font-size:11px}
 @media(max-width:700px){.catalog-controls{padding:14px}.element-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.element-filter{min-width:0;padding:8px 5px;font-size:10px}.element-filter .element-symbol{font-size:16px}.catalog-toolbar-footer{align-items:flex-start}.catalog-meta{white-space:normal}.resonator-grid{gap:8px}}
+
+/* Admin navigation link */
+a.nav-item{ text-decoration:none; }
