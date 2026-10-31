@@ -1,0 +1,302 @@
+[
+  {
+    "name": "Aalto",
+    "rarity": 4,
+    "element": "Aero"
+  },
+  {
+    "name": "Aemeath",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Augusta",
+    "rarity": 5,
+    "element": "Electro"
+  },
+  {
+    "name": "Baizhi",
+    "rarity": 4,
+    "element": "Glacio"
+  },
+  {
+    "name": "Brant",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Buling",
+    "rarity": 4,
+    "element": "Electro"
+  },
+  {
+    "name": "Calcharo",
+    "rarity": 5,
+    "element": "Electro"
+  },
+  {
+    "name": "Camellya",
+    "rarity": 5,
+    "element": "Havoc"
+  },
+  {
+    "name": "Cantarella",
+    "rarity": 5,
+    "element": "Havoc"
+  },
+  {
+    "name": "Carlotta",
+    "rarity": 5,
+    "element": "Glacio"
+  },
+  {
+    "name": "Cartethyia",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Changli",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Chisa",
+    "rarity": 5,
+    "element": "Havoc"
+  },
+  {
+    "name": "Chixia",
+    "rarity": 4,
+    "element": "Fusion"
+  },
+  {
+    "name": "Ciaccona",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Danjin",
+    "rarity": 4,
+    "element": "Havoc"
+  },
+  {
+    "name": "Denia",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Encore",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Galbrena",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Hiyuki",
+    "rarity": 5,
+    "element": "Glacio"
+  },
+  {
+    "name": "Hsin",
+    "rarity": 5,
+    "element": "Electro"
+  },
+  {
+    "name": "Iuno",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Jianxin",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Jingran",
+    "rarity": 5,
+    "element": ""
+  },
+  {
+    "name": "Jinhsi",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Jiyan",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Lingyang",
+    "rarity": 5,
+    "element": "Glacio"
+  },
+  {
+    "name": "Lucilla",
+    "rarity": 5,
+    "element": ""
+  },
+  {
+    "name": "Lucy",
+    "rarity": 5,
+    "element": ""
+  },
+  {
+    "name": "Lumi",
+    "rarity": 4,
+    "element": "Electro"
+  },
+  {
+    "name": "Lupa",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Luuk Herssen",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Lynae",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Mornye",
+    "rarity": 5,
+    "element": "Fusion"
+  },
+  {
+    "name": "Mortefi",
+    "rarity": 4,
+    "element": "Fusion"
+  },
+  {
+    "name": "Phoebe",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Phrolova",
+    "rarity": 5,
+    "element": "Havoc"
+  },
+  {
+    "name": "Qingxiao",
+    "rarity": 5,
+    "element": ""
+  },
+  {
+    "name": "Qiuyuan",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Rebecca",
+    "rarity": 5,
+    "element": ""
+  },
+  {
+    "name": "Roccia",
+    "rarity": 5,
+    "element": "Havoc"
+  },
+  {
+    "name": "Rover (Aero)",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Rover (Electro)",
+    "rarity": 5,
+    "element": "Electro"
+  },
+  {
+    "name": "Rover (Havoc)",
+    "rarity": 5,
+    "element": "Havoc"
+  },
+  {
+    "name": "Rover (Spectro)",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Sanhua",
+    "rarity": 4,
+    "element": "Glacio"
+  },
+  {
+    "name": "Sigrika",
+    "rarity": 5,
+    "element": "Aero"
+  },
+  {
+    "name": "Suisui",
+    "rarity": 5,
+    "element": ""
+  },
+  {
+    "name": "Suoming",
+    "rarity": 5,
+    "element": "Electro"
+  },
+  {
+    "name": "Taoqi",
+    "rarity": 4,
+    "element": "Havoc"
+  },
+  {
+    "name": "The Shorekeeper",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Verina",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Xiangli Yao",
+    "rarity": 5,
+    "element": "Electro"
+  },
+  {
+    "name": "Yangyang",
+    "rarity": 4,
+    "element": "Aero"
+  },
+  {
+    "name": "Yangyang Xuanling",
+    "rarity": 5,
+    "element": "Havoc"
+  },
+  {
+    "name": "Yinlin",
+    "rarity": 5,
+    "element": "Electro"
+  },
+  {
+    "name": "Youhu",
+    "rarity": 4,
+    "element": "Glacio"
+  },
+  {
+    "name": "Yuanwu",
+    "rarity": 4,
+    "element": "Electro"
+  },
+  {
+    "name": "Zani",
+    "rarity": 5,
+    "element": "Spectro"
+  },
+  {
+    "name": "Zhezhi",
+    "rarity": 5,
+    "element": "Glacio"
+  }
+]
