@@ -68,3 +68,38 @@
 #theme-primary,#theme-secondary{height:48px;padding:5px;cursor:pointer}#theme-mode{background:#0b1423;color:var(--text);border:1px solid #2b3b55;padding:12px;border-radius:9px}
 @media(max-width:950px){.blogger-workspace{grid-template-columns:1fr}.admin-tools-nav{margin-top:0}.admin-sidebar{gap:12px}.admin-nav{flex-wrap:nowrap}.sidebar-tools-label{display:none}}
 @media(max-width:650px){.blogger-toolbar{align-items:flex-start;flex-direction:column}.blogger-toolbar>*{width:100%}.post-filters{width:auto}.blogger-workspace{grid-template-columns:1fr}.post-body-editor{min-height:260px}}
+
+
+/* Unified sidebar navigation + mobile drawer */
+.admin-app{grid-template-columns:260px minmax(0,1fr);direction:rtl}
+.admin-sidebar{z-index:50;overflow-y:auto;overscroll-behavior:contain;gap:18px}
+.admin-nav{gap:5px}
+.admin-nav-item{min-height:43px}
+.admin-main{min-width:0}
+.topbar-heading{display:flex;align-items:center;gap:12px;min-width:0}
+.sidebar-toggle{display:none;border:1px solid var(--line);background:#172942;color:var(--cyan);border-radius:10px;width:42px;height:42px;font-size:20px;cursor:pointer;flex:0 0 42px}
+.sidebar-backdrop{display:none}
+@media(max-width:950px){
+ .admin-app{display:block}
+ .admin-sidebar{position:fixed;top:0;right:0;bottom:0;width:min(300px,86vw);height:100dvh;max-height:100dvh;padding:20px 16px;transform:translateX(105%);transition:transform .25s ease;box-shadow:-18px 0 45px #0008;border:0;border-left:1px solid var(--line);gap:17px}
+ .admin-app.sidebar-open .admin-sidebar{transform:translateX(0)}
+ .admin-app.sidebar-open .sidebar-backdrop{display:block;position:fixed;inset:0;z-index:40;background:#020817b8;border:0;padding:0}
+ .sidebar-toggle{display:inline-grid;place-items:center}
+ .admin-nav{display:grid;overflow:visible;gap:5px}
+ .admin-nav-item{white-space:normal;padding:11px 13px;font-size:13px;min-height:42px}
+ .admin-nav-item span{font-size:18px}
+ .sidebar-label,.sidebar-bottom{display:block}
+ .sidebar-tools-label{display:block}
+ .admin-tools-nav{margin-top:-10px}
+ .admin-brand .brand-mark{width:43px;height:43px}
+ .admin-topbar{align-items:center}
+ .admin-main{padding:18px 16px}
+}
+@media(max-width:650px){
+ .admin-topbar{align-items:flex-start;flex-direction:column}
+ .topbar-heading{width:100%;align-items:flex-start}
+ .sidebar-toggle{margin-top:3px}
+ .top-actions{width:100%}
+ .top-actions>*{flex:1;min-width:0}
+}
+@media(prefers-reduced-motion:reduce){.admin-sidebar{transition:none}}
