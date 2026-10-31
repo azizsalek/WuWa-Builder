@@ -48,7 +48,7 @@ async function renderSession(session) {
   show("setup-panel", false);
   show("admin-app", true);
   try {
-    await switchAdminView("characters");
+    await switchAdminView("overview");
     if (renderVersion !== sessionRenderVersion) return;
     await loadRecords();
     await loadSiteSettings();
@@ -139,6 +139,15 @@ function selectRecord(record) {
   setMessage("save-message", "");
   renderRecordList();
 }
+function updateDashboardStats() {
+  const total = $("record-count"), published = $("published-count"), chars = $("character-count"), latestNode = $("last-updated");
+  if (total) total.textContent = records.length.toLocaleString("ar");
+  if (published) published.textContent = records.filter(item => item.published).length.toLocaleString("ar");
+  const roster = records.find(item => item.slug === "characters-roster");
+  if (chars) chars.textContent = Array.isArray(roster?.content) ? roster.content.length.toLocaleString("ar") : "—";
+  const latest = records.map(item => item.updated_at).filter(Boolean).sort().at(-1);
+  if (latestNode) latestNode.textContent = latest ? new Date(latest).toLocaleDateString("ar") : "—";
+}
 function renderRecordList() {
   const list = $("record-list");
   if (!records.length) {
@@ -168,8 +177,7 @@ async function loadRecords() {
   records = data || [];
   $("record-count").textContent = records.length;
   $("published-count").textContent = records.filter(item => item.published).length;
-  const latest = records.map(item => item.updated_at).filter(Boolean).sort().at(-1);
-  $("last-updated").textContent = latest ? new Date(latest).toLocaleDateString("ar") : "—";
+  updateDashboardStats();
   renderRecordList();
   renderCharacterManager();
   if (activeId) {
@@ -347,7 +355,7 @@ async function loadCharacterEditorData(){
 async function switchAdminView(name){
  document.querySelectorAll(".admin-view").forEach(v=>v.classList.toggle("active",v.dataset.panel===name));
  document.querySelectorAll(".admin-nav-item").forEach(b=>b.classList.toggle("active",b.dataset.view===name));
- const meta={posts:["المشاركات","أنشئ المقالات وأدر المسودات والمنشورات."],stats:["الإحصاءات","متابعة أداء الموقع والزيارات الحقيقية."],comments:["التعليقات","مراجعة تعليقات الزوار وإدارتها."],earnings:["الأرباح","إعدادات تحقيق الدخل والربط بالخدمات."],pages:["الصفحات","إنشاء الصفحات الثابتة وإدارتها."],layout:["التنسيق","التحكم بالأقسام الظاهرة وترتيب الواجهة."],theme:["المظهر","تخصيص ألوان وهوية الموقع."],settings:["الإعدادات","إعدادات الموقع العامة والخصوصية."],reading:["قائمة القراءة","مصادر ومراجع محفوظة."],characters:["قاعدة الشخصيات","إدارة قاعدة الشخصيات وأدلتها."],media:["مكتبة الوسائط","رفع الصور وإدارة روابطها."],backup:["النسخ الاحتياطي","تصدير المحتوى واستيراد نسخة محفوظة."],content:["محرر جميع بيانات الموقع","إضافة وتعديل وحذف سجلات المحتوى والإعدادات وقاعدة الشخصيات والأدلة مباشرة."]};
+ const meta={overview:["الرئيسية","نظرة عامة على بيانات ومحتوى الموقع."],posts:["المشاركات","أنشئ المقالات وأدر المسودات والمنشورات."],stats:["الإحصاءات","متابعة أداء الموقع والزيارات الحقيقية."],comments:["التعليقات","مراجعة تعليقات الزوار وإدارتها."],earnings:["الأرباح","إعدادات تحقيق الدخل والربط بالخدمات."],pages:["الصفحات","إنشاء الصفحات الثابتة وإدارتها."],layout:["التنسيق","التحكم بالأقسام الظاهرة وترتيب الواجهة."],theme:["المظهر","تخصيص ألوان وهوية الموقع."],settings:["الإعدادات","إعدادات الموقع العامة والخصوصية."],reading:["قائمة القراءة","مصادر ومراجع محفوظة."],characters:["قاعدة الشخصيات","إدارة قاعدة الشخصيات وأدلتها."],media:["مكتبة الوسائط","رفع الصور وإدارة روابطها."],backup:["النسخ الاحتياطي","تصدير المحتوى واستيراد نسخة محفوظة."],content:["محرر جميع بيانات الموقع","إضافة وتعديل وحذف سجلات المحتوى والإعدادات وقاعدة الشخصيات والأدلة مباشرة."]};
  if(!meta[name])return;
  $("view-title").textContent=meta[name][0];$("view-description").textContent=meta[name][1];
  if(name==="characters")await loadCharacterEditorData();
@@ -446,7 +454,7 @@ async function saveSettingsPatch(patch,messageId){const row=records.find(r=>r.sl
 function loadAdvancedSettings(){const s=currentSettings();$("layout-show-builds").checked=s.showBuilds!==false;$("layout-show-echoes").checked=s.showEchoes!==false;$("layout-show-characters").checked=s.showCharacters!==false;$("layout-show-profile").checked=s.showProfile!==false;$("layout-order").value=(s.layoutOrder||["builds","echoes","characters","profile"]).join(", ");$("theme-primary").value=s.themePrimary||"#72d7e7";$("theme-secondary").value=s.themeSecondary||"#8dbbff";$("theme-mode").value=s.themeMode||"dark";renderReading();}
 function renderReading(){const items=currentSettings().readingList||[];$("reading-list").innerHTML=items.map((x,i)=>'<div class="reading-item"><a href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener">'+escapeHtml(x.title)+'</a><button type="button" data-remove-reading="'+i+'">حذف</button></div>').join("")||'<p class="admin-muted">قائمة القراءة فارغة.</p>';$("reading-list").querySelectorAll("[data-remove-reading]").forEach(b=>b.addEventListener("click",async()=>{const next=[...(currentSettings().readingList||[])];next.splice(Number(b.dataset.removeReading),1);await saveSettingsPatch({readingList:next},"reading-message");}));}
 document.querySelectorAll("[data-view]").forEach(b=>b.addEventListener("click",()=>{switchAdminView(b.dataset.view);if(b.dataset.view==="posts")renderCmsList("post","posts-list","posts-count",postFilter);if(b.dataset.view==="pages")renderCmsList("page","pages-list","pages-count");if(["layout","theme","reading"].includes(b.dataset.view))loadAdvancedSettings();}));
-$("post-create").addEventListener("click",()=>openPostEditor(null));$("quick-new-post").addEventListener("click",()=>{switchAdminView("posts");openPostEditor(null);});
+$("post-create").addEventListener("click",()=>openPostEditor(null));const quickNewPostButton=$("quick-new-post");if(quickNewPostButton)quickNewPostButton.addEventListener("click",()=>{switchAdminView("posts");openPostEditor(null);});
 $("post-editor-back").addEventListener("click",()=>{showPostEditor(false);renderPostsTable();});
 $("post-form").addEventListener("submit",e=>{e.preventDefault();saveCms("post",e.currentTarget);});
 $("post-reset").addEventListener("click",()=>openPostEditor(null));$("post-delete").addEventListener("click",()=>deleteCms("post"));
