@@ -34,6 +34,7 @@ async function renderSession(session) {
     }
     show("admin-app", true);
     await loadRecords();
+    await loadSiteSettings();
   } catch (error) {
     show("auth-panel", true);
     setMessage("auth-message", "تعذر التحقق من الصلاحيات: " + error.message, true);
@@ -224,6 +225,58 @@ $("media-form").addEventListener("submit", async (event) => {
   link.textContent = data.publicUrl;
   $("media-result").append("تم رفع الصورة. انسخ الرابط لاستخدامه في محتوى JSON: ", link);
   $("media-file").value = "";
+});
+
+
+async function loadSiteSettings() {
+  const { data, error } = await db.from("site_content").select("*").eq("slug", "site-settings").maybeSingle();
+  if (error || !data) {
+    $("settings-status").textContent = "تعذر التحميل";
+    setMessage("settings-message", error?.message || "سجل الإعدادات غير موجود.", true);
+    return;
+  }
+  const s = data.content || {};
+  $("setting-site-name").value = s.siteName || "WuWa Builder";
+  $("setting-tagline").value = s.tagline || "";
+  $("setting-dashboard-title").value = s.dashboardTitle || "";
+  $("setting-dashboard-description").value = s.dashboardDescription || "";
+  $("setting-announcement").value = s.announcement || "";
+  $("setting-show-builds").checked = s.showBuilds !== false;
+  $("setting-show-echoes").checked = s.showEchoes !== false;
+  $("setting-show-characters").checked = s.showCharacters !== false;
+  $("setting-show-profile").checked = s.showProfile !== false;
+  $("setting-maintenance").checked = s.maintenanceMode === true;
+  $("settings-status").textContent = "تم التحميل";
+}
+$("site-settings-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const settings = {
+    siteName: $("setting-site-name").value.trim(),
+    tagline: $("setting-tagline").value.trim(),
+    dashboardTitle: $("setting-dashboard-title").value.trim(),
+    dashboardDescription: $("setting-dashboard-description").value.trim(),
+    announcement: $("setting-announcement").value.trim(),
+    showBuilds: $("setting-show-builds").checked,
+    showEchoes: $("setting-show-echoes").checked,
+    showCharacters: $("setting-show-characters").checked,
+    showProfile: $("setting-show-profile").checked,
+    maintenanceMode: $("setting-maintenance").checked
+  };
+  const button = event.submitter;
+  if (button) button.disabled = true;
+  $("settings-status").textContent = "جارٍ الحفظ";
+  const { error } = await db.from("site_content").update({
+    title: "إعدادات الموقع", content: settings, published: true,
+    updated_at: new Date().toISOString()
+  }).eq("slug", "site-settings");
+  if (button) button.disabled = false;
+  if (error) {
+    $("settings-status").textContent = "فشل الحفظ";
+    return setMessage("settings-message", "تعذر حفظ الإعدادات: " + error.message, true);
+  }
+  $("settings-status").textContent = "محفوظ";
+  setMessage("settings-message", "تم حفظ إعدادات الموقع. ستظهر التغييرات للزوار عند تحديث الموقع.");
+  await loadRecords();
 });
 
 (async function boot() {
