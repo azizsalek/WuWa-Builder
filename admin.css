@@ -103,3 +103,78 @@
  .top-actions>*{flex:1;min-width:0}
 }
 @media(prefers-reduced-motion:reduce){.admin-sidebar{transition:none}}
+
+
+/* Blogger-inspired administration shell — adapted to WuWa Builder identity */
+.admin-body{font-family:'Cairo',sans-serif;background:#f1f5f9;color:#1e293b;min-height:100vh}
+.admin-app{background:#f1f5f9;grid-template-columns:260px minmax(0,1fr)}
+.admin-sidebar{background:#fff;color:#334155;border-left:1px solid #e2e8f0;padding:18px 14px;gap:18px;box-shadow:0 2px 12px #0f172a08}
+.admin-brand{color:#1e293b;padding:2px 5px 12px}
+.admin-brand small{color:#94a3b8}
+.admin-brand .brand-mark,.auth-brand .brand-mark,.blog-avatar{background:linear-gradient(135deg,#72d7e7,#8dbbff);color:#102033;box-shadow:0 5px 14px #72d7e733}
+.blog-switcher{background:#f8fafc;border:1px solid #e2e8f0;color:#1e293b;padding:11px;border-radius:13px}
+.blog-switcher small{color:#94a3b8}
+.sidebar-label{color:#94a3b8;font-size:11px;margin:4px 0 -8px;padding:0 10px}
+.admin-nav{gap:4px}
+.admin-nav-item{color:#64748b;border-radius:11px;padding:10px 12px;min-height:42px;font-family:inherit;font-weight:700;font-size:12px;gap:12px}
+.admin-nav-item i{width:20px;text-align:center;color:#94a3b8;font-size:14px}
+.admin-nav-item:hover{background:#f8fafc;color:#0f172a;border-color:transparent}
+.admin-nav-item.active{background:#e6f8fb;color:#087f93;border-color:#c7eef3}
+.admin-nav-item.active i{color:#0891a5}
+.sidebar-tools-label{margin-top:2px!important}
+.admin-tools-nav{margin-top:0}
+.sidebar-bottom{border-top:1px solid #e2e8f0;color:#64748b;margin-top:auto;padding:14px 8px 2px}
+.view-blog-link{display:flex;align-items:center;justify-content:space-between;color:#087f93;text-decoration:none;font-size:12px;font-weight:800;padding:9px 10px;border-radius:9px}
+.view-blog-link:hover{background:#e6f8fb}
+.sidebar-legal{display:flex;justify-content:space-between;gap:8px;padding:10px 10px 0;color:#94a3b8;font-size:9px}
+.admin-main{padding:24px clamp(16px,3vw,38px);max-width:none}
+.admin-topbar{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:13px 18px;min-height:76px;box-shadow:0 2px 10px #0f172a08;margin-bottom:22px}
+.admin-topbar h1{color:#1e293b;font-size:20px;margin:2px 0}
+.admin-topbar .eyebrow{color:#94a3b8;font-size:9px;letter-spacing:.08em}
+.admin-topbar .admin-muted{margin:0;font-size:10px}
+.top-actions{align-items:center}
+.primary{background:linear-gradient(110deg,#0891a5,#56b9d1);color:#fff;box-shadow:0 4px 10px #0891a522}
+.primary:hover{filter:brightness(.96)}
+.secondary{background:#f8fafc;color:#475569;border:1px solid #e2e8f0}
+.secondary:hover{background:#f1f5f9}
+.danger{background:#fff1f2;color:#e11d48;border:1px solid #fecdd3}
+.panel,.stat-card,.quick-card,.notice-card{background:#fff;color:#1e293b;border:1px solid #e2e8f0;box-shadow:0 2px 10px #0f172a08}
+.panel{border-radius:15px}
+.admin-section-head h2,.blogger-toolbar h2,.admin-view h2,.admin-view h3{color:#1e293b}
+.field{color:#475569}
+.field input,.field textarea,#theme-mode,.json-editor,.post-body-editor{background:#f8fafc!important;color:#1e293b!important;border:1px solid #e2e8f0}
+.field input:focus,.field textarea:focus{border-color:#0891a5;box-shadow:0 0 0 3px #0891a511}
+.json-editor{background:#f8fafc!important;color:#334155!important}
+.publish-toggle,.publish-toggle label,.settings-toggles label{color:#475569}
+.settings-toggles{background:#f8fafc;border-color:#e2e8f0}
+.blog-post-item,.record-button{background:#f8fafc;color:#334155;border-color:#e2e8f0}
+.blog-post-item:hover,.blog-post-item.active,.record-button:hover,.record-button.active{background:#e6f8fb;border-color:#0891a5;color:#0f172a}
+.filter-chip{background:#f8fafc;color:#64748b;border-color:#e2e8f0}
+.filter-chip.active{background:#e6f8fb;color:#087f93;border-color:#a5e6ee}
+.status-pill{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
+.status-pill.saved{background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+.section-banner,.welcome-card{background:linear-gradient(110deg,#e8f8fb,#f8fafc 65%,#eef5ff);border-color:#d5edf2}
+.section-banner h2,.welcome-card h2{color:#1e293b}
+.section-banner p,.welcome-card p{color:#64748b}
+.banner-icon,.welcome-mark{color:#0891a5;background:#e0f7fa;border-color:#b8e9ef}
+.notice-card{background:#f8fafc;border-color:#e2e8f0;border-right:3px solid #0891a5}
+.notice-card p,.stat-card small,.stat-card span,.quick-card small,.shortcut-card small{color:#64748b}
+.stat-card strong{color:#1e293b}
+.reading-item{background:#f8fafc;border-color:#e2e8f0}
+.reading-item button{background:#fff1f2;color:#e11d48}
+.media-form input,.backup-card input[type=file]{background:#f8fafc;color:#334155;border-color:#e2e8f0}
+.admin-footer{color:#94a3b8;border-color:#e2e8f0}
+.sidebar-toggle{background:#f8fafc;color:#0891a5;border-color:#e2e8f0}
+.sidebar-new-post{width:100%;min-height:43px;gap:9px;margin:2px 0 3px}
+.sidebar-new-post i{font-size:12px}
+.top-view-link{gap:8px}
+@media(max-width:950px){
+ .admin-sidebar{background:#fff}
+ .admin-app.sidebar-open .sidebar-backdrop{background:#0f172a66}
+ .admin-main{padding:15px}
+}
+@media(max-width:650px){
+ .admin-topbar{padding:13px;gap:12px}
+ .top-actions>*{min-height:40px}
+ .admin-main{padding:12px}
+}
