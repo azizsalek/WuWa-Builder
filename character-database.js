@@ -119,19 +119,44 @@ resetFilters.addEventListener("click", () => {
 
 async function loadCharacters() {
   try {
-    const [rosterResponse,guidesResponse] = await Promise.all([fetch(fallbackUrl,{cache:"no-cache"}),fetch(guideUrl,{cache:"no-cache"})]);
-    if (!rosterResponse.ok) throw new Error("Roster unavailable");
-    characters = await rosterResponse.json(); guides = guidesResponse.ok ? await guidesResponse.json() : {};
-    render(); sourceLabel.textContent = "قائمة الشخصيات · يتم تحميل الصور";
+    let loadedFromCloud = false;
+    if (window.wuwaSupabase) {
+      const { data, error } = await window.wuwaSupabase
+        .from("site_content")
+        .select("slug, content")
+        .in("slug", ["characters-roster", "character-guides"]);
+      if (!error) {
+        const rosterRow = (data || []).find(row => row.slug === "characters-roster");
+        const guidesRow = (data || []).find(row => row.slug === "character-guides");
+        characters = Array.isArray(rosterRow?.content) ? rosterRow.content : [];
+        guides = guidesRow?.content && typeof guidesRow.content === "object" ? guidesRow.content : {};
+        loadedFromCloud = true;
+      }
+    }
+    if (!loadedFromCloud) {
+      const [rosterResponse,guidesResponse] = await Promise.all([
+        fetch(fallbackUrl,{cache:"no-cache"}),
+        fetch(guideUrl,{cache:"no-cache"})
+      ]);
+      if (!rosterResponse.ok) throw new Error("Roster unavailable");
+      characters = await rosterResponse.json();
+      guides = guidesResponse.ok ? await guidesResponse.json() : {};
+    }
+    render();
+    sourceLabel.textContent = loadedFromCloud
+      ? "بيانات الشخصيات من قاعدة البيانات السحابية"
+      : "قائمة الشخصيات · يتم تحميل الصور";
   } catch (error) {
-    box.innerHTML='<div class="empty-state">تعذر تحميل قاعدة الشخصيات.</div>'; sourceLabel.textContent="تعذر تحميل البيانات"; return;
+    box.innerHTML='<div class="empty-state">تعذر تحميل قاعدة الشخصيات.</div>';
+    sourceLabel.textContent="تعذر تحميل البيانات";
+    return;
   }
   try {
     const response=await fetch(characterApiUrl); if(!response.ok) throw new Error("Image service unavailable");
     const data=await response.json(), list=Array.isArray(data.roleList)?data.roleList:[];
     list.forEach(item=>{if(item.Name&&item.RoleHeadIcon)imageMap.set(normalizeName(item.Name),item.RoleHeadIcon);});
     characters=characters.map(c=>({...c,id:list.find(x=>normalizeName(x.Name)===normalizeName(c.name))?.Id||""}));
-    render(); sourceLabel.textContent=imageMap.size+" صورة مصغّرة متاحة · اضغط على البطاقة لفتح الملف";
+    render(); sourceLabel.textContent=imageMap.size+" صورة مصغّرة متاحة · بيانات الملفات من قاعدة البيانات";
   } catch (error) { sourceLabel.textContent="تعذر تحميل الصور الآن؛ ستظهر العناصر البديلة"; }
 }
 loadCharacters();
