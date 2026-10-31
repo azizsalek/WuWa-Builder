@@ -310,3 +310,7 @@ html,body{max-width:100%;overflow-x:hidden}
 .ce-preview-head img{width:82px;height:100px;object-fit:cover;border-radius:10px}
 .ce-preview-head h3{margin:0}
 @media(max-width:650px){.character-editor-toolbar{align-items:stretch;flex-direction:column}.character-editor-toolbar>.field{max-width:none}.character-editor-actions,.character-editor-footer{display:grid;grid-template-columns:1fr}.character-editor-actions button,.character-editor-footer button{width:100%;min-height:43px}.character-editor-panel{padding:12px}}
+
+/* Keep only the two requested admin sections in the sidebar. */
+.admin-nav .admin-nav-item:not([data-view="characters"]):not([data-view="pages"]){display:none!important}
+.sidebar-new-post,.sidebar-tools-label{display:none!important}
