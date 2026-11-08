@@ -233,7 +233,13 @@ async function loadCharacters() {
     const data = await response.json();
     const list = Array.isArray(data.roleList) ? data.roleList : [];
     list.forEach(item => {
-      if (item.Name && item.RoleHeadIcon) imageMap.set(normalizeName(item.Name), item.RoleHeadIcon);
+      // Encore's current character payload commonly exposes RoleHeadIconCircle;
+      // keep older and larger portrait fields as compatible fallbacks.
+      const portrait = item.RoleHeadIconCircle || item.RoleHeadIcon ||
+        item.FormationRoleCard || item.RolePortrait || item.Card || "";
+      if (item.Name && typeof portrait === "string" && portrait.trim()) {
+        imageMap.set(normalizeName(item.Name), portrait.trim());
+      }
     });
     characters = characters.map(c => ({
       ...c,
