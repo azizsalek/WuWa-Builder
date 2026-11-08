@@ -21,6 +21,22 @@ function esc(value) {
 }
 function normalizeName(value) { return String(value || "").toLowerCase().replace(/[^a-z0-9]/g, ""); }
 function getImage(character) { return character.image || imageMap.get(normalizeName(character.name)) || ""; }
+function guideCompleteness(guide) {
+  const checks = [
+    !!guide?.role, !!guide?.summary, !!guide?.kit,
+    Array.isArray(guide?.skills) && guide.skills.length > 0,
+    Array.isArray(guide?.teams) && guide.teams.length > 0,
+    !!guide?.echoSet, !!guide?.rotation,
+    typeof guide?.source === "string" && /^https?:\/\//i.test(guide.source)
+  ];
+  return { done: checks.filter(Boolean).length, total: checks.length };
+}
+function safeList(value) { return Array.isArray(value) ? value : []; }
+function guideProgress(guide) {
+  const score = guideCompleteness(guide);
+  const percent = Math.round(score.done / score.total * 100);
+  return '<div class="guide-completeness"><div class="guide-completeness-label"><b>اكتمال بيانات الملف</b><span>' + score.done + ' / ' + score.total + '</span></div><div class="guide-completeness-track"><span style="width:' + percent + '%"></span></div><small>مؤشر توفر الحقول الأساسية، وليس تقييماً لجودة الدليل.</small></div>';
+}
 function setListVisible(visible) {
   listOnlySelectors.forEach(selector => charactersView.querySelectorAll(selector).forEach(el => el.classList.toggle("profile-list-hidden", !visible)));
   profilePage.classList.toggle("hidden", visible);
@@ -41,7 +57,8 @@ function render() {
     (!activeRarity || String(c.rarity) === activeRarity) &&
     (!activeElement || c.element === activeElement)
   );
-  count.textContent = "Showing " + filtered.length + " / " + characters.length + " characters";
+  const guideCount = characters.filter(c => !!guides[c.name]).length;
+  count.textContent = "Showing " + filtered.length + " / " + characters.length + " characters · " + guideCount + " guides";
   box.innerHTML = filtered.map(c => {
     const image = getImage(c), meta = elementMeta[c.element] || {symbol:"◇",label:c.element || "Unknown"};
     const art = image
@@ -51,7 +68,7 @@ function render() {
       '<div class="resonator-art">' + art +
       '<span class="rarity-stars" aria-label="' + esc(c.rarity) + ' stars">' + "★".repeat(Number(c.rarity)||0) + '</span>' +
       '<span class="element-badge" title="' + esc(meta.label) + '">' + esc(meta.symbol) + '</span></div>' +
-      '<div class="resonator-info"><b>' + esc(c.name) + '</b><span>' + esc(meta.label) + ' · ' + esc(c.rarity) + '★</span></div></button>';
+      '<div class="resonator-info"><b>' + esc(c.name) + '</b><span>' + esc(meta.label) + ' · ' + esc(c.rarity) + '★</span><small class="guide-card-status ' + (guides[c.name] ? 'has-guide' : 'pending-guide') + '">' + (guides[c.name] ? 'ملف إرشادي متاح' : 'قيد التوثيق') + '</small></div></button>';
   }).join("") || '<div class="empty-state">لا توجد نتائج مطابقة. جرّب تغيير البحث أو الفلاتر.</div>';
   box.querySelectorAll("[data-character]").forEach(card => card.addEventListener("click", () => openProfile(card.dataset.character)));
   box.querySelectorAll("img").forEach(img => img.addEventListener("error", () => {
@@ -92,26 +109,33 @@ function openProfile(name) {
   currentCharacter = c;
   const guide = guides[c.name], image = getImage(c);
   const art = image ? '<img class="profile-main-image" src="' + esc(image) + '" alt="' + esc(c.name) + '" referrerpolicy="no-referrer">' : '<div class="profile-image-placeholder">' + esc(c.name.slice(0,1)) + '</div>';
-  const facts = '<div class="profile-facts"><span>' + esc(c.element || "العنصر غير موثق") + '</span><span>' + esc(c.rarity) + ' نجوم</span><span>' + (guide ? esc(guide.role) : "تفاصيل الدور قيد التوثيق") + '</span></div>';
+  const facts = '<div class="profile-facts"><span>' + esc(c.element || "العنصر غير موثق") + '</span><span>' + esc(c.rarity) + ' نجوم</span><span>' + (guide?.role ? esc(guide.role) : "تفاصيل الدور قيد التوثيق") + '</span></div>';
   let html = '<div class="profile-banner"><div class="profile-image-frame">' + art + '</div><div class="profile-title"><span class="eyebrow">RESONATOR PROFILE</span><h2>' + esc(c.name) + '</h2>' + facts + '<p>ملف الشخصية ودليل اللعب</p></div></div>';
   if (guide) {
+    html += guideProgress(guide);
     if (guide.summary) html += section("نبذة عن الشخصية", '<p>' + esc(guide.summary) + '</p>');
     if (guide.richContent) html += section("معلومات إضافية", safeRichHtml(guide.richContent));
     html += section("Kit · أسلوب اللعب والقدرات", '<p>' + esc(guide.kit || "لم تتم إضافة وصف بعد.") + '</p>');
-    if (guide.skills) html += section("Skills · المهارات", '<div class="guide-highlight">' + guide.skills.map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
-    if (guide.passives) html += section("Passive Skills · المهارات السلبية", '<div class="guide-highlight">' + guide.passives.map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
-    html += section("Teams · الفرق المقترحة", '<ul class="guide-list">' + guide.teams.map(team => '<li>' + esc(team) + '</li>').join("") + '</ul>');
-    html += section("Echo Sets · مجموعات Echo", '<div class="guide-highlight"><b>' + esc(guide.echoSet) + '</b><p>Main Echo: ' + esc(guide.mainEcho) + '</p><p>Main Stats: ' + esc(guide.mainStats) + '</p><p>Substats: ' + esc(guide.subStats) + '</p>' + (guide.echoOptions || []).map(item => '<p><b>' + esc(item.name) + ':</b> ' + esc(item.desc) + '</p>').join("") + '</div>');
-    if (guide.recommendedStats) html += section("Recommended Stats · الإحصائيات المقترحة", '<ul class="guide-list">' + guide.recommendedStats.map(item => '<li>' + esc(item) + '</li>').join("") + '</ul>');
-    if (guide.skillPriority) html += section("Skill Priority · أولوية تطوير المهارات", '<ol class="guide-list">' + guide.skillPriority.map(item => '<li>' + esc(item) + '</li>').join("") + '</ol>');
+    if (safeList(guide.skills).length) html += section("Skills · المهارات", '<div class="guide-highlight">' + safeList(guide.skills).map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
+    if (safeList(guide.passives).length) html += section("Passive Skills · المهارات السلبية", '<div class="guide-highlight">' + safeList(guide.passives).map(item => '<p><b>' + esc(item.name) + '</b><br>' + esc(item.desc) + '</p>').join("") + '</div>');
+    if (guide.forteCircuit) html += section("Forte Circuit · آلية Forte", '<p>' + esc(guide.forteCircuit) + '</p>');
+    html += section("Teams · الفرق المقترحة", '<ul class="guide-list">' + safeList(guide.teams).map(team => '<li>' + esc(team) + '</li>').join("") || '<li>لم تتم إضافة فرق موصى بها بعد.</li>' + '</ul>');
+    html += section("Echo Sets · مجموعات Echo", '<div class="guide-highlight"><b>' + esc(guide.echoSet) + '</b><p>Main Echo: ' + esc(guide.mainEcho) + '</p><p>Main Stats: ' + esc(guide.mainStats) + '</p><p>Substats: ' + esc(guide.subStats) + '</p>' + safeList(guide.echoOptions).map(item => '<p><b>' + esc(item.name) + ':</b> ' + esc(item.desc) + '</p>').join("") + '</div>');
+    if (safeList(guide.recommendedStats).length) html += section("Recommended Stats · الإحصائيات المقترحة", '<ul class="guide-list">' + guide.recommendedStats.map(item => '<li>' + esc(item) + '</li>').join("") + '</ul>');
+    if (safeList(guide.skillPriority).length) html += section("Skill Priority · أولوية تطوير المهارات", '<ol class="guide-list">' + guide.skillPriority.map(item => '<li>' + esc(item) + '</li>').join("") + '</ol>');
     html += section("Rotation · تسلسل اللعب", '<p>' + esc(guide.rotation) + '</p>' + (guide.advancedRotation ? '<p><b>تدوير متقدم:</b> ' + esc(guide.advancedRotation) + '</p>' : ''));
-    if (guide.review) html += section("Review · التقييم", '<div class="guide-highlight"><b>نقاط القوة</b><ul class="guide-list">' + guide.review.strengths.map(item => '<li>' + esc(item) + '</li>').join("") + '</ul><b>نقاط يجب الانتباه لها</b><ul class="guide-list">' + guide.review.limitations.map(item => '<li>' + esc(item) + '</li>').join("") + '</ul></div>');
-    if (guide.sequences) html += section("Resonance Chain · العقد", '<div class="guide-highlight">' + guide.sequences.map(item => '<p><b>' + esc(item.name) + '</b> — ' + esc(item.desc) + '</p>').join("") + '</div>');
+    if (guide.review) html += section("Review · التقييم", '<div class="guide-highlight"><b>نقاط القوة</b><ul class="guide-list">' + safeList(guide.review.strengths).map(item => '<li>' + esc(item) + '</li>').join("") + '</ul><b>نقاط يجب الانتباه لها</b><ul class="guide-list">' + safeList(guide.review.limitations).map(item => '<li>' + esc(item) + '</li>').join("") + '</ul></div>');
+    const sequences = safeList(guide.sequences || guide.resonanceChain);
+    if (sequences.length) html += section("Resonance Chain · العقد", '<div class="guide-highlight">' + sequences.map(item => '<p><b>' + esc(item.name) + '</b> — ' + esc(item.desc) + '</p>').join("") + '</div>');
     if (guide.baseStats) html += section("Base Stats · الإحصائيات الأساسية (Lv. 90)", '<div class="guide-highlight">' + Object.entries(guide.baseStats).map(([key,value]) => '<p><b>' + esc(key) + ':</b> ' + esc(value) + '</p>').join("") + '</div>' + (guide.minorFortes ? '<p>' + guide.minorFortes.map(esc).join(" · ") + '</p>' : ''));
-    if (guide.voiceActors) html += section("Voice Actors · المؤدون الصوتيون", '<ul class="guide-list">' + guide.voiceActors.map(item => '<li>' + esc(item) + '</li>').join("") + '</ul>');
+    if (safeList(guide.voiceActors).length) html += section("Voice Actors · المؤدون الصوتيون", '<ul class="guide-list">' + safeList(guide.voiceActors).map(item => '<li>' + esc(item) + '</li>').join("") + '</ul>');
     if (guide.materials) { html += section("Materials · مواد التطوير", '<div class="guide-highlight"><p><b>الصعود:</b> ' + esc(guide.materials.ascension || "غير متوفر") + '</p><p><b>تطوير المهارات:</b> ' + esc(guide.materials.forte || "غير متوفر") + '</p></div>'); }
     if (guide.notes) html += section("ملاحظات المصدر", "<p>" + esc(guide.notes) + "</p>");
-    html += '<div class="guide-source">المصدر: <a href="' + esc(guide.source) + '" target="_blank" rel="noopener noreferrer">' + esc(guide.sourceName || "دليل الشخصية") + '</a><p>آخر مراجعة للبيانات: ' + esc(guide.sourceLastVerified || "غير محدد") + '. قد تتغير التوصيات مع تحديثات اللعبة؛ راجع المصدر قبل اعتمادها.</p></div>';
+    if (typeof guide.source === "string" && /^https?:\/\//i.test(guide.source)) {
+      html += '<div class="guide-source">المصدر: <a href="' + esc(guide.source) + '" target="_blank" rel="noopener noreferrer">' + esc(guide.sourceName || "دليل الشخصية") + '</a><p>آخر مراجعة للبيانات: ' + esc(guide.sourceLastVerified || "غير محدد") + '. قد تتغير التوصيات مع تحديثات اللعبة؛ راجع المصدر قبل اعتمادها.</p></div>';
+    } else {
+      html += '<div class="guide-pending">مصدر هذا الملف لم يُضف أو لم يتم التحقق من رابطه بعد.</div>';
+    }
   } else {
     html += '<div class="guide-pending"><b>المعلومات التفصيلية لهذه الشخصية لم توثّق بعد.</b><p>لن نضع مهارات أو فرقاً أو تدويرات تخمينية. ستظهر البيانات بعد مطابقتها مع دليل رسمي أو مصدر موثوق.</p></div>';
     html += section("Kit · القدرات", "<p>بانتظار توثيق وصف المهارات وآليات Forte.</p>");
