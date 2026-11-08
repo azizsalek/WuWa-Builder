@@ -214,3 +214,53 @@ button,a,input,select,textarea{touch-action:manipulation}
 .team-elements{color:var(--cyan);font-size:12px;margin:14px 0 0}
 .tool-warning{color:#ffd18b;font-size:12px}
 @media(max-width:720px){.tool-form{grid-template-columns:1fr}.tool-actions{grid-column:1}.tool-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}.tool-tab{padding:10px 7px}.damage-values{grid-template-columns:1fr}.team-members{grid-template-columns:1fr}.tools-intro h2{font-size:21px}}
+
+
+/* Character guide coverage indicators */
+.guide-card-status {
+  display: inline-flex;
+  width: fit-content;
+  margin-top: 6px;
+  font-size: 11px;
+  line-height: 1.5;
+  opacity: .9;
+}
+.guide-card-status.has-guide { color: #8ddfc9; }
+.guide-card-status.pending-guide { color: #aab3c5; }
+.guide-completeness {
+  margin: 18px 0 22px;
+  padding: 14px 16px;
+  border: 1px solid rgba(133, 160, 205, .18);
+  border-radius: 14px;
+  background: rgba(16, 26, 47, .56);
+}
+.guide-completeness-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 9px;
+  font-size: 13px;
+}
+.guide-completeness-label span {
+  color: var(--cyan, #6ed9e8);
+  font-variant-numeric: tabular-nums;
+}
+.guide-completeness-track {
+  height: 7px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255,255,255,.09);
+}
+.guide-completeness-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #3aa99a, #65d6dc);
+}
+.guide-completeness small {
+  display: block;
+  margin-top: 8px;
+  color: var(--muted, #9aa6bd);
+  font-size: 11px;
+}
