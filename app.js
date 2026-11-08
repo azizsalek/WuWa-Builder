@@ -1,4 +1,4 @@
-const titles = { dashboard: "الرئيسية", characters: "قائمة الشخصيات", "site-page": "صفحة معلومات" };
+const titles = { dashboard: "الرئيسية", characters: "قائمة الشخصيات", tools: "الأدوات", "site-page": "صفحة معلومات" };
 
 function go(view) {
   if (!titles[view]) return;
