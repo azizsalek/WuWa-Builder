@@ -170,45 +170,80 @@ resetFilters.addEventListener("click", () => {
 });
 
 async function loadCharacters() {
+  // Render the bundled roster first so the catalogue never depends on the
+  // Supabase request completing successfully.
   try {
-    let loadedFromCloud = false;
-    if (window.wuwaSupabase) {
-      const { data, error } = await window.wuwaSupabase
+    const [rosterResponse, guidesResponse] = await Promise.all([
+      fetch(fallbackUrl, { cache: "no-cache" }),
+      fetch(guideUrl, { cache: "no-cache" })
+    ]);
+    if (!rosterResponse.ok) throw new Error("Roster fallback returned HTTP " + rosterResponse.status);
+    const fallbackRoster = await rosterResponse.json();
+    if (!Array.isArray(fallbackRoster) || fallbackRoster.length === 0) {
+      throw new Error("Roster fallback is empty or has an invalid format");
+    }
+    characters = fallbackRoster;
+    guides = guidesResponse.ok ? await guidesResponse.json() : {};
+    render();
+    sourceLabel.textContent = "قائمة محلية احتياطية · " + characters.length + " شخصية";
+  } catch (fallbackError) {
+    console.error("Character fallback failed:", fallbackError);
+    box.innerHTML = '<div class="empty-state">تعذر تحميل قائمة الشخصيات. تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.</div>';
+    sourceLabel.textContent = "تعذر تحميل بيانات الشخصيات";
+    return;
+  }
+
+  // Upgrade the initial data from the cloud only when a real, non-empty
+  // roster is returned. An empty response must not replace valid local data.
+  if (window.wuwaSupabase) {
+    try {
+      const cloudRequest = window.wuwaSupabase
         .from("site_content")
         .select("slug, content")
         .in("slug", ["characters-roster", "character-guides"]);
-      if (!error) {
-        const rosterRow = (data || []).find(row => row.slug === "characters-roster");
-        const guidesRow = (data || []).find(row => row.slug === "character-guides");
-        characters = Array.isArray(rosterRow?.content) ? rosterRow.content : [];
-        guides = guidesRow?.content && typeof guidesRow.content === "object" ? guidesRow.content : {};
-        loadedFromCloud = true;
+      const timeout = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error("Supabase request timed out")), 8000)
+      );
+      const { data, error } = await Promise.race([cloudRequest, timeout]);
+      if (error) throw error;
+      const rows = Array.isArray(data) ? data : [];
+      const rosterRow = rows.find(row => row.slug === "characters-roster");
+      const guidesRow = rows.find(row => row.slug === "character-guides");
+      if (Array.isArray(rosterRow?.content) && rosterRow.content.length > 0) {
+        characters = rosterRow.content.filter(item => item && typeof item.name === "string");
+        if (characters.length > 0) {
+          if (guidesRow?.content && typeof guidesRow.content === "object" && !Array.isArray(guidesRow.content)) {
+            guides = guidesRow.content;
+          }
+          render();
+          sourceLabel.textContent = "بيانات الشخصيات من قاعدة البيانات السحابية · " + characters.length + " شخصية";
+        }
+      } else {
+        console.warn("Supabase returned no usable roster; keeping bundled fallback data.");
       }
+    } catch (cloudError) {
+      console.warn("Cloud character data unavailable; keeping bundled fallback data:", cloudError);
     }
-    if (!loadedFromCloud) {
-      const [rosterResponse,guidesResponse] = await Promise.all([
-        fetch(fallbackUrl,{cache:"no-cache"}),
-        fetch(guideUrl,{cache:"no-cache"})
-      ]);
-      if (!rosterResponse.ok) throw new Error("Roster unavailable");
-      characters = await rosterResponse.json();
-      guides = guidesResponse.ok ? await guidesResponse.json() : {};
-    }
-    render();
-    sourceLabel.textContent = loadedFromCloud
-      ? "بيانات الشخصيات من قاعدة البيانات السحابية"
-      : "قائمة الشخصيات · يتم تحميل الصور";
-  } catch (error) {
-    box.innerHTML='<div class="empty-state">تعذر تحميل قاعدة الشخصيات.</div>';
-    sourceLabel.textContent="تعذر تحميل البيانات";
-    return;
   }
+
+  // Portraits are optional: failures must never hide the character list.
   try {
-    const response=await fetch(characterApiUrl); if(!response.ok) throw new Error("Image service unavailable");
-    const data=await response.json(), list=Array.isArray(data.roleList)?data.roleList:[];
-    list.forEach(item=>{if(item.Name&&item.RoleHeadIcon)imageMap.set(normalizeName(item.Name),item.RoleHeadIcon);});
-    characters=characters.map(c=>({...c,id:list.find(x=>normalizeName(x.Name)===normalizeName(c.name))?.Id||""}));
-    render(); sourceLabel.textContent=imageMap.size+" صورة مصغّرة متاحة · بيانات الملفات من قاعدة البيانات";
-  } catch (error) { sourceLabel.textContent="تعذر تحميل الصور الآن؛ ستظهر العناصر البديلة"; }
+    const response = await fetch(characterApiUrl);
+    if (!response.ok) throw new Error("Image service returned HTTP " + response.status);
+    const data = await response.json();
+    const list = Array.isArray(data.roleList) ? data.roleList : [];
+    list.forEach(item => {
+      if (item.Name && item.RoleHeadIcon) imageMap.set(normalizeName(item.Name), item.RoleHeadIcon);
+    });
+    characters = characters.map(c => ({
+      ...c,
+      id: list.find(x => normalizeName(x.Name) === normalizeName(c.name))?.Id || ""
+    }));
+    render();
+    sourceLabel.textContent = imageMap.size + " صورة مصغّرة متاحة · " + characters.length + " شخصية";
+  } catch (imageError) {
+    console.warn("Character portraits unavailable; showing fallback initials:", imageError);
+    sourceLabel.textContent = characters.length + " شخصية · تعذر تحميل الصور، وتظهر الأحرف البديلة";
+  }
 }
 loadCharacters();
