@@ -57,6 +57,8 @@ function render() {
   box.querySelectorAll("img").forEach(img => img.addEventListener("error", () => {
     const placeholder=document.createElement("span"); placeholder.className="art-placeholder"; placeholder.textContent=img.alt.slice(0,1); img.replaceWith(placeholder);
   }, {once:true}));
+  window.wuwaRoster = characters.slice();
+  window.dispatchEvent(new CustomEvent("wuwa:roster-ready", { detail: { characters: window.wuwaRoster } }));
   updateFilterButtons();
 }
 
