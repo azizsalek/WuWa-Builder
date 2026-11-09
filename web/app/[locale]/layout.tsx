@@ -9,5 +9,5 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const { locale: rawLocale } = await params;
   if (!isLocale(rawLocale)) notFound();
   const locale = rawLocale as Locale;
-  return <><LocaleAttributes locale={locale} /><div className="app-frame"><SiteHeader locale={locale} /><main className="main-content">{children}</main><SiteFooter locale={locale} /></div>;
+  return <><LocaleAttributes locale={locale} /><div className="app-frame"><SiteHeader locale={locale} /><main className="main-content">{children}</main><SiteFooter locale={locale} /></div></>;
 }
