@@ -1,0 +1,260 @@
+{
+  "Jiyan": {
+    "role": "مهاجم رئيسي · Aero",
+    "summary": "قائد حرس منتصف الليل، يعتمد على ضرر Aero واسع النطاق ويتركز معظم ضرره خلال نافذة Resonance Liberation. يناسبه فريق Hyper Carry يمنحه التعزيزات والطاقة قبل دخوله الميداني.",
+    "kit": "يجمع Jiyan مورد Resolve عبر الهجمات الأساسية وIntro Skill. يمكنه تخزين 60 نقطة؛ وعند توفر 30 نقطة أو أكثر يستطيع تفعيل ضربة Emerald Storm: Finale مع Resonance Liberation. أثناء Qingloong Mode تتحول هجماته الأساسية والثقيلة وهجوم المراوغة إلى سلسلة Lance of Qingloong المكوّنة من ثلاث مراحل، مع مقاومة أعلى للمقاطعة وقدرة على جمع كثير من الأعداء.",
+    "skills": [
+      {
+        "name": "Basic Attack · Lone Lance",
+        "desc": "ينفذ حتى خمس ضربات متتالية من ضرر Aero. يتضمن هجوماً ثقيلاً، وهجمات جوية، وهجوماً مضاداً بعد المراوغة الناجحة."
+      },
+      {
+        "name": "Resonance Skill · Windqueller",
+        "desc": "اندفاع إلى الأمام يسبب ضرر Aero ويمكن تنفيذه في الهواء. إذا كان لديه 30 Resolve قبل Qingloong Mode، يمكن أن يستهلكها لزيادة ضرر المهارة."
+      },
+      {
+        "name": "Resonance Liberation · Emerald Storm: Prelude",
+        "desc": "يدخل Jiyan في Qingloong Mode. تستبدل هجماته الأساسية والثقيلة وهجوم المراوغة بسلسلة Lance of Qingloong، وهي ثلاث ضربات متتابعة محسوبة كضرر Heavy Attack."
+      },
+      {
+        "name": "Forte Circuit · Qingloong at War",
+        "desc": "يدير مورد Resolve حتى 60 نقطة. تُكتسب النقاط من إصابة الأعداء بالهجمات الأساسية وIntro Skill، وتتراجع تدريجياً إذا لم يصب هدفاً لمدة 15 ثانية. عند توفر 30 نقطة وقت تفعيل Liberation، يطلق Emerald Storm: Finale إضافية."
+      },
+      {
+        "name": "Intro Skill · Tactical Strike",
+        "desc": "ضربة Aero من الجو عند دخول Jiyan إلى ساحة القتال."
+      },
+      {
+        "name": "Outro Skill · Discipline",
+        "desc": "عندما تصيب ضربة Heavy Attack للحليف التالي هدفاً، يستدعي Jiyan Qingloong لتنفيذ هجوم منسق يسبب ضرراً يعادل 313.4% من ATK. يستمر التأثير 8 ثوانٍ ويمكن تفعيله مرة كل ثانية، حتى مرتين."
+      }
+    ],
+    "passives": [
+      {
+        "name": "Heavenly Balance",
+        "desc": "بعد Tactical Strike ترتفع ATK بنسبة 10% لمدة 15 ثانية."
+      },
+      {
+        "name": "Tempest Taming",
+        "desc": "عند إصابة هدف، يرتفع Crit. DMG بنسبة 12% لمدة 8 ثوانٍ."
+      }
+    ],
+    "teams": [
+      "Jiyan + Iuno + Ciaccona — خيار Aero قوي عند توافر شروط المجموعة المناسبة.",
+      "Jiyan + Iuno + Phrolova — خيار يجمع مهاجماً ثانوياً مع تعزيزات Heavy Attack.",
+      "Jiyan + Mortefi + The Shorekeeper — تشكيلة عملية مع دعم وتعزيزات عامة.",
+      "Jiyan + Mortefi + Verina — خيار دعم بديل.",
+      "Jiyan + Aero Rover + The Shorekeeper — خيار يستفيد من تآزر Aero."
+    ],
+    "echoSet": "Windward Pilgrimage عند توفر تطبيق Aero Erosion على الخصم؛ وإلا فإن Sierra Gale خيار ثابت وموثوق.",
+    "echoOptions": [
+      {
+        "name": "Windward Pilgrimage",
+        "desc": "يوفر Aero DMG إضافياً، ويمنح Crit. Rate وAero DMG Bonus إضافيين عند مهاجمة هدف متأثر بـ Aero Erosion."
+      },
+      {
+        "name": "Sierra Gale",
+        "desc": "يوفر Aero DMG بشكل ثابت، مع تعزيز إضافي بعد استخدام Intro Skill."
+      }
+    ],
+    "mainEcho": "Nightmare: Kelpie مع Windward Pilgrimage؛ أو Nightmare: Feilian Beringal مع Sierra Gale. يمكن اختيار البديل ذي الإحصائيات الفرعية الأفضل.",
+    "mainStats": "4-Cost: Crit. Rate أو Crit. DMG · 3-Cost: Aero DMG Bonus أو ATK% · 1-Cost: ATK% · 1-Cost: ATK%",
+    "subStats": "Energy Regen حتى تلبية الحاجة للدوران، ثم Crit. Rate = Crit. DMG > ATK% > ATK > Heavy Attack DMG Bonus.",
+    "recommendedStats": [
+      "HP: 15,000+",
+      "DEF: 1,150+",
+      "ATK: 1,900–2,700+",
+      "Crit. Rate: 65–80%+",
+      "Crit. DMG: 215–260%+",
+      "Energy Regen: 115–125% تقريباً؛ تتغير الحاجة بحسب الفريق.",
+      "Aero DMG Bonus: 20–80%+ بحسب توزيع الإحصائيات."
+    ],
+    "skillPriority": [
+      "Resonance Liberation",
+      "Forte Circuit",
+      "Resonance Skill",
+      "Intro Skill",
+      "Basic Attack"
+    ],
+    "rotation": "قبل نافذة الضرر: استخدم Resonance Skill عند توفرها للمساعدة في شحن الطاقة، ودوّر بين أعضاء الفريق لبناء Concerto Energy. استخدم Echo قبل دخول Jiyan إلى نافذة Liberation مباشرة. داخل النافذة: Intro Skill → Resonance Liberation مع توفر 30 Resolve → سلسلة Lance of Qingloong من مراحلها الثلاث → Resonance Skill في الوقت المناسب → أكمل الهجمات المحسّنة ثم Outro Skill للتبديل. احرص على إبقاء Resolve لتفعيل Emerald Storm: Finale.",
+    "advancedRotation": "توجد نسخة متقدمة تسمى Double Dragon تعتمد على توقيت إلغاء الحركة بالمراوغة بين أجزاء Lance of Qingloong. توقيتها أصعب، وقد يؤدي الإلغاء المبكر إلى فقدان بعض ضربات السلسلة؛ لذلك ابدأ بالتدوير الأساسي قبل تجربتها.",
+    "review": {
+      "strengths": [
+        "ضرر قوي خلال نافذة Resonance Liberation.",
+        "تغطية واسعة وفعالية جيدة ضد مجموعات الأعداء.",
+        "يجمع الأعداء ويحد من حركتهم خلال جزء من هجماته المحسّنة.",
+        "مقاومة أفضل للمقاطعة أثناء Qingloong Mode.",
+        "أسلوب لعب مباشر نسبياً."
+      ],
+      "limitations": [
+        "يعتمد جزء كبير من ضرره على جاهزية Resonance Liberation.",
+        "إدارة الطاقة وفترات إعادة الاستخدام مهمة للحفاظ على سلاسة التدوير.",
+        "يحتاج إلى وقت ميداني واضح أثناء نافذة الضرر."
+      ]
+    },
+    "sequences": [
+      {
+        "name": "S1",
+        "desc": "تمنح Resonance Skill استخداماً إضافياً وتخفض استهلاك Resolve عند استخدامها."
+      },
+      {
+        "name": "S2",
+        "desc": "بعد Intro Skill يحصل على 30 Resolve وتعزيز ATK بنسبة 28% لمدة 15 ثانية، مرة كل 15 ثانية."
+      },
+      {
+        "name": "S3",
+        "desc": "استخدام المهارات المحددة يمنحه Crit. Rate بنسبة 16% وCrit. DMG بنسبة 32% لمدة 8 ثوانٍ."
+      },
+      {
+        "name": "S4",
+        "desc": "تفعيل Resonance Liberation يزيد Heavy Attack DMG Bonus لجميع أعضاء الفريق بنسبة 25% لمدة 30 ثانية."
+      },
+      {
+        "name": "S5",
+        "desc": "يرفع معامل ضرر Outro Skill، كما تتراكم زيادة ATK عند إصابة الأهداف وتصل إلى الحد الأقصى بعد Intro Skill."
+      },
+      {
+        "name": "S6",
+        "desc": "تمنحه بعض الحركات تكدسات Momentum حتى تكدسين؛ وتستهلكها Emerald Storm: Finale لزيادة معامل ضررها."
+      }
+    ],
+    "baseStats": {
+      "level": "90",
+      "HP": "10,488",
+      "ATK": "438",
+      "DEF": "1,186",
+      "Max Energy": "125",
+      "Crit. Rate": "5%",
+      "Crit. DMG": "150%",
+      "Healing Bonus": "0%",
+      "Aero DMG": "0%"
+    },
+    "minorFortes": [
+      "Crit. Rate +8%",
+      "ATK% +12%"
+    ],
+    "materials": {
+      "ascension": "LF Howler Core ×4، MF Howler Core ×12، HF Howler Core ×12، FF Howler Core ×4؛ Roaring Rock Fist ×46؛ Pecok Flower ×60؛ Shell Credits ×170,000.",
+      "forte": "LF Howler Core ×25، MF Howler Core ×28، HF Howler Core ×40، FF Howler Core ×57؛ Waveworn Residue 210 ×25، 226 ×28، 235 ×55، 239 ×67؛ Monument Bell ×26؛ Shell Credits ×2,030,000."
+    },
+    "voiceActors": [
+      "الإنجليزية: Alex Jordan",
+      "اليابانية: Ono Yuki",
+      "الصينية: Sun Ye",
+      "الكورية: Nam Doh Hyeong"
+    ],
+    "source": "https://www.prydwen.gg/wuthering-waves/characters/jiyan",
+    "sourceName": "Prydwen",
+    "sourceLastVerified": "2026-10-31",
+    "sourceUpdated": "30/07/2026",
+    "notes": "تمت إضافة تفاصيل الملف والمهارات والفرق ومجموعات Echo والإحصائيات والمواد والممثلين الصوتيين من صفحة Prydwen. الصور المعروضة في الموقع تعتمد على صورة الشخصية المتاحة عبر قاعدة الصور الحالية؛ لم تتم إعادة رفع صور الموقع أو نسخ أصوله."
+  },
+  "Lupa": {
+    "role": "دعم هجومي / Sub-DPS · Fusion",
+    "kit": "تعتمد على Wolflame وWolfaith لتفعيل هجمات محسّنة وهجمات منسّقة. تمنح الفريق تعزيزات تتغير بحسب عدد شخصيات Fusion، ويعزز Outro Skill ضرر Fusion وBasic Attack للحليف التالي.",
+    "teams": [
+      "Changli + Lupa + Brant"
+    ],
+    "echoSet": "Flaming Clawprint (5 قطع)؛ Molten Rift خيار بديل",
+    "mainEcho": "Lioness of Glory؛ Nightmare: Inferno Rider بديل",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Fusion DMG Bonus · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Liberation DMG Bonus > Energy Regen",
+    "rotation": "بعد Resonance Liberation فعّل Foebreaker للحصول على Burning Matchpoint، ثم نفّذ سلسلة Basic Attacks خلال نافذة التعزيز لبناء Wolflame، وأنهِ بالهجمات الخاصة المتاحة. تدوير مختصر منشور: R → A/E → A*n → H → A → Ultimate E.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1207&strategy_id=14073"
+  },
+  "Lingyang": {
+    "role": "مهاجم رئيسي · Glacio",
+    "kit": "مهاجم Glacio يعتمد على Basic Attack والقتال الجوي. يجمع Lion's Spirit عبر الضربات والمهارات، وعند بلوغ الحد المطلوب يدخل Striding Lion؛ وتزيد Resonance Liberation ضرره الجليدي وتخفّض استهلاك Lion's Spirit.",
+    "teams": [
+      "Lingyang + Sanhua + Shorekeeper"
+    ],
+    "echoSet": "Freezing Frost (5 قطع)",
+    "mainEcho": "Lampylumen Myriad",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Glacio DMG Bonus أو ATK% · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Basic Attack DMG > Resonance Skill DMG Bonus",
+    "rotation": "Intro Skill → سلسلة Basic Attacks مع Resonance Skill المحسّنة → Resonance Liberation → Heavy Attack للدخول في Striding Lion → واصل سلسلة الهجمات الجوية والمهارات خلال الحالة.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1104&strategy_id=14049"
+  },
+  "Denia": {
+    "role": "دعم هجومي مزدوج / Sub-DPS · Fusion",
+    "kit": "لديها نظامان للعب: Fusion Burst وTune Strain. في الأول تعزز Fusion DMG وتزيد قابلية الأعداء لتلقي Fusion Burst؛ وفي الثاني تطبّق Tune Strain وتدعم Tune Break Boost. يمكنها أيضاً تجميع الأعداء خارج الميدان.",
+    "teams": [
+      "Aemeath + Denia + Chisa",
+      "Luuk Herssen + Denia + Mornye"
+    ],
+    "echoSet": "Chromatic Foam (5 قطع) لمسار Fusion Burst؛ Reel of Spliced Memories (5 قطع) لمسار Tune Strain",
+    "mainEcho": "Reminiscence: Denia",
+    "mainStats": "4-Cost: Crit Rate أو ATK · 3-Cost: Fusion DMG Bonus · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Liberation DMG > Energy Regen",
+    "rotation": "Intro Skill → Basic Attack → Resonance Skill → Resonance Liberation (المرحلة الأولى) → Basic Attacks → Resonance Skills المحسّنة → Resonance Liberation (المرحلة الثانية) → Outro Skill.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1211&strategy_id=14116"
+  },
+  "Rover (Aero)": {
+    "role": "دعم / Sub-DPS / معالج · Aero",
+    "kit": "يركز على Resonance Skill DMG. بعض هجماته الجوية وResonance Liberation توفر علاجاً للفريق، كما تساعد Resonance Skill على تحويل الحالات السلبية غير الهوائية إلى Aero، ويزيد Outro Skill سقف تراكم الحالة الهوائية.",
+    "teams": [
+      "Jiyan + Mortefi + Rover (Aero)"
+    ],
+    "echoSet": "Rejuvenating Glow (5 قطع)",
+    "mainEcho": "Fallacy of No Return",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Aero DMG Bonus · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Skill DMG Bonus > Energy Regen",
+    "rotation": "اشحن Windstrings عبر Intro Skill والهجمات الجوية المعززة وضربات Basic Attack المحددة، ثم استخدم مراحل Resonance Skill المعززة لتفعيل دعم الفريق، وبعدها Resonance Liberation واخرج عند اكتمال Concerto Energy.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1408&strategy_id=14104"
+  },
+  "Rover (Spectro)": {
+    "role": "مهاجم · Spectro",
+    "kit": "يركز على Resonance Skill DMG وتطبيق Spectro Frazzle. يجمع Diminutive Sound من الهجمات وIntro Skill، وعند تجاوز العتبة يستطيع إطلاق Resonance Skill محسّنة.",
+    "teams": [
+      "Rover (Spectro) + Phoebe + Shorekeeper"
+    ],
+    "echoSet": "Eternal Radiance (5 قطع)",
+    "mainEcho": "Nightmare: Mourning Aix",
+    "mainStats": "4-Cost: Crit Rate · 3-Cost: Spectro DMG Bonus أو ATK% · 1-Cost: ATK%",
+    "subStats": "Crit Rate / Crit DMG > ATK% > Resonance Skill DMG Bonus > Resonance Liberation DMG Bonus",
+    "rotation": "اجمع Diminutive Sound بالهجمات وIntro Skill، ثم استخدم Resonance Skill المحسّنة عند تجاوز 50؛ تدوير مختصر منشور: E → A → H → A → A → E → A → R.",
+    "source": "https://wuwaguide.kurogames.com/en/?role_id=1502&strategy_id=14049"
+  },
+  "Mornye": {
+    "role": "دعم / معالج · Fusion",
+    "kit": "دعم يركز على استعادة الطاقة وتعزيز الفريق مع توفير العلاج. يتضمن أسلوبها Wide Field Observation Mode وتفاعلات مرتبطة بـ Rest Mass Energy وResonance Skill وResonance Liberation.",
+    "teams": [
+      "Luuk Herssen + Lynae + Mornye (فريق Tune Strain؛ يجب ضبط Lynae على Tune Strain Mode)",
+      "Lynae + Sanhua + Mornye (Lynae كمهاجم رئيسي)"
+    ],
+    "echoSet": "Halo of Starry Radiance (5 قطع)؛ Rejuvenating Glow بديل مناسب",
+    "mainEcho": "Fallacy of No Return",
+    "mainStats": "4-Cost: Healing Bonus أو DEF% حسب إعداد الدليل؛ 3-Cost: Energy Regen؛ 1-Cost: DEF%",
+    "subStats": "Energy Regen > DEF% > Flat DEF > CRIT DMG",
+    "rotation": "ابدأ بـ Mornye ونفّذ 3 Basic Attacks لشحن Rest Mass Energy، ثم Heavy Attack للدخول إلى Wide Field Observation Mode. أكمل سلسلة الهجمات والمهارة كما يوضح دليل Game8 قبل التبديل إلى المهاجم الرئيسي.",
+    "source": "https://game8.co/games/Wuthering-Waves/archives/568193g",
+    "sourceName": "Game8",
+    "sourceLastVerified": "2026-10-31",
+    "materials": {
+      "ascension": "LF Mech Core ×4، MF Mech Core ×12، HF Mech Core ×12، FF Mech Core ×4؛ Burning Judgment ×46؛ Gemini Spore ×60؛ Shell Credit ×170,000.",
+      "forte": "LF Mech Core ×25، MF Mech Core ×28، HF Mech Core ×40، FF Mech Core ×57؛ LF Carved Crystal ×25، MF Carved Crystal ×28، HF Carved Crystal ×55، FF Carved Crystal ×67؛ The Netherworld's Stare ×26؛ Shell Credit ×2,030,000."
+    },
+    "notes": "المعلومات المتاحة من مقتطف Game8 المفهرس. لم يتم ملء أرقام أو تفاصيل مهارات غير ظاهرة في المصدر."
+  },
+  "Verina": {
+    "role": "دعم / معالج · Spectro",
+    "kit": "دعم شامل يركز على علاج الفريق وتعزيز ATK. يوفر Outro Skill تعزيز All-Type DMG Deepen، كما يمكنها تفعيل Photosynthesis Mark على الأعداء باستخدام Resonance Liberation.",
+    "teams": [
+      "Rover (Spectro) + Yangyang + Verina (فريق مجاني)",
+      "Jiyan + Mortefi + Verina (فريق متقدم؛ يذكر الدليل ملاحظة خاصة بإعداد Mortefi)"
+    ],
+    "echoSet": "Rejuvenating Glow (5 قطع)؛ Moonlit Clouds بديل",
+    "mainEcho": "Fallacy of No Return؛ Bell-Borne Geochelone بديل دفاعي",
+    "mainStats": "4-Cost: Healing Bonus أو ATK%؛ 3-Cost: Energy Regen؛ 1-Cost: ATK%",
+    "subStats": "Energy Regen > ATK% > Flat ATK",
+    "rotation": "اشحن Concerto Energy، ثم استخدم Resonance Liberation لتطبيق Photosynthesis Mark، فعّل Echo Skill عند الحاجة، ثم بدّل إلى المهاجم الرئيسي للاستفادة من تعزيزات الفريق.",
+    "source": "https://game8.co/games/Wuthering-Waves/archives/454229f",
+    "sourceName": "Game8",
+    "sourceLastVerified": "2026-10-31",
+    "materials": {
+      "ascension": "LF Howler Core ×4، MF Howler Core ×12، HF Howler Core ×12، FF Howler Core ×4؛ Elegy Tacet Core ×46؛ Belle Poppy ×60؛ Shell Credit ×170,000.",
+      "forte": "LF Howler Core ×25، MF Howler Core ×28، HF Howler Core ×40، FF Howler Core ×57؛ Lento Helix ×25، Adagio Helix ×28، Andante Helix ×55، Presto Helix ×67؛ Monument Bell ×26؛ Shell Credit ×2,030,000."
+    },
+    "notes": "المعلومات مستخلصة من مقتطف Game8 المفهرس. تفاصيل المهارات الكاملة وأولويات رفع كل مهارة لم تتوفر في المقتطف، لذلك لم تتم إضافتها تخميناً."
+  }
+}
