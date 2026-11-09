@@ -65,7 +65,7 @@ export function CharacterDirectory({ locale }: { locale: Locale }) {
     <div className="directory-meta">{loading ? t.loading : (locale === "ar" ? "عدد النتائج: " : "Results: ") + filtered.length}</div>
     {loading ? <div className="empty-panel">{t.loading}</div> : filtered.length === 0 ? <div className="empty-panel">{t.noResults}</div> :
       <div className="character-grid">{filtered.map((c) => {
-        const key = c.name.toLowerCase().replace(/[^a-z0-9]/g, "");
+        const key = c.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
         const image = images[key] || c.image;
         return <Link href={"/" + locale + "/characters/" + key} className="character-card" key={c.name}>
           <div className={"character-art element-" + c.element.toLowerCase()}>
@@ -73,7 +73,7 @@ export function CharacterDirectory({ locale }: { locale: Locale }) {
             <b className="stars">{"★".repeat(c.rarity)}</b>
           </div>
           <div className="character-info"><strong>{c.name}</strong><span>{labels[c.element] || c.element} · {c.rarity}★</span></div>
-        </article>;
+        </Link>;
       })}</div>}
     <p className="source-note">{t.sourceNote}</p>
   </div>;
