@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import type { Locale } from "@/lib/i18n";
 import { getMessages } from "@/lib/i18n";
 
@@ -66,7 +67,7 @@ export function CharacterDirectory({ locale }: { locale: Locale }) {
       <div className="character-grid">{filtered.map((c) => {
         const key = c.name.toLowerCase().replace(/[^a-z0-9]/g, "");
         const image = images[key] || c.image;
-        return <article className="character-card" key={c.name}>
+        return <Link href={"/" + locale + "/characters/" + key} className="character-card" key={c.name}>
           <div className={"character-art element-" + c.element.toLowerCase()}>
             {image ? <img src={image} alt={c.name} loading="lazy" /> : <span>{c.name.slice(0,1)}</span>}
             <b className="stars">{"★".repeat(c.rarity)}</b>
